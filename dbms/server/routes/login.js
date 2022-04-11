@@ -21,7 +21,7 @@ router.post('/register',[body('email').isEmail(),body('password').isStrongPasswo
     const password = securePassword(req.body.password);
     console.log("This is " + password);
     //DB
-    db.query('INSERT INTO USER (user_id,email,password,first_name,last_name) VALUES (?,?,?,?,?)',[req.body.user_id,req.body.email,password,req.body.first_name,req.body.last_name],function(err, results, fields){
+    db.query('INSERT INTO USER (user_id,email,password,first_name,last_name,balance) VALUES (?,?,?,?,?,?)',[req.body.user_id,req.body.email,password,req.body.first_name,req.body.last_name,0],function(err, results, fields){
         if(err){
             res.status(422).json({
                 message:err.message
