@@ -16,4 +16,17 @@ router.post('/login',(req,res)=>{
         res.json({user:results[0]});
     });
 });
+
+router.post('/addteams',(req,res)=>{
+    db.query('INSERT INTO TEAMS (team_id,team_name,team_flag) VALUES (?,?,?)',
+                [req.body.team_id,req.body.team_name,req.body.team_flag],
+                function(err,results,fields){
+                    if(err)
+                    {
+                        return done(err);
+                    }
+                res.json({teams:results[1]});
+    });
+});
+
 module.exports = router;

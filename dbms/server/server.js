@@ -3,7 +3,7 @@ const db = require('./db/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const loginRoutes = require('./routes/login');
-const adminLoginRoutes = require('./admin/login');
+const adminLoginRoutes = require('./admin/adminroutes');
 // const sequelize = require('./db/sequelize');
 const app = express();
 app.use(express.urlencoded());
