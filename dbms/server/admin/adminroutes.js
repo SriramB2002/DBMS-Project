@@ -48,8 +48,13 @@ router.post('/addstadium',(req,res)=>{
 
 //Adds match to database
 router.post('/match',(req,res)=>{
-    db.query('INSERT INTO MATCH (match_id, match_format, match_type, date_time, stadium_id, team1_id, team2_id) VALUES (?,?,?,?,?,?,?)',
-        [req.body.team_id,req.body.match_format,req.body.match_type, req.body.date_time, req.body.stadium_id, req.body.team1_id, req.body.team2_id],
+    if(req.body.team1_id==req.body.team2_id)
+    {
+        res.status(400).json("Team id cannot be equal");
+        return;
+    }
+    db.query('INSERT INTO DBS.MATCH (match_id, match_format, match_type, date_time, stadium_id, team1_id, team2_id) VALUES (?,?,?,?,?,?,?);',
+        [req.body.match_id,req.body.match_format,req.body.match_type, req.body.date_time, req.body.stadium_id, req.body.team1_id, req.body.team2_id],
                 function(err,results,fields){
                     if(err){
                         res.status(422).json({
