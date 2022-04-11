@@ -31,20 +31,55 @@ router.post('/addteams',(req,res)=>{
     });
 });
 
+
+function addSeats(stadium_id,normal_price,premium_price,capacity)
+{
+    for(let i=1;i<=capacity/4;i++)
+    {
+        db.query('INSERT INTO SEATS (seat_id,stadium_id,seat_type,seat_price) VALUES (?,?,?,?)',
+        [i,stadium_id,"Premium",premium_price]);
+    }
+    for(let i=capacity/4+1;i<=capacity;i++)
+    {
+        db.query('INSERT INTO SEATS (seat_id,stadium_id,seat_type,seat_price) VALUES (?,?,?,?)',
+        [i,stadium_id,"Normal",normal_price]);
+    }   
+}
+
 //Add Stadium to database
-router.post('/addstadium',(req,res)=>{
+router.post('/addstadium',(req,res)=>
+{
     db.query('INSERT INTO STADIUM (stadium_id,stadium_name,capacity,city,country) VALUES (?,?,?,?,?)',
                 [req.body.stadium_id,req.body.stadium_name,req.body.capacity, req.body.city, req.body.country],
-                function(err,results,fields){
+                function(err,results,fields)
+                {
                     if(err){
                         res.status(422).json({
                             message:err.message
                         });
                         return;
                     }
-                    res.json("Added");
-    });
+                    // console.log(results);
+                }
+            );
+    db.query('select stadium_id from stadium where stadium_name=?',[req.body.stadium_name],
+                function(err,results,fields)
+                {
+                    if(err){
+                        res.status(422).json({
+                            message:err.message
+                        });
+                        // throw err;
+                        return;
+                    }
+                    console.log(results[0].stadium_id);
+                    addSeats(results[0].stadium_id,req.body.normal_price,req.body.premium_price,req.body.capacity);
+                    // res.json("added");
+                }
+            );
+            res.json("added");
 });
+
 
 //Adds match to database
 router.post('/match',(req,res)=>{
