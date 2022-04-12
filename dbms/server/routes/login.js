@@ -71,10 +71,17 @@ router.post('/login',(req,res)=>{
 });
 
 router.post('/updateBalance',authenticate,(req, res) => {
-        console.log(req.user.user.email);
-        db.query('UPDATE user SET balance = balance + ? WHERE email=?', [req.body.val, req.user.user.email], function(err, results) {
-            res.json(results);
-        });
+    console.log(req.user.user.email);
+    db.query('UPDATE user SET balance = balance + ? WHERE email=?', [req.body.val, req.user.user.email], function(err, results) {
+        res.json(results);
+    });
+});
+
+router.post('/updateDetails', authenticate, (req, res) => {
+    const password = securePassword(req.body.password);
+    db.query('UPDATE user SET password=?, first_name=?, last_name=? WHERE email=?', [password, req.body.first_name, req.body.last_name, req.user.user.email], function(err, results) {
+        res.json(results);
+    });
 });
 
 module.exports = router;
