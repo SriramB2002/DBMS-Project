@@ -7,10 +7,14 @@ const bcrypt = require('bcrypt');
 const { body, validationResult } = require('express-validator');
 app.use(express.urlencoded());
 app.use(express.json());
+
+let currentUserEmail = "";
+
 const securePassword = (password) =>{
     const passwordHashed = bcrypt.hashSync(password,10);
     return passwordHashed;
 }
+
 router.post('/register',[body('email').isEmail(),body('password').isStrongPassword()],(req,res)=>{
     //Express Validator
     const errors = validationResult(req);
@@ -32,11 +36,27 @@ router.post('/register',[body('email').isEmail(),body('password').isStrongPasswo
             res.json(results);
         });
     });
-
 });
+
 router.post('/login',(req,res)=>{
     db.query('SELECT * FROM USER WHERE email=? AND password=?',[req.body.email,req.body.password],function(err,results,fields){
+        currentUserEmail = req.body.email;
         res.json({user:results[0]});
     });
 });
+
+router.post('/updateBalance', (req, res) => {
+    if (currentUserEmail == "")
+    {
+        console.log("No user logged in!");
+        res.statusCode = 404;
+    }
+    else {
+        console.log(currentUserEmail);
+        db.query('UPDATE user SET balance = balance + ? WHERE email=?', [req.body.val, currentUserEmail], function(err, results) {
+            res.json(results);
+        });
+    }
+});
+
 module.exports = router;
