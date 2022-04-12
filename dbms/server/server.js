@@ -5,11 +5,13 @@ const bcrypt = require('bcrypt');
 const loginRoutes = require('./routes/login');
 const adminLoginRoutes = require('./admin/adminroutes');
 const adminGetRoutes = require('./admin/getroutes');
+const userbooking = require('./user/userbooking');
 // const sequelize = require('./db/sequelize');
 const app = express();
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(loginRoutes);
+app.use(userbooking);
 app.use('/admin',adminLoginRoutes);
 app.use('/get',adminGetRoutes);
 app.get('/users',(req,res)=>{
