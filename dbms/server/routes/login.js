@@ -53,10 +53,20 @@ router.post('/register',[body('email').isEmail(),body('password').isStrongPasswo
 });
 
 router.post('/login',(req,res)=>{
-    db.query('SELECT * FROM USER WHERE email=? AND password=?',[req.body.email,req.body.password],function(err,results,fields){
-        res.json({user:results[0]});
-        req.token = jwt.sign({user:results[0]}, process.env.SECRET_KEY,expiresIn='1s');
-        console.log(req.token);
+    db.query('SELECT * FROM USER WHERE email=?',[req.body.email,req.body.password],function(err,results,fields){
+        bcrypt.compare(req.body.password,results[0].password,function(err,result){
+            if(result){
+                console.log(results[0]);
+                // return;
+                req.token = jwt.sign({user:results[0]}, process.env.SECRET_KEY);
+                res.json({user:results[0]});
+                console.log(req.token);
+            }
+            else{
+                res.status(404).send('Please Enter Correct Password');
+            }
+        });
+        
     });
 });
 
