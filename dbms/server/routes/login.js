@@ -55,13 +55,14 @@ router.post('/register',[body('email').isEmail(),body('password').isStrongPasswo
 router.post('/login',(req,res)=>{
     db.query('SELECT * FROM USER WHERE email=? AND password=?',[req.body.email,req.body.password],function(err,results,fields){
         res.json({user:results[0]});
-        req.token = jwt.sign({user:results[0]}, process.env.SECRET_KEY);
+        req.token = jwt.sign({user:results[0]}, process.env.SECRET_KEY,expiresIn='1s');
         console.log(req.token);
     });
 });
 
 router.post('/updateBalance',authenticate,(req, res) => {
-        db.query('UPDATE user SET balance = balance + ? WHERE email=?', [req.body.val, req.user.email], function(err, results) {
+        console.log(req.user.user.email);
+        db.query('UPDATE user SET balance = balance + ? WHERE email=?', [req.body.val, req.user.user.email], function(err, results) {
             res.json(results);
         });
 });
