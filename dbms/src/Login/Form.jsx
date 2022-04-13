@@ -12,12 +12,17 @@ const Form = props => {
     return <Redirect to="/Dashboard" />;
   }
   const authenticate = async (data) => {
-    console.log(data);
-      const response = await axios.post("http://localhost:8080/login", {
-        email: data.email,
-        password: data.password
-      });
-      console.log(response);
+      try{
+        const response = await axios.post("http://localhost:8080/login", {
+          email: data.email,
+          password: data.password
+        });
+      }
+      catch(error){
+        console.log(Object.keys(error),error.message);
+      }
+     
+      
   }
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,

@@ -54,8 +54,13 @@ router.post('/register',[body('email').isEmail(),body('password').isStrongPasswo
 
 router.post('/login',(req,res)=>{
     console.log(req.body);
-    db.query('SELECT * FROM USER WHERE email=?',[req.body.email,req.body.password],function(err,results,fields){
-        console.log(results);
+    db.query('SELECT * FROM USER WHERE email=?',[req.body.email],function(err,results,fields){
+        if(results.length==0 || results===null || results===undefined){
+            res.status(404).json({
+                message:'User Doesn\'t Exist'
+            });
+            return;
+        }
         bcrypt.compare(req.body.password,results[0].password,function(err,result){
             if(result){
                 console.log(results[0]);
