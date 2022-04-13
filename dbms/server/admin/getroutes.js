@@ -25,7 +25,7 @@ router.get("/stadiums",function(req,res)
 //get All Seats in a stadium
 router.post("/availableseats",function(req,res)
 {
-    db.query('select s.seat_id,s.stadium_id from seats s, dbs.match m where m.stadium_id = s.stadium_id and match_id=? and s.seat_id'+
+    db.query('select s.seat_id,s.stadium_id,s.seat_type,s.seat_price from seats s, dbs.match m where m.stadium_id = s.stadium_id and match_id=? and s.seat_id'+
     ' Not IN(select s.seat_id from book_seats s, dbs.match m, booking b where b.booking_id=s.booking_id and '+
     'm.match_id = b.match_id and m.match_id = ?)',
     [req.body.match_id,req.body.match_id],
