@@ -1,39 +1,35 @@
-import React, { useState,useEffect } from "react";
-import useForm from "./useForm";
-import validate from "./LoginFormValidationRules";
+import React, { useState } from "react";
+import useForm from "../Shared/useForm";
+import validate from "../Shared/LoginFormValidationRules";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { loginst } from "../Reducers/LoginReducer";
-import { login } from "../Reducers/UserReducer";
+import axios from "axios";
 const Form = props => {
+  const login = (data) => {
+    //Login Button is Pressed and We Got the Data
+    authenticate(data);
+    setLoggedIn(true);
+    props.parentCallback(true);
+    return <Redirect to="/Dashboard" />;
+  }
+  const authenticate = async (data) => {
+    console.log(data);
+      const response = await axios.post("http://localhost:8080/login", {
+        email: data.email,
+        password: data.password
+      });
+      console.log(response);
+  }
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validate
   );
-  const loggedIn = useSelector((state)=>(state.loginReducer.value.isloggedIn));
-  
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loginst(localStorage.getItem('isloggedIn')=='true'));
-    
-  },[]);
-  //after clicking on login button
-  function login() {
-    if(loggedIn==true){
-      localStorage.setItem("isloggedIn", loggedIn);
-      return;
-    }
-    
-    dispatch(loginst(true));
-    localStorage.setItem("isloggedIn", true);
-    
-    return <Redirect to="/Dashboard" />;
-  }
-  //UI for Form
+  const [loggedIn, setLoggedIn] = useState(null);
+
+
+
   return (
     <div className="section is-fullheight">
-      {loggedIn==true && <Redirect to="/Dashboard" />}
+      {!!loggedIn && <Redirect to="/Dashboard" />}
       <div className="container">
         <div className="column is-6 is-offset-3">
           <div className="box">

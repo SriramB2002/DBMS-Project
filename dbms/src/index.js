@@ -4,21 +4,10 @@ import "bulma/css/bulma.css";
 import "./styles.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import {configureStore} from '@reduxjs/toolkit';
-import {Provider} from 'react-redux';
-import userReducer from './Reducers/UserReducer';
-import loginReducer from './Reducers/LoginReducer';
 
-const store = configureStore({
-    reducer: {
-        userReducer,
-        loginReducer
-    }
-});
+ReactDOM.render(<App />, document.getElementById("root"));
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>
-, document.getElementById("root"));
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();

@@ -6,8 +6,17 @@ const loginRoutes = require('./routes/login');
 const adminLoginRoutes = require('./admin/adminroutes');
 const adminGetRoutes = require('./admin/getroutes');
 const userbooking = require('./user/userbooking');
+var cors = require('cors');
 // const sequelize = require('./db/sequelize');
 const app = express();
+app.use(cors());
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+  });
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(loginRoutes);
