@@ -60,24 +60,25 @@ router.post('/addstadium',(req,res)=>
                         return;
                     }
                     // console.log(results);
-                }
-            );
-    db.query('select stadium_id from stadium where stadium_name=?',[req.body.stadium_name],
-                function(err,results,fields)
-                {
-                    if(err){
-                        res.status(422).json({
-                            message:err.message
-                        });
-                        // throw err;
-                        return;
+                    db.query('select stadium_id from stadium where stadium_name=?',[req.body.stadium_name],
+                    function(err,results,fields)
+                    {
+                        if(err){
+                            res.status(422).json({
+                                message:err.message
+                            });
+                            return;
+                            // throw err;
+                        }
+                        console.log(results[0].stadium_id);
+                        addSeats(results[0].stadium_id,req.body.normal_price,req.body.premium_price,req.body.capacity);
+                        // res.json("added");
                     }
-                    console.log(results[0].stadium_id);
-                    addSeats(results[0].stadium_id,req.body.normal_price,req.body.premium_price,req.body.capacity);
-                    // res.json("added");
+                );
+                res.json("added");
                 }
             );
-            res.json("added");
+   
 });
 
 
