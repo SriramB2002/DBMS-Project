@@ -32,6 +32,13 @@
     bottom: -400px;
     margin: auto;
   }
+  .btngroup2{
+    position: fixed;
+    top:17px;
+    right: 17px;
+    margin: auto;
+    transform: scale(0.5);
+  }
   .secondary-text{
       margin-top: 100px;
       background-color: rgba(1, 1, 1, 0.5);
@@ -66,6 +73,17 @@
       border-radius: 10px !important;
       text-transform: none !important;
   }
+  .btns2{
+    color: white !important;
+    font-size:15px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: bold !important;
+    background-color: rgba(1, 1, 1, 0.3) !important;
+    padding: 7px !important;
+    margin: 2px !important;
+    border-radius: 10px !important;
+    text-transform: none !important;
+}
   .btns:hover{
         background-color: rgba(1, 1, 1, 0.5) !important;
         transform: scale(1.1) !important;

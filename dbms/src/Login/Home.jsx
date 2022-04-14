@@ -7,20 +7,27 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import { Link } from "react-router-dom";
+import NavBar from "../Components/Navbar";
 export default function Home() {
     useEffect(() => {
         Aos.init({ duration: 2000 });
     }, []);
     return (
         <Parallax>
+            {/* <NavBar /> */}
             <section>
                 <Layer className="banner banner-2" settings={{ speed: 0.5 }} >
-                    <div data-aos="fade-up"><h1 className="logo-home">Welcome to <span className="stadia" >Stadia</span></h1></div>
-                    <div data-aos="zoom-out" data-aos-duration="1000" className="secondary-text">Book Tickets At Your <b>Ease</b> and Get <b>Cheapest</b> Rates</div>
+                     <div className="btngroup2" data-aos="zoom-in-down" data-aos-duration="900">
+                        <Link to='/login'><Button className="btns2" data-aos="zoom-out" data-aos-duration="900">Login</Button></Link>
+                        <Link to='/register'><Button className="btns2" data-aos="zoom-out" data-aos-duration="900">SignUp</Button></Link>
+                    </div>
                     <div className="btngroup" data-aos="zoom-in-down" data-aos-duration="900">
                         <Link to='/login'><Button className="btns" data-aos="zoom-out" data-aos-duration="900">Login</Button></Link>
                         <Link to='/register'><Button className="btns" data-aos="zoom-out" data-aos-duration="900">SignUp</Button></Link>
                     </div>
+                    <div data-aos="fade-up"><h1 className="logo-home">Welcome to <span className="stadia" >Stadia</span></h1></div>
+                    <div data-aos="zoom-out" data-aos-duration="1000" className="secondary-text">Book Tickets At Your <b>Ease</b> and Get <b>Cheapest</b> Rates</div>
+                  
                 </Layer>
 
             </section>
