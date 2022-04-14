@@ -47,7 +47,9 @@ router.post('/register',[body('email').isEmail(),body('password').isStrongPasswo
             return;
         }
         db.query('SELECT * FROM USER',function(err, results, fields){
-            res.json(results);
+            res.json({
+                message:"Register Successful"
+            });
         });
     });
 });

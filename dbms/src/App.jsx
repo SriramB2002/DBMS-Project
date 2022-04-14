@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,27 +8,24 @@ import {
 import Login from "./Login/Login";
 import Dashboard from "./Dashboard/Dashboard";
 import Register from "./Register/Register";
+import  AuthContext  from "./Shared/AuthContext";
 const App = () => {
-  const [loggedIn, setloggedIn] = useState(null);
-
-  function callbackFunction(childData) {
-    setloggedIn(childData);
-  }
+  const { auth, setAuth } = useContext(AuthContext);
 
   return (
     <Router>
       <Switch>
         <Route path="/register">
-          {!!loggedIn ? <Redirect to="/Dashboard" /> : <Register />}
+          {!!auth.token ? <Redirect to="/Dashboard" /> : <Register />}
         </Route>
         <Route path="/Dashboard">
-          {!!loggedIn ? <Dashboard/> : <Redirect to="/" />}
+          {!!auth.token ? <Dashboard/> : <Redirect to="/" />}
         </Route>
         <Route path="/">
-          {!!loggedIn ? (
+          {!!auth.token ? (
             <Redirect to="/Dashboard" />
           ) : (
-            <Login parentCallback={callbackFunction} />
+            <Login/>
           )}
         </Route>
         

@@ -3,22 +3,20 @@ import useForm from "../Shared/useForm";
 import validate from "../Shared/LoginFormValidationRules";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-const Form = props => {
-  const login = async (data) => {
+import { useContext } from "react";
+import  AuthContext  from "../Shared/AuthContext";
+const Form = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
+  const login =  async (data) => {
     //Login Button is Pressed and We Got the Data
+    console.log("Hi");
     try{
       const response = await axios.post("http://localhost:8080/login", {
         email: data.email,
         password: data.password
       });
       console.log(response.data);
-      localStorage.setItem("token", response.data);
-      setTimeout(() => {
-        localStorage.setItem("token", null);
-        setLoggedIn(false);
-      }, 1000);
-      setLoggedIn(true);
-      props.parentCallback(true);
+      setAuth({token:response.data});
       return <Redirect to="/dashboard" />;
     }
     catch(error){
@@ -30,13 +28,11 @@ const Form = props => {
     login,
     validate
   );
-  const [loggedIn, setLoggedIn] = useState(null);
-
-
 
   return (
+
     <div className="section is-fullheight">
-      {!!loggedIn && <Redirect to="/Dashboard" />}
+      {!!auth.token && <Redirect to="/Dashboard" />}
       <div className="container">
         <div className="column is-6 is-offset-3">
           <div className="box">
