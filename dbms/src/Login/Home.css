@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 .body {
     font-family: sans-serif;
-    height: 1000px;
+    height: 125vh
   }
   
   section {
     margin-top: 0px;
-    height: 1100px;
+    height: 125vh;
   }
   .stadia{
       background-color: rgba(237, 65, 65, 0.67);
@@ -50,10 +50,11 @@
     font-family: 'Montserrat', sans-serif;
   }
   .banner {
-    height: 1200px;
+    height: 200vh;
+    margin-bottom: 0px;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 130%;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,4 +92,5 @@
   }
   .banner.banner-2 {
     background-image: url('../Resources/stadium-1.jpg');
+    object-fit: cover;
    }
