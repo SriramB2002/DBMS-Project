@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
+.body {
+    font-family: sans-serif;
+    height: 1000px;
+  }
+  
+  section {
+    margin-top: 0px;
+    height: 1100px;
+  }
+  .stadia{
+      background-color: rgba(136, 47, 47, 0.8);
+      opacity: 0.8;
+      border-radius: 20px;
+      padding-top: 13px;
+      padding-bottom: 14px;
+      padding-left: 10px;
+      padding-right: 12px;
+  }
+  /* .separator {
+    height: 30px;
+  } */
+  .logo-home{
+     color: white;
+     font-size: 100px;
+     font-family: 'Montserrat', sans-serif;
+     background-color: rgba(104, 163, 215,0.2);
+     border-radius: 20px;
+  }
+  .btngroup{
+    position: absolute;
+    bottom: -400px;
+    margin: auto;
+  }
+  .secondary-text{
+      margin-top: 100px;
+      background-color: rgba(1, 1, 1, 0.5);
+      border-radius: 10px;
+      padding: 5px;
+    color: white;
+    font-size: 40px;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .banner {
+    height: 1200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 130%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .btngroup{
+    
+  }
+  .btns{
+      color: white !important;
+      font-size: 30px !important;
+      font-family: 'Montserrat', sans-serif !important;
+      font-weight: bold !important;
+      background-color: rgba(1, 1, 1, 0.3) !important;
+      padding: 10px !important;
+      margin: 10px !important;
+      border-radius: 10px !important;
+      text-transform: none !important;
+  }
+  .btns:hover{
+        background-color: rgba(1, 1, 1, 0.5) !important;
+        transform: scale(1.1) !important;
+        transition:all 0.5s ease;
+  }
+  .banner.banner-2 {
+    background-image: url('../Resources/stadium-1.jpg');
+   }

@@ -9,6 +9,8 @@ import Login from "./Login/Login";
 import Dashboard from "./Dashboard/Dashboard";
 import Register from "./Register/Register";
 import  AuthContext  from "./Shared/AuthContext";
+import Home from "./Login/Home";
+
 const App = () => {
   const { auth, setAuth } = useContext(AuthContext);
   return (
@@ -20,12 +22,15 @@ const App = () => {
         <Route path="/Dashboard">
           {!!auth.token ? <Dashboard/> : <Redirect to="/" />}
         </Route>
-        <Route path="/">
+        <Route path="/login">
           {!!auth.token ? (
             <Redirect to="/Dashboard" />
           ) : (
             <Login/>
           )}
+        </Route>
+        <Route path="/">
+          <Home />
         </Route>
         
       </Switch>
