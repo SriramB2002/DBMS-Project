@@ -27,7 +27,7 @@ function NavBar({navbarItems}) {
   return (
     <Navbar.Wrapper>
       <Navbar.Logo>
-        <Link className="link" to="/">
+        <Link className="link-logo" to="/">
           <p className="logo">
             Stadia
           </p>
