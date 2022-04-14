@@ -5,9 +5,9 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-import Form from "./Login/Form";
+import Login from "./Login/Login";
 import Dashboard from "./Dashboard/Dashboard";
-
+import Register from "./Register/Register";
 const App = () => {
   const [loggedIn, setloggedIn] = useState(null);
 
@@ -18,16 +18,20 @@ const App = () => {
   return (
     <Router>
       <Switch>
+        <Route path="/register">
+          {!!loggedIn ? <Redirect to="/Dashboard" /> : <Register />}
+        </Route>
         <Route path="/Dashboard">
-          {!!loggedIn ? <Dashboard /> : <Redirect to="/" />}
+          {!!loggedIn ? <Dashboard/> : <Redirect to="/" />}
         </Route>
         <Route path="/">
           {!!loggedIn ? (
             <Redirect to="/Dashboard" />
           ) : (
-            <Form parentCallback={callbackFunction} />
+            <Login parentCallback={callbackFunction} />
           )}
         </Route>
+        
       </Switch>
     </Router>
   );

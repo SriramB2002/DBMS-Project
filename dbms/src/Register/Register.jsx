@@ -3,11 +3,11 @@ import useForm from "../Shared/useForm";
 import validate from "../Shared/LoginFormValidationRules";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 const Form = props => {
   const login = async (data) => {
-    //Login Button is Pressed and We Got the Data
     try{
-      const response = await axios.post("http://localhost:8080/login", {
+      const response = await axios.post("http://localhost:8080/register", {
         email: data.email,
         password: data.password
       });
@@ -35,7 +35,7 @@ const Form = props => {
       <div className="container">
         <div className="column is-6 is-offset-3">
           <div className="box">
-            <h1>Login</h1>
+            <h1>Register</h1>
             <form onSubmit={handleSubmit} noValidate>
               <div className="field">
                 <label className="label">Email Address</label>
@@ -70,13 +70,49 @@ const Form = props => {
                   <p className="help is-danger">{errors.password}</p>
                 )}
               </div>
+
+              <div className="field">
+                <label className="label">First Name</label>
+                <div className="control">
+                  <input
+                    autoComplete="off"
+                    className={`input ${errors.first_name && "is-danger"}`}
+                    type="text"
+                    name="first_name"
+                    onChange={handleChange}
+                    value={values.first_name || ""}
+                    required
+                  />
+                  {errors.first_name && (
+                    <p className="help is-danger">{errors.first_name}</p>
+                  )}
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Last Name</label>
+                <div className="control">
+                  <input
+                    autoComplete="off"
+                    className={`input ${errors.last_name && "is-danger"}`}
+                    type="text"
+                    name="last_name"
+                    onChange={handleChange}
+                    value={values.last_name || ""}
+                    required
+                  />
+                  {errors.last_name && (
+                    <p className="help is-danger">{errors.last_name}</p>
+                  )}
+                </div>
+              </div>
               <button
                 type="submit"
                 className="button is-block is-info is-fullwidth"
               >
-                Login
+                Register
               </button>
             </form>
+            <div className="container mt-3"><Link to="/login">Already Have an Account ? Login Here</Link></div>
           </div>
         </div>
       </div>
