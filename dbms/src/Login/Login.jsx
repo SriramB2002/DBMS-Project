@@ -5,7 +5,10 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import  AuthContext  from "../Shared/AuthContext";
+import Modal from "../Components/Modal";
+
 const Form = (props) => {
+  const [open,setOpen] = useState(false);
   const { auth, setAuth } = useContext(AuthContext);
   const login =  async (data) => {
     //Login Button is Pressed and We Got the Data
@@ -21,6 +24,7 @@ const Form = (props) => {
     }
     catch(error){
       console.log(Object.keys(error),error.message);
+      setOpen(true);
     }
  
   }
@@ -33,6 +37,7 @@ const Form = (props) => {
 
     <div className="section is-fullheight">
       {!!auth.token && <Redirect to="/Dashboard" />}
+      <Modal heading={"Invalid Credentials"} text={"Password is Incorrect or the User Doesn't Exist"} open={open} setOpen={setOpen}/>
       <div className="container">
         <div className="column is-6 is-offset-3">
           <div className="box">
