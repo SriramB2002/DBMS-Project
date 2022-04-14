@@ -9,7 +9,7 @@
     height: 1100px;
   }
   .stadia{
-      background-color: rgba(136, 47, 47, 0.8);
+      background-color: rgba(237, 65, 65, 0.67);
       opacity: 0.8;
       border-radius: 20px;
       padding-top: 13px;
@@ -78,10 +78,10 @@
     font-size:15px !important;
     font-family: 'Montserrat', sans-serif !important;
     font-weight: bold !important;
-    background-color: rgba(1, 1, 1, 0.3) !important;
+    background-color: rgba(237, 65, 65, 0.67) !important;
     padding: 7px !important;
     margin: 2px !important;
-    border-radius: 10px !important;
+    border-radius: 5px !important;
     text-transform: none !important;
 }
   .btns:hover{
