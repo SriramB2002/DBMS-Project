@@ -1,25 +1,27 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import Home from './Home';
 function Dashboard() {
   const navbarItems = [
     {
       name:"Home",
-      path:"/login"
+      path:"/Dashboard"
     },
     {
       name:"Profile",
-      path:"/"
+      path:"/Dashboard"
     },
     {
       name:"Book",
-      path:"/Hello"
+      path:"/Dashboard"
     }
   ];
   return (
     <div>
+      {console.log("Here")}
       <Navbar navbarItems={navbarItems}/>
-      <p>Dashboard</p>
+      <Home />
     </div>
   );
 }

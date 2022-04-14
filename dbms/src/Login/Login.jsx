@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useForm from "../Shared/useForm";
 import validate from "../Shared/LoginFormValidationRules";
 import { Link, Redirect } from "react-router-dom";
@@ -10,9 +10,11 @@ import Modal from "../Components/Modal";
 const Form = (props) => {
   const [open,setOpen] = useState(false);
   const { auth, setAuth } = useContext(AuthContext);
-  if(JSON.parse(localStorage.getItem('auth')).token!==undefined){
-    setAuth(JSON.parse(localStorage.getItem('auth')));
-  }
+  useEffect(() => {
+    if(localStorage.getItem('auth') && JSON.parse(localStorage.getItem('auth')).token!==undefined && auth.token==undefined){
+      setAuth(JSON.parse(localStorage.getItem('auth')));
+    }
+  }, []);
   const login =  async (data) => {
     //Login Button is Pressed and We Got the Data
     console.log("Hi");
