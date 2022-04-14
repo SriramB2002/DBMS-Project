@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef,useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import './Navbar.css';
+import AuthContext from '../Shared/AuthContext';
 function NavBar({navbarItems}) {
+  const {auth,setAuth} = useContext(AuthContext);
   const [openDrawer, toggleDrawer] = useState(false);
+  const history = useHistory();
   const drawerRef = useRef(null);
   useEffect(() => {
     const closeDrawer = (event) => {
@@ -16,7 +20,9 @@ function NavBar({navbarItems}) {
     return () => document.removeEventListener("mousedown", closeDrawer);
   }, []);
   const logout = () => {
-  
+    setAuth({});
+    localStorage.setItem("auth",JSON.stringify({}));
+    history.push('/login');
   };
   return (
     <Navbar.Wrapper>
@@ -41,9 +47,9 @@ function NavBar({navbarItems}) {
           </Navbar.Item>
         ))}
         <Navbar.Item>
-            <div className="logout-link" onClick={logout} style={{color:"red"}}>
+            <Logout.Wrapper onClick={logout} style={{color:"red"}}>
               Logout
-            </div>
+            </Logout.Wrapper>
         </Navbar.Item>
       </Navbar.Items>
     </Navbar.Wrapper>
@@ -178,5 +184,19 @@ const HamburgerButton = {
     }
   `
 };
+const Logout = {
+  Wrapper: styled.div`
+  margin-left: 10px;
+  &:hover{
+    background-color: rgb(249, 249, 249);
+    transform: scale(1.1);
+    padding: 5px;
+    border-radius: 5px;
+    transition:all 0.1s ease-in-out;
+    margin-top: -5px;
+    margin-bottom: -5px;
+  }
+  `
+}
 
 export default NavBar;

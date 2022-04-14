@@ -10,6 +10,9 @@ import Modal from "../Components/Modal";
 const Form = (props) => {
   const [open,setOpen] = useState(false);
   const { auth, setAuth } = useContext(AuthContext);
+  if(JSON.parse(localStorage.getItem('auth')).token!==undefined){
+    setAuth(JSON.parse(localStorage.getItem('auth')));
+  }
   const login =  async (data) => {
     //Login Button is Pressed and We Got the Data
     console.log("Hi");
@@ -20,6 +23,9 @@ const Form = (props) => {
       });
       console.log(response.data);
       setAuth({token:response.data});
+      localStorage.setItem("auth",JSON.stringify({token:response.data}));
+
+      //Logout after 5 mins 
       return <Redirect to="/dashboard" />;
     }
     catch(error){

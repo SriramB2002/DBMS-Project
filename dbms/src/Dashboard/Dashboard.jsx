@@ -9,11 +9,11 @@ function Dashboard() {
     },
     {
       name:"Profile",
-      path:"/login"
+      path:"/"
     },
     {
       name:"Book",
-      path:"/login"
+      path:"/Hello"
     }
   ];
   return (

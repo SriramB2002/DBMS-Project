@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,7 +11,6 @@ import Register from "./Register/Register";
 import  AuthContext  from "./Shared/AuthContext";
 const App = () => {
   const { auth, setAuth } = useContext(AuthContext);
-
   return (
     <Router>
       <Switch>
