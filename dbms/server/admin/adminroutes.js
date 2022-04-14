@@ -11,13 +11,73 @@ const securePassword = (password) =>{
     const passwordHashed = bcrypt.hashSync(password,10);
     return passwordHashed;
 }
-router.post('/login',(req,res)=>{
-    db.query('SELECT * FROM ADMIN WHERE username=? AND password=?',[req.body.username,req.body.password],function(err,results,fields){
-        res.json({user:results[0]});
+function authenticate(req,res,next){
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
+    if(token==null){
+        return res.status(404).send('Access denied');
+    }
+    jwt.verify(token,process.env.SECRET_KEY,(err,user)=>{
+        if(err){
+            console.log(err);
+            return res.status(404).send('Access denied');
+        }
+        req.user = user;
+        next();
+    });
+}
+router.post('/register',(req,res)=>{
+    //Express Validator
+    //BCrpyt
+    const password = securePassword(req.body.password);
+    console.log("This is " + password);
+    //DB
+    db.query('INSERT INTO ADMIN  (username,password) VALUES (?,?)',[req.body.username,password],function(err, results, fields){
+        if(err){
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+        db.query('SELECT * FROM USER',function(err, results, fields){
+            res.json({
+                message:"Register Successful"
+            });
+        });
     });
 });
-
-router.post('/addteams',(req,res)=>{
+router.post('/login',(req,res)=>{
+    console.log(req.body);
+    db.query('SELECT * FROM ADMIN WHERE username=?',[req.body.username],function(err,results,fields){
+        if(results.length==0 || results===null || results===undefined){
+            res.status(404).json({
+                message:'User Doesn\'t Exist'
+            });
+            return;
+        }
+        bcrypt.compare(req.body.password,results[0].password,function(err,result){
+            if(result){
+                console.log(results[0]);
+                // return;
+                req.token = jwt.sign({user:results[0]}, process.env.SECRET_KEY);
+                res.json(req.token);
+                console.log(req.token);
+            }
+            else{
+                res.status(404).send('Please Enter Correct Password');
+            }
+        });
+        
+    });
+});
+// router.post('/login',(req,res)=>{
+//     db.query('SELECT * FROM ADMIN WHERE username=? AND password=?',[req.body.username,req.body.password],function(err,results,fields){
+//         res.json({user:results[0]});
+//     });
+// });
+//Adds Teams to Database
+router.post('/addteams',/*authenticate,*/(req,res)=>{
     db.query('INSERT INTO TEAMS (team_id,team_name,team_flag) VALUES (?,?,?)',
                 [req.body.team_id,req.body.team_name,req.body.team_flag],
                 function(err,results,fields){
@@ -47,7 +107,7 @@ function addSeats(stadium_id,normal_price,premium_price,capacity)
 }
 
 //Add Stadium to database
-router.post('/addstadium',(req,res)=>
+router.post('/addstadium',/*authenticate,*/(req,res)=>
 {
     db.query('INSERT INTO STADIUM (stadium_id,stadium_name,capacity,city,country) VALUES (?,?,?,?,?)',
                 [req.body.stadium_id,req.body.stadium_name,req.body.capacity, req.body.city, req.body.country],
@@ -83,7 +143,7 @@ router.post('/addstadium',(req,res)=>
 
 
 //Adds match to database
-router.post('/match',(req,res)=>{
+router.post('/match',/*authenticate,*/(req,res)=>{
     if(req.body.team1_id==req.body.team2_id)
     {
         res.status(400).json("Team id cannot be equal");
@@ -103,7 +163,7 @@ router.post('/match',(req,res)=>{
 });
 
 //Add food item
-router.post('/addfood',(req,res)=>
+router.post('/addfood',/*authenticate,*/(req,res)=>
 {
     db.query('INSERT INTO FOOD_ITEM (food_id,food_name,food_price) values(?,?,?)',
         [req.body.food_id,req.body.food_name,req.body.food_price],
@@ -119,7 +179,7 @@ router.post('/addfood',(req,res)=>
             });
 });
 
-router.post('/updatefood',(req,res)=>
+router.post('/updatefood',/*authenticate,*/(req,res)=>
 {
     db.query('UPDATE food_item SET food_price = ? WHERE food_id = ?', [req.body.newprice, req.body.food_id],
     function(err,results,fiels)
@@ -134,7 +194,7 @@ router.post('/updatefood',(req,res)=>
     });
 })
 
-router.post('/addmerch',(req,res)=>
+router.post('/addmerch',/*authenticate,*/(req,res)=>
 {
     db.query('INSERT INTO MERCH (merch_id,merch_name,merch_image,merch_price) values(?,?,?,?)',
         [req.body.merch_id,req.body.merch_name,req.body.merch_image,req.body.merch_price],
@@ -150,7 +210,7 @@ router.post('/addmerch',(req,res)=>
             });
 });
 
-router.post('/updatemerch',(req,res)=>
+router.post('/updatemerch',/*authenticate,*/(req,res)=>
 {
     db.query('UPDATE merch SET merch_price = ? WHERE merch_id = ?', [req.body.newprice, req.body.merch_id],
     function(err,results,fiels)
