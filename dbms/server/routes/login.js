@@ -66,7 +66,7 @@ router.post('/login',(req,res)=>{
                 console.log(results[0]);
                 // return;
                 req.token = jwt.sign({user:results[0]}, process.env.SECRET_KEY);
-                res.json({user:results[0]});
+                res.json(req.token);
                 console.log(req.token);
             }
             else{

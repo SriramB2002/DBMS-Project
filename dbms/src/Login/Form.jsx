@@ -4,25 +4,22 @@ import validate from "../Shared/LoginFormValidationRules";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 const Form = props => {
-  const login = (data) => {
+  const login = async (data) => {
     //Login Button is Pressed and We Got the Data
-    authenticate(data);
-    setLoggedIn(true);
-    props.parentCallback(true);
-    return <Redirect to="/Dashboard" />;
-  }
-  const authenticate = async (data) => {
-      try{
-        const response = await axios.post("http://localhost:8080/login", {
-          email: data.email,
-          password: data.password
-        });
-      }
-      catch(error){
-        console.log(Object.keys(error),error.message);
-      }
-     
-      
+    try{
+      const response = await axios.post("http://localhost:8080/login", {
+        email: data.email,
+        password: data.password
+      });
+      console.log(response.data);
+      setLoggedIn(true);
+      props.parentCallback(true);
+      return <Redirect to="/Dashboard" />;
+    }
+    catch(error){
+      console.log(Object.keys(error),error.message);
+    }
+ 
   }
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
