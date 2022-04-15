@@ -15,6 +15,14 @@ function Dashboard() {
     {
       name:"Merch",
       path:"/Dashboard/Merch"
+    },
+    {
+      name:"Food",
+      path:"/Dashboard/Food"
+    },
+    {
+      name:"Cart",
+      path:"/Dashboard/Cart"
     }
   ];
   return (
