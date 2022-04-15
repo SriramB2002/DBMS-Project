@@ -80,20 +80,21 @@ router.post('/createBooking', authenticate, (req, res) => {
                     });
                     return;
                 }
+                let seats = req.body.seats;
+                db.query("SELECT LAST_INSERT_ID() as val" , function(err,results) {
+                    for(var i = 0 ; i < seats.length ; i++) {
+                        bookseats(results[0].val , seats[i].seat_id);
+                    }
+                    for(var i = 0 ; i < req.body.merch_list.length ; i++) {
+                        addMerch(results[0].val , req.body.merch_list[i].merch_id , req.body.merch_list[i].merch_quantity);
+                    }
+                    for(var i = 0 ; i < req.body.food_list.length ; i++) {
+                        addfood(results[0].val , req.body.food_list[i].food_id , req.body.food_list[i].food_quantity);
+                    }
+                });
+                res.json("BOOKED SUCCESSFULLY");
             });
-            let seats = req.body.seats;
-            db.query("SELECT LAST_INSERT_ID() as val" , function(err,results) {
-                for(var i = 0 ; i < seats.length ; i++) {
-                    bookseats(results[0].val , seats[i].seat_id);
-                }
-                for(var i = 0 ; i < req.body.merch_list.length ; i++) {
-                    addMerch(results[0].val , req.body.merch_list[i].merch_id , req.body.merch_list[i].merch_quantity);
-                }
-                for(var i = 0 ; i < req.body.food_list.length ; i++) {
-                    addfood(results[0].val , req.body.food_list[i].food_id , req.body.food_list[i].food_quantity);
-                }
-            });
-            res.json("BOOKED SUCCESSFULLY");
+            
         }
     });
 }); 
