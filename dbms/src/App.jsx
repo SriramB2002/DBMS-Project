@@ -22,14 +22,14 @@ const App = () => {
         <Route path="/Dashboard">
           {!!auth.token ? <Dashboard/> : <Redirect to="/" />}
         </Route>
-        <Route path="/login">
+        <Route path="/login" exact>
           {!!auth.token ? (
             <Redirect to="/Dashboard" />
           ) : (
             <Login/>
           )}
         </Route>
-        <Route path="/">
+        <Route path="/" exact>
           <Home />
         </Route>
         

@@ -9,12 +9,29 @@ import axios from 'axios';
 import "aos/dist/aos.css";
 import './Home.css';
 import AuthContext from '../Shared/AuthContext';
+import Matches from './Matches';
 const Home = () => {
   //Selected Stadium Data
   const [stadium, setStadium] = useState({});
+  const [capacity, setCapacity] = useState('');
+  const [stadiumID,setstadiumID] = useState('');
+  const [headerHidden,setheaderHidden] = useState(false);
   const {auth,setAuth} = useContext(AuthContext);
+  const [filter,setFilter] = useState(false);
   const handleChange = (event) => {
+    if(event.target.value=="See All Matches"){
+      setStadium(event.target.value);
+      setFilter(false);
+    }
     setStadium(event.target.value);
+    for (let i = 0; i < stadiumData.length; i++) {
+      if (stadiumData[i].stadium_name === event.target.value) {
+        setCapacity(stadiumData[i].capacity);
+        setstadiumID(stadiumData[i].stadium_id);
+        setFilter(true);
+        return;
+      }
+    }
   };
   const [stadiumData, setStadiumData] = useState([]);
   useEffect(() => {
@@ -38,9 +55,9 @@ const Home = () => {
     <div className='paddedr'>
       <div className='homepage' style={{ height: '200vh', paddingTop: '5rem' }}>
       </div>
-      <div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>See Stadiums Near Me</h1></div>
+      {!headerHidden && <div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>See Stadiums Near Me</h1></div>}
       <div className='stadium-list'>
-        <FormControl fullWidth>
+        <FormControl fullWidth className={headerHidden ? 'header-hidden-modifications' : ''}>
           {console.log(stadium)}
         <InputLabel id="demo-simple-select-label">Select Stadium</InputLabel>
         <Select
@@ -50,19 +67,27 @@ const Home = () => {
           label="Select Stadium"
           onChange={handleChange}
         >
-    
+          
           {stadiumData.length === 0 &&  <MenuItem value="" disabled>No Stadium Available Now ! Please Come Later</MenuItem>}
+          <MenuItem value="See All Matches">See All Matches</MenuItem>
           {stadiumData.map((stadiums,keyr) => {
             return (
               <MenuItem key={keyr} value={stadiums.stadium_name} className='menu-items'>
+                <div>
+                <div>
                 {stadiums.stadium_name}
-                {console.log(stadiums.stadium_name,stadium) && stadiums.stadium_name!=stadium &&  <div><div className='stadium-details'>{stadiums.city}, {stadiums.country}</div></div>}
+                </div>
+                <div>
+                <div className='stadium-details'> {stadiums.city}, {stadiums.country}</div>
+                </div>
+                </div>
               </MenuItem>
             )
           })}
   
         </Select>
         </FormControl>
+        {<Matches stadium_id={stadiumID} filter={filter} className='matches'/>}
         </div>
     </div>
 
