@@ -102,4 +102,47 @@ router.post('/createBooking', authenticate, (req, res) => {
         });
     });
 });
+
+function getMatchId(bid) {
+    let mid = [];
+    for (let i = 0; i < bid.length; i++) {
+        db.query('SELECT match_id FROM booking WHERE booking_id=?', [bid[i]], function(err, results) {
+            mid.push(results[0].match_id);
+        })
+    }
+    return mid;
+}
+
+router.post('/getBookings', authenticate, (req, res) => {
+    db.query('SELECT booking_id FROM booking WHERE user_id=?', [req.user.user.user_id], function(err, results) {
+        let bid = [];
+        for (let i = 0; i < results.length; i++)
+        {
+            let bookingId = results[i].booking_id;
+            console.log(results[i].booking_id);
+            db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
+                let matchId = results1[0].match_id;
+                console.log(matchId)
+                db.query('SELECT * FROM new_schema.match WHERE match_id=?', [matchId], function(err2, results2) {
+                    console.log(results2);
+                    let stadiumId = results2[0].stadium_id;
+                    let team1 = results2[0].team1_id;
+                    let team2 = results2[0].team2_id;
+                    db.query('SELECT stadium_name, city FROM stadium WHERE stadium_id=?', [stadiumId], function(err3, results3) {
+                        console.log(results3[0].stadium_name, results3[0].city);
+                    })
+                    db.query('SELECT team_name FROM teams WHERE team_id=?', [team1], function(err3, results3) {
+                        console.log(results3[0].team_name);
+                    })
+                    db.query('SELECT team_name FROM teams WHERE team_id=?', [team2], function(err3, results3) {
+                        console.log(results3[0].team_name);
+                    })
+                });
+            })
+        }
+        console.log(bid);
+        res.json(results);
+    });
+});
+
 module.exports = router;
