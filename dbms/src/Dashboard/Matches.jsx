@@ -42,7 +42,7 @@ useEffect(() => {
     <Grid container spacing={2}>
         {matches.map((match, index) => (
             <Grid item xs={4} key={index}>
-            <Card key={index} match={match}/>
+            <Card key={index} match={match} stadium={props.stadium}/>
             </Grid>
         ))}
 

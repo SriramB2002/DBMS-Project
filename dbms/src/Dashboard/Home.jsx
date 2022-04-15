@@ -15,6 +15,7 @@ const Home = () => {
   const [stadium, setStadium] = useState({});
   const [capacity, setCapacity] = useState('');
   const [stadiumID,setstadiumID] = useState('');
+  const [stadiumLocation,setstadiumLocation] = useState('');
   const [headerHidden,setheaderHidden] = useState(false);
   const {auth,setAuth} = useContext(AuthContext);
   const [filter,setFilter] = useState(false);
@@ -28,6 +29,7 @@ const Home = () => {
       if (stadiumData[i].stadium_name === event.target.value) {
         setCapacity(stadiumData[i].capacity);
         setstadiumID(stadiumData[i].stadium_id);
+        // setstadiumLocation(stadiumData[i].city + ", " + stadiumData[i].country);
         setFilter(true);
         return;
       }
@@ -55,7 +57,7 @@ const Home = () => {
     <div className='paddedr'>
       <div className='homepage' style={{ height: '200vh', paddingTop: '5rem' }}>
       </div>
-      {!headerHidden && <div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>See Stadiums Near Me</h1></div>}
+      {!headerHidden && <div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>Browse Matches</h1></div>}
       <div className='stadium-list'>
         <FormControl fullWidth className={headerHidden ? 'header-hidden-modifications' : ''}>
           {console.log(stadium)}
@@ -69,7 +71,7 @@ const Home = () => {
         >
           
           {stadiumData.length === 0 &&  <MenuItem value="" disabled>No Stadium Available Now ! Please Come Later</MenuItem>}
-          <MenuItem value="See All Matches">See All Matches</MenuItem>
+          <MenuItem value="See All Matches">Show Matches in All Stadiums</MenuItem>
           {stadiumData.map((stadiums,keyr) => {
             return (
               <MenuItem key={keyr} value={stadiums.stadium_name} className='menu-items'>
@@ -87,7 +89,7 @@ const Home = () => {
   
         </Select>
         </FormControl>
-        {<Matches stadium_id={stadiumID} filter={filter} className='matches'/>}
+        {<Matches stadium_id={stadiumID} stadium={stadium} filter={filter} className='matches'/>}
         </div>
     </div>
 
