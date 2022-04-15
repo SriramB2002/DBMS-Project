@@ -61,7 +61,6 @@ export default function MatchCard(props) {
           <Typography gutterBottom variant="h5" component="div">
           {currentTeam1} vs {currentTeam2}
           <Typography variant="body1" color="text.primary">
-       
           {props.match.match_type}    
           </Typography>
           <Typography variant="body2" color="text.secondary">
