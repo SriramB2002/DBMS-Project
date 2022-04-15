@@ -1,27 +1,31 @@
 import React, { useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Home from './Home';
 function Dashboard() {
   const navbarItems = [
     {
       name:"Home",
-      path:"/Dashboard"
+      path:"/Dashboard/Home"
     },
     {
       name:"Profile",
-      path:"/Dashboard"
+      path:"/Dashboard/Profile"
     },
     {
-      name:"Book",
-      path:"/Dashboard"
+      name:"Merch",
+      path:"/Dashboard/Merch"
     }
   ];
   return (
     <div>
       {console.log("Here")}
       <Navbar navbarItems={navbarItems}/>
-      <Home />
+      <Switch>
+        <Route to='/Dashboard/Home'>
+           <Home />
+        </Route>
+      </Switch>
     </div>
   );
 }

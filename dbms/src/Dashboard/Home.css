@@ -34,3 +34,10 @@
 .stadium-details{
     color: gray;
 }
+.container-capacity{
+    margin-top: 1rem;
+}
+.header-hidden-modifications{
+    margin-top: 7rem !important;
+    transition: all 0.5s ease-out;
+}
