@@ -73,8 +73,8 @@ router.get('/allmatches',function(req,res)
     });
 });
 
-router.post('/getTeamName', (req, res) => {
-    db.query('SELECT team_name FROM teams WHERE team_id=?', [req.body.team_id], function(err, results) {
+router.post('/getTeam', (req, res) => {
+    db.query('SELECT * FROM teams WHERE team_id=?', [req.body.team_id], function(err, results) {
         res.json(results);
     })
 });
