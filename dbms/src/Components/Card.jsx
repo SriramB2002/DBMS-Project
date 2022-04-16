@@ -88,6 +88,11 @@ export default function MatchCard(props) {
   </Grid>
   <Grid item xs={1.5}>
           <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
+            <div>{props.match.match_type}</div>
+          </Typography>
+  </Grid>
+  <Grid item xs={1.5}>
+          <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
             <div>{date.toLocaleTimeString()}</div>
           </Typography>
   </Grid>
@@ -96,12 +101,12 @@ export default function MatchCard(props) {
             <div>{date.toLocaleDateString()}</div>
           </Typography>
   </Grid>
-  <Grid item xs={2}>
+  <Grid item xs={1.5}>
           <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
             <div>{currentStadium?.stadium_name}</div>
           </Typography>
   </Grid>
-  <Grid item xs={2.5}>
+  <Grid item xs={2}>
   <div style={{paddingY:'20px',height:'100%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',flexDirection:'column'}}>
     <Typography gutterBottom variant="h5" component="div" color="white" className='fpt-lg'>
           {currentTeam1} <ReactCountryFlag countryCode="PK" svg/> 
@@ -115,7 +120,7 @@ export default function MatchCard(props) {
     </Typography>
     </div>
   </Grid>
-  <Grid item xs={2.5}>
+  <Grid item xs={2}>
   <div style={{paddingY:'20px',height:'100%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',flexDirection:'column'}}>
     <Typography gutterBottom variant="h5" component="div" color="white" className='fpt-lg'>
           {currentTeam2} <ReactCountryFlag countryCode="IN" svg/> 
