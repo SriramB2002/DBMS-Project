@@ -1,0 +1,13 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    /* background:url('../Resources/stadium-2.jpg'); */
+    background-size: cover;
+}
+.bg{
+    height: 100%;
+}
+.login-btn{
+    background-color:rgb(254, 47, 47) !important;
+}

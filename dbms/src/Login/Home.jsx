@@ -13,7 +13,7 @@ export default function Home() {
         Aos.init({ duration: 2000 });
     }, []);
     return (
-        <Parallax>
+        <Parallax >
             {/* <NavBar /> */}
             <section>
                 <Layer className="banner banner-2" settings={{ speed: 0.5 }} >
@@ -22,8 +22,7 @@ export default function Home() {
                         <Link to='/register'><Button className="btns2" data-aos="zoom-out" data-aos-duration="900">SignUp</Button></Link>
                     </div>
                     <div className="btngroup" data-aos="zoom-in-down" data-aos-duration="900">
-                        <Link to='/login'><Button className="btns" data-aos="zoom-out" data-aos-duration="900">See Stadiums Near Me</Button></Link>
-                        <Link to='/register'><Button className="btns" data-aos="zoom-out" data-aos-duration="900">SignUp</Button></Link>
+                        <Link to='/login'><Button className="btns-new" data-aos="zoom-out" data-aos-duration="900">See Upcoming Matches</Button></Link>
                     </div>
                     <div data-aos="fade-up"><h1 className="logo-home">Welcome to <span className="stadia" ><b>Stadia</b></span></h1></div>
                     <div data-aos="zoom-out" data-aos-duration="1000" className="secondary-text">Book Tickets At Your <b>Ease</b> and Get <b>Cheapest</b> Rates</div>

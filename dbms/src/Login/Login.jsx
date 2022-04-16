@@ -6,7 +6,7 @@ import axios from "axios";
 import { useContext } from "react";
 import  AuthContext  from "../Shared/AuthContext";
 import Modal from "../Components/Modal";
-
+import './Login.css';
 const Form = (props) => {
   const [open,setOpen] = useState(false);
   const { auth, setAuth } = useContext(AuthContext);
@@ -43,7 +43,7 @@ const Form = (props) => {
 
   return (
 
-    <div className="section is-fullheight">
+    <div className="section is-fullheight bg">
       {!!auth.token && <Redirect to="/Dashboard" />}
       <Modal heading={"Invalid Credentials"} text={"Password is Incorrect or the User Doesn't Exist"} open={open} setOpen={setOpen}/>
       <div className="container">
@@ -86,7 +86,7 @@ const Form = (props) => {
               </div>
               <button
                 type="submit"
-                className="button is-block is-info is-fullwidth"
+                className="button is-block is-info is-fullwidth login-btn"
               >
                 Login
               </button>

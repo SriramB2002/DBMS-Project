@@ -57,7 +57,7 @@ const Home = () => {
     <div className='paddedr'>
       <div className='homepage' style={{ height: '200vh', paddingTop: '5rem' }}>
       </div>
-      {!headerHidden && <div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>Browse Matches</h1></div>}
+      {!headerHidden && <div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>Upcoming Matches</h1></div>}
       <div className='stadium-list'>
         <FormControl fullWidth className={headerHidden ? 'header-hidden-modifications' : ''}>
           {console.log(stadium)}

@@ -11,18 +11,6 @@ function Dashboard() {
     {
       name:"Profile",
       path:"/Dashboard/Profile"
-    },
-    {
-      name:"Merch",
-      path:"/Dashboard/Merch"
-    },
-    {
-      name:"Food",
-      path:"/Dashboard/Food"
-    },
-    {
-      name:"Cart",
-      path:"/Dashboard/Cart"
     }
   ];
   return (

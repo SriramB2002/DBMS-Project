@@ -6,6 +6,11 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import axios from 'axios';
+import Grid from '@mui/material/Grid';
+import ReactCountryFlag from "react-country-flag"
+import './Card.css';
+import Aos from "aos";
+import "aos/dist/aos.css";
 import { Link } from 'react-router-dom';
 export default function MatchCard(props) {
   const date = new Date(props.match.date_time);
@@ -54,39 +59,65 @@ export default function MatchCard(props) {
   }, [stadiumList]);
 
   return (
-    <Card sx={{ maxWidth: 375 ,marginTop:'2.5rem',transition:'1s ease-in'}}>
-      <CardActionArea>
-        <CardContent>
-          {/* <CardMedia> */}
-          <Typography gutterBottom variant="h5" component="div">
-          {currentTeam1} vs {currentTeam2}
-          <Typography variant="body1" color="text.primary">
-          {props.match.match_type}    
+    <div className='d-flex' >
+    <Card data-aos="flip-down" data-aos-duration="500" sx={{ minWidth: '90%' ,marginTop:'2.5rem',transition:'1s ease-in', backgroundColor:'white',color:'white',height:'8rem'}} className="fpt">
+      <CardActionArea sx={{padding:'2rem'}} className='ffpr'>
+      <Grid container spacing={2}>
+  <Grid item xs={1}>
+          <Typography variant="body1" color="black" sx={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px'}} className="fpt-small">
+            <div>{props.match.match_format}</div>
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {props.match.match_format}
+  </Grid>
+  <Grid item xs={1.5}>
+      <div style={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
+          <Typography variant="body1" color="black" className='fpt-small'>
+          <div>{date.toLocaleDateString()}</div>
           </Typography>
-          </Typography>
-          {console.log(stadiumList)}
-          <Typography variant="body2" color="text.secondary">
-           {date.toLocaleDateString()}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
+      </div>
+  </Grid>
+  <Grid item xs={1.5}>
+      <div style={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
+          <Typography variant="body1" color="black" className='fpt-small'>
            {date.toLocaleTimeString()}
           </Typography>
-          <Typography variant="body1" color="text.primary">
-            {currentStadium?.stadium_name}
+      </div>
+  </Grid>
+  <Grid item xs={1.5}>
+      <div className='as'style={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column',rowGap:'0px',textAlign:'center'}}>
+          <Typography variant="body1" color="black" className='fpt-small'>
+          <div>{currentStadium?.stadium_name}
+          </div>
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {currentStadium?.city},  {currentStadium?.country}
-          </Typography>
-        </CardContent>
+          
+      </div>
+  </Grid>
+  <Grid item xs={3}>
+  <div style={{paddingY:'20px',height:'100%',background:'#7E57C2',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
+    <Typography gutterBottom variant="h5" component="div" color="black" className='fpt-lg'>
+          {currentTeam1} <ReactCountryFlag countryCode="PK" svg/> 
+    </Typography>
+    </div>
+  </Grid>
+  <Grid item xs={3.5}>
+  <div style={{paddingY:'20px',height:'100%',background:'#FF7043',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
+    <Typography gutterBottom variant="h5" component="div" color="black" className='fpt-lg'>
+          {currentTeam2} <ReactCountryFlag countryCode="IN" svg/> 
+    </Typography>
+    </div>
+  </Grid>
+ 
+</Grid>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Book Seats
-        </Button>
-      </CardActions>
     </Card>
+    <Grid item xs={2} data-aos="flip-up" data-aos-duration="700">
+    <Button size="small" color="primary" style={{color:'white'}} className="msrt">
+
+    <CardActions className="msrt-2"sx={{display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'7px',height:'8rem',marginTop:'2.5rem'}}>
+          Book Seats
+      </CardActions> 
+      </Button>
+ 
+  </Grid>
+    </div>
   );
 }
