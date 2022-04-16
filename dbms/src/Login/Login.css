@@ -4,10 +4,11 @@ html,body{
     font-family: 'Montserrat', sans-serif;
     /* background:url('../Resources/stadium-2.jpg'); */
     background-size: cover;
+    /* background-color: #424250; */
 }
 .bg{
     height: 100%;
 }
 .login-btn{
-    background-color:rgb(254, 47, 47) !important;
+    background-color:#CA3C6E !important;
 }

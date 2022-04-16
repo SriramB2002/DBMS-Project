@@ -35,16 +35,15 @@ const Form = props => {
 
 
   return (
-    <div className="section is-fullheight">
+    <div className="section is-fullheight bg" style={{backgroundColor:'#424250',height:'100vh'}}>
       <Modal open={open} setOpen={setOpen} heading={"Successfully Registered"} text={"Thank You for Registering . You will now be redirected to Login Page ."} redirect={'/login'}/>
       {!!setAuth.token && <Redirect to="/Dashboard" />}
       <div className="container">
         <div className="column is-6 is-offset-3">
-          <div className="box">
-            <h1>Register</h1>
-            <form onSubmit={handleSubmit} noValidate>
+          <div className="box" style={{backgroundColor:'#33333D'}}>
+          <h1 style={{textAlign:'center',color:'white',borderBottom:'none'}}>Register</h1>            <form onSubmit={handleSubmit} noValidate>
               <div className="field">
-                <label className="label">Email Address</label>
+                <label className="label" style={{color:'white'}}>Email Address</label>
                 <div className="control">
                   <input
                     autoComplete="off"
@@ -61,7 +60,7 @@ const Form = props => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Password</label>
+                <label className="label" style={{color:'white'}}>Password</label>
                 <div className="control">
                   <input
                     className={`input ${errors.password && "is-danger"}`}
@@ -78,7 +77,7 @@ const Form = props => {
               </div>
 
               <div className="field">
-                <label className="label">First Name</label>
+                <label className="label" style={{color:'white'}}>First Name</label>
                 <div className="control">
                   <input
                     autoComplete="off"
@@ -95,7 +94,7 @@ const Form = props => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Last Name</label>
+                <label className="label" style={{color:'white'}}>Last Name</label>
                 <div className="control">
                   <input
                     autoComplete="off"
@@ -113,12 +112,12 @@ const Form = props => {
               </div>
               <button
                 type="submit"
-                className="button is-block is-info is-fullwidth"
+                className="button is-block is-info is-fullwidth login-btn mt-5"
               >
                 Register
               </button>
             </form>
-            <div className="container mt-3"><Link to="/login">Already Have an Account ? Login Here</Link></div>
+            <div className="container mt-3"><Link to="/login" style={{color:'#EBF3F5'}}>Already Have an Account ? Login Here</Link></div>
           </div>
         </div>
       </div>

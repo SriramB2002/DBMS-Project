@@ -43,16 +43,16 @@ const Form = (props) => {
 
   return (
 
-    <div className="section is-fullheight bg">
+    <div className="section is-fullheight bg" style={{backgroundColor:'#424250',height:'100vh'}}>
       {!!auth.token && <Redirect to="/Dashboard" />}
       <Modal heading={"Invalid Credentials"} text={"Password is Incorrect or the User Doesn't Exist"} open={open} setOpen={setOpen}/>
-      <div className="container">
-        <div className="column is-6 is-offset-3">
-          <div className="box">
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit} noValidate>
+      <div className="container" >
+        <div className="column is-6 is-offset-3" >
+          <div className="box" style={{backgroundColor:'#33333D'}}>
+            <h1 style={{textAlign:'center',color:'white',borderBottom:'none'}}>Login</h1>
+            <form onSubmit={handleSubmit} noValidate >
               <div className="field">
-                <label className="label">Email Address</label>
+                <label className="label" style={{color:'white'}}>Email Address</label>
                 <div className="control">
                   <input
                     autoComplete="off"
@@ -69,7 +69,7 @@ const Form = (props) => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Password</label>
+                <label className="label" style={{color:'white'}}>Password</label>
                 <div className="control">
                   <input
                     className={`input ${errors.password && "is-danger"}`}
@@ -86,12 +86,12 @@ const Form = (props) => {
               </div>
               <button
                 type="submit"
-                className="button is-block is-info is-fullwidth login-btn"
+                className="button is-block is-info is-fullwidth login-btn mt-5"
               >
                 Login
               </button>
             </form>
-            <div className="container mt-3"><Link to="/register">Don't Have an Account ? Register Here</Link></div>
+            <div className="container mt-3" ><Link to="/register" style={{color:'#EBF3F5'}}>Don't Have an Account ? Register Here</Link></div>
           </div>
         </div>
       </div>
