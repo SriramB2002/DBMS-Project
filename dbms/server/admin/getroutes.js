@@ -57,6 +57,22 @@ router.get('/upcomingmatches',function(req,res)
     });
 });
 
+//getUpcomingMatches By Stadium
+router.get('/upcomingmatches/:stadium_id',function(req,res)
+{
+    db.query('SELECT * FROM dbs.match where date_time>now() and stadium_id=?',[req.params.stadium_id],function(err,results,fields)
+    {
+        if(err)
+        {
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 //To get All matches
 router.get('/allmatches',function(req,res)
 {
