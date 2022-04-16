@@ -126,9 +126,13 @@ class Booking_details
     }
 }
 
-router.post('/getBookings', authenticate, (req, res) => {
+router.get('/getBookings', authenticate, (req, res) => {
     db.query('SELECT booking_id FROM booking WHERE user_id=?', [req.user.user.user_id], function(err, results) {
         var bookings = [];
+        if(results.length==0)
+        {
+            res.json("No Bookings Done By User")
+        }
         for (let i = 0; i < results.length; i++)
         {
             let bookingId = results[i].booking_id;
