@@ -52,32 +52,34 @@ function addMerch(booking_id, merch_id, quantity) {
     });
 }
 router.post('/createBooking', authenticate, (req, res) => {
-    let total = 0;
-    db.query('SELECT stadium_id FROM NEW_SCHEMA.MATCH WHERE match_id=?', [req.body.match_id], function (err, currentStadiumID) {
+    let seat_total = 0;
+    let food_total = 0;
+    let merch_total = 0;
+    db.query('SELECT stadium_id FROM dbs.MATCH WHERE match_id=?', [req.body.match_id], function (err, currentStadiumID) {
         // console.log(currentStadiumID[0].stadium_id);
         for (let i = 0; i < req.body.seats.length; i++) {
-            total += parseInt(req.body.seats[i].seat_price);
+            seat_total += parseInt(req.body.seats[i].seat_price);
         }
         req.body.merch_list.forEach(i => {
-            total += i.merch_price * i.merch_quantity;
+            merch_total += i.merch_price * i.merch_quantity;
         });
         req.body.food_list.forEach(i => {
-            total += i.food_price * i.food_quantity;
+            food_total += i.food_price * i.food_quantity;
         });
         console.log(req.user);
         db.query('SELECT balance from USER where user_id = ?', [req.user.user.user_id], function (err, results) {
             if (err) {
                 return;
             }
-            if (total > results[0].balance)
+            if (seat_total + food_total + merch_total > results[0].balance)
                 res.json("Insufficient Balance");
             else {
-                db.query('UPDATE user SET balance = balance - ? where user_id = ?', [total, req.user.user.user_id], function (err, results) {
+                db.query('UPDATE user SET balance = balance - ? where user_id = ?', [seat_total+food_total+merch_total, req.user.user.user_id], function (err, results) {
                     if (err) {
                         return;
                     }
                 });
-                db.query('INSERT INTO BOOKING (booking_id,user_id,match_id) VALUES(?,?,?)', [req.body.booking_id, req.user.user.user_id, req.body.match_id], function (err, results, fields) {
+                db.query('INSERT INTO BOOKING (booking_id,user_id,match_id,seat_total,merch_total,food_total) VALUES(?,?,?,?,?,?)', [req.body.booking_id, req.user.user.user_id, req.body.match_id,seat_total,merch_total,food_total], function (err, results, fields) {
                     if (err) {
                         res.status(422).json({
                             message: err.message
@@ -113,9 +115,20 @@ function getMatchId(bid) {
     return mid;
 }
 
+class Booking_details
+{
+    constructor(match,seats,food,merch)
+    {
+        this.match = match;
+        this.seats = seats;
+        this.food = food;
+        this.merch = merch;
+    }
+}
+
 router.post('/getBookings', authenticate, (req, res) => {
     db.query('SELECT booking_id FROM booking WHERE user_id=?', [req.user.user.user_id], function(err, results) {
-        let bid = [];
+        var bookings = [];
         for (let i = 0; i < results.length; i++)
         {
             let bookingId = results[i].booking_id;
@@ -123,25 +136,31 @@ router.post('/getBookings', authenticate, (req, res) => {
             db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
                 let matchId = results1[0].match_id;
                 console.log(matchId)
-                db.query('SELECT * FROM new_schema.match WHERE match_id=?', [matchId], function(err2, results2) {
-                    console.log(results2);
-                    let stadiumId = results2[0].stadium_id;
-                    let team1 = results2[0].team1_id;
-                    let team2 = results2[0].team2_id;
-                    db.query('SELECT stadium_name, city FROM stadium WHERE stadium_id=?', [stadiumId], function(err3, results3) {
-                        console.log(results3[0].stadium_name, results3[0].city);
-                    })
-                    db.query('SELECT team_name FROM teams WHERE team_id=?', [team1], function(err3, results3) {
-                        console.log(results3[0].team_name);
-                    })
-                    db.query('SELECT team_name FROM teams WHERE team_id=?', [team2], function(err3, results3) {
-                        console.log(results3[0].team_name);
-                    })
+                db.query('SELECT * FROM dbs.match WHERE match_id=?', [matchId], function(err2, match) {
+                    db.query('SELECT seat_id FROM book_seats WHERE booking_id=?',[bookingId],function(err,seats)
+                    {
+                        if(err)
+                        {
+                            console.log(err);
+                        }
+                        db.query('SELECT * FROM booking_food WHERE booking_id=?',[bookingId],function(err,foods)
+                        {
+                            db.query('SELECT * FROM booking_merch WHERE booking_id=?',[bookingId],function(err,merch)
+                            {
+                                bookings.push((new Booking_details(match,(seats),(foods),(merch))));
+                                console.log(JSON.stringify(bookings[i])+"\n\n");
+                                // bookings.push(1);
+                                if(i==results.length-1)
+                                {
+                                    res.json(bookings);
+                                    return;
+                                }
+                            });
+                        });
+                    });
                 });
             })
         }
-        console.log(bid);
-        res.json(results);
     });
 });
 
