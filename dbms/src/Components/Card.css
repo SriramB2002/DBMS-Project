@@ -35,7 +35,7 @@
         font-size: 1rem;
   }
   .msrt-2{
-      background-color: rgba(32, 185, 30, 0.837);
+      background-color: #1EB980;
       font-family: 'Open Sans', sans-serif;
       font-size: 1.2rem;
       font-stretch: condensed;
@@ -43,7 +43,7 @@
       font-weight: 800 !important;
   }
   .ffpr{
-      background-color: #eeeeee !important;
+      background-color: #33333D !important;
   }
   .as{
   }

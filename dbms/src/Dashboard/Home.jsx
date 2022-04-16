@@ -57,12 +57,13 @@ const Home = () => {
     <div className='paddedr'>
       <div className='homepage' style={{ height: '200vh', paddingTop: '5rem' }}>
       </div>
-      {!headerHidden && <div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>Upcoming Matches</h1></div>}
+      {<div className='ge' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he'>Upcoming Matches</h1></div>}
+      {<div className='ge-2' data-aos="fade-up" data-aos-duratiion="1000"><h1 className='he-2'>Click on Card for More Details</h1></div>}
       <div className='stadium-list'>
-        <FormControl fullWidth className={headerHidden ? 'header-hidden-modifications' : ''}>
+        {/* <FormControl fullWidth className={headerHidden ? 'header-hidden-modifications' : ''}>
           {console.log(stadium)}
-        <InputLabel id="demo-simple-select-label">Select Stadium</InputLabel>
-        <Select
+        <InputLabel id="demo-simple-select-label">Select Stadium</InputLabel> */}
+        {/* <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={stadium}
@@ -87,8 +88,8 @@ const Home = () => {
             )
           })}
   
-        </Select>
-        </FormControl>
+        </Select> */}
+        {/* </FormControl> */}
         {<Matches stadium_id={stadiumID} stadium={stadium} filter={filter} className='matches'/>}
         </div>
     </div>

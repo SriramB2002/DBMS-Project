@@ -36,12 +36,12 @@ export default function MatchCard(props) {
     }
     getStadiumList();
     const getTeamNames = async () => {
-      const data = await axios.post('http://localhost:8080/get/getTeamName', {
+      const data = await axios.post('http://localhost:8080/get/getTeam', {
         team_id: team1
       });
       console.log(data.data);
       setCurrentTeam1(data.data[0].team_name);
-      const data2 = await axios.post('http://localhost:8080/get/getTeamName', {
+      const data2 = await axios.post('http://localhost:8080/get/getTeam', {
         team_id: team2
       });
       setCurrentTeam2(data2.data[0].team_name);
@@ -60,21 +60,11 @@ export default function MatchCard(props) {
 
   return (
     <div className='d-flex' >
-    <Card data-aos="flip-down" data-aos-duration="500" sx={{ minWidth: '90%' ,marginTop:'2.5rem',transition:'1s ease-in', backgroundColor:'white',color:'white',height:'8rem'}} className="fpt">
+    <Card data-aos="flip-down" data-aos-duration="500" sx={{ minWidth: '90%' ,transition:'1s ease-in', backgroundColor:'white',color:'white',height:'8rem'}} className="fpt">
       <CardActionArea sx={{padding:'2rem'}} className='ffpr'>
-      <Grid container spacing={2}>
-  <Grid item xs={1}>
-          <Typography variant="body1" color="black" sx={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px'}} className="fpt-small">
-            <div>{props.match.match_format}</div>
-          </Typography>
-  </Grid>
-  <Grid item xs={1.5}>
-      <div style={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
-          <Typography variant="body1" color="black" className='fpt-small'>
-          <div>{date.toLocaleDateString()}</div>
-          </Typography>
-      </div>
-  </Grid>
+      <Grid container spacing={3}>
+  {/* 
+
   <Grid item xs={1.5}>
       <div style={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
           <Typography variant="body1" color="black" className='fpt-small'>
@@ -90,17 +80,44 @@ export default function MatchCard(props) {
           </Typography>
           
       </div>
+  </Grid> */}
+  <Grid item xs={1}>
+          <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
+            <div>{props.match.match_format}</div>
+          </Typography>
   </Grid>
-  <Grid item xs={3}>
-  <div style={{paddingY:'20px',height:'100%',background:'#7E57C2',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
-    <Typography gutterBottom variant="h5" component="div" color="black" className='fpt-lg'>
+  <Grid item xs={1.5}>
+          <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
+            <div>{date.toLocaleTimeString()}</div>
+          </Typography>
+  </Grid>
+  <Grid item xs={1.5}>
+          <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
+            <div>{date.toLocaleDateString()}</div>
+          </Typography>
+  </Grid>
+  <Grid item xs={2}>
+          <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
+            <div>{currentStadium?.stadium_name}</div>
+          </Typography>
+  </Grid>
+  <Grid item xs={2.5}>
+  <div style={{paddingY:'20px',height:'100%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',flexDirection:'column'}}>
+    <Typography gutterBottom variant="h5" component="div" color="white" className='fpt-lg'>
           {currentTeam1} <ReactCountryFlag countryCode="PK" svg/> 
     </Typography>
     </div>
   </Grid>
-  <Grid item xs={3.5}>
-  <div style={{paddingY:'20px',height:'100%',background:'#FF7043',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
-    <Typography gutterBottom variant="h5" component="div" color="black" className='fpt-lg'>
+  <Grid item xs={1}>
+  <div style={{paddingY:'0',height:'100%',background:'',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',flexDirection:'column'}}>
+    <Typography gutterBottom variant="h5" component="div" color="white" className='fpt-lg'>
+         vs
+    </Typography>
+    </div>
+  </Grid>
+  <Grid item xs={2.5}>
+  <div style={{paddingY:'20px',height:'100%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',flexDirection:'column'}}>
+    <Typography gutterBottom variant="h5" component="div" color="white" className='fpt-lg'>
           {currentTeam2} <ReactCountryFlag countryCode="IN" svg/> 
     </Typography>
     </div>
@@ -112,7 +129,7 @@ export default function MatchCard(props) {
     <Grid item xs={2} data-aos="flip-up" data-aos-duration="700">
     <Button size="small" color="primary" style={{color:'white'}} className="msrt">
 
-    <CardActions className="msrt-2"sx={{display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'7px',height:'8rem',marginTop:'2.5rem'}}>
+      <CardActions className="msrt-2"sx={{display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',height:'8rem'}}>
           Book Seats
       </CardActions> 
       </Button>

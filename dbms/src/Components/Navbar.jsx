@@ -26,13 +26,13 @@ function NavBar({navbarItems}) {
   };
   return (
     <Navbar.Wrapper>
-      <Navbar.Logo>
+      <div className="navbar-logo">
         <Link className="link-logo" to="/">
           <p className="logo">
             Stadia
           </p>
         </Link>
-      </Navbar.Logo>
+      </div>
 
       <HamburgerButton.Wrapper onClick={() => toggleDrawer(true)}>
         <HamburgerButton.Lines />
@@ -72,7 +72,7 @@ const Navbar = {
     justify-content: space-between;
     align-items: center;
 
-    background-color: white;
+    background-color: #434c4f;
     box-shadow: 0 0.75rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2);
 
     //40em == 640px
@@ -87,8 +87,8 @@ const Navbar = {
   Logo: styled.h1`
     position: relative;
     top: 15px;
-    padding: 0 1rem 0 0;
-    color: black;
+    padding: 0 0 0 0;
+    color: transparent;
   `,
 
   Items: styled.ul`
@@ -188,7 +188,7 @@ const Logout = {
   Wrapper: styled.div`
   margin-left: 10px;
   &:hover{
-    background-color: rgb(249, 249, 249);
+    background-color: rgba(249, 249, 249, 0.7);
     transform: scale(1.1);
     padding: 5px;
     border-radius: 5px;
