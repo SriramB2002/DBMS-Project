@@ -37,7 +37,6 @@ function bookseats(booking_id, seat_id) {
     db.query('INSERT INTO book_seats (booking_id , seat_id ) VALUES (?,?)', [booking_id, seat_id], function (err, results) {
         if (err) {
             console.log(err.message);
-            console.log("chalja bhai");
         }
     });
 };
@@ -166,6 +165,68 @@ router.get('/getBookings', authenticate, (req, res) => {
             })
         }
     });
+});
+
+router.get('/deletebooking/:booking_id',authenticate, function(req,res)
+{
+    db.query('DELETE FROM booking WHERE booking_id=?', [req.params.booking_id], function(err, results) {
+        if(err){
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+        res.json(results);
+    }); 
+});
+
+router.post('/updateBooking', authenticate, (req, res) => {
+    db.query('DELETE FROM book_seats WHERE booking_id=?', [req.body.booking_id], function(err, results) {
+        if(err){
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+        db.query('SELECT seat_total FROM booking WHERE booking_id=?', [req.body.booking_id],function(err,prev_seat_total,fields)
+        {
+            if(err){
+                res.status(422).json({
+                    message:err.message
+                });
+                return;
+            }
+            // let prev = prev_seat_total;
+            let seatTotal = 0;
+            for (let i = 0; i < req.body.seats.length; i++)
+            {
+                bookseats(req.body.booking_id, req.body.seats[i].seat_id);
+                seatTotal+=req.body.seats[i].seat_price;
+            }
+            db.query('UPDATE user SET balance = balance - ? WHERE user_id=?',[seatTotal-prev_seat_total[0].seat_total, req.user.user.user_id], function(err, results) {
+                // console.log(prev_seat_total[0].seat_total);
+                if(err){
+                    // console.log(err.message);
+                    res.status(422).json({
+                        message:err.message
+                    });
+                    return;
+                } 
+                db.query('UPDATE booking SET seat_total=? WHERE booking_id=?', [seatTotal, req.body.booking_id], function(err, results) {
+                    if(err){
+                        res.status(422).json({
+                            message:err.message
+                        });
+                        return;
+                    }
+                    res.json("Changed");    
+                })
+            });
+        });
+    });
+       
+    
+
 });
 
 module.exports = router;
