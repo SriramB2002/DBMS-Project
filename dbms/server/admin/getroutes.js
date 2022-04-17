@@ -25,8 +25,8 @@ router.get("/stadiums",function(req,res)
 //get All Seats in a stadium
 router.get("/availableseats/:id",function(req,res)
 {
-    db.query('select s.seat_id,s.stadium_id,s.seat_type,s.seat_price from seats s, dbs.match m where m.stadium_id = s.stadium_id and match_id=? and s.seat_id'+
-    ' Not IN(select s.seat_id from book_seats s, dbs.match m, booking b where b.booking_id=s.booking_id and '+
+    db.query('select s.seat_id,s.stadium_id,s.seat_type,s.seat_price, st.stadium_name, st.capacity, st.city, st.country from seats s, new_schema.match m, stadium st where m.stadium_id = s.stadium_id and s.stadium_id = st.stadium_id and match_id=? and s.seat_id'+
+    ' Not IN(select s.seat_id from book_seats s, new_schema.match m, booking b where b.booking_id=s.booking_id and '+
     'm.match_id = b.match_id and m.match_id = ?)',
     [req.params.id,req.params.id],
     function(err,results,fields)
@@ -36,7 +36,7 @@ router.get("/availableseats/:id",function(req,res)
                 message:err.message
             });
             return;
-        } 
+        }
         res.json(results);
     });
 });
