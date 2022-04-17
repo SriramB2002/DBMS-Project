@@ -6,7 +6,6 @@ import axios from "axios";
 import { useContext } from "react";
 import  AuthContext  from "../Shared/AuthContext";
 import Modal from "../Components/Modal";
-import './AdminLogin.css';
 const Form = (props) => {
   const [open,setOpen] = useState(false);
   const { auth, setAuth } = useContext(AuthContext);
