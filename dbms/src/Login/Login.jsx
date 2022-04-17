@@ -28,7 +28,7 @@ const Form = (props) => {
       localStorage.setItem("auth",JSON.stringify({token:response.data}));
 
       //Logout after 5 mins 
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/Dashboard" />;
     }
     catch(error){
       console.log(Object.keys(error),error.message);

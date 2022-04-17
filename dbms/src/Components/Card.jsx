@@ -11,8 +11,9 @@ import ReactCountryFlag from "react-country-flag"
 import './Card.css';
 import Aos from "aos";
 import "aos/dist/aos.css";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 export default function MatchCard(props) {
+  const history = useHistory();
   const date = new Date(props.match.date_time);
   const team1 = props.match.team1_id;
   const team2 = props.match.team2_id;
@@ -22,7 +23,9 @@ export default function MatchCard(props) {
   const [teamList,setTeamList] = React.useState([]);
   const [currentTeam1, setCurrentTeam1] = React.useState("");
   const [currentTeam2, setCurrentTeam2] = React.useState("");
-
+  const redir = () => {
+    history.push(`/Dashboard/Seats/${props.match.match_id}`);
+  }
   useEffect(() => {
     
     const getStadiumList = async () => {
@@ -132,7 +135,7 @@ export default function MatchCard(props) {
       </CardActionArea>
     </Card>
     <Grid item xs={2} data-aos="flip-up" data-aos-duration="700">
-    <Button size="small" color="primary" style={{color:'white'}} className="msrt">
+    <Button size="small" color="primary" style={{color:'white'}} className="msrt" onClick={redir}>
 
       <CardActions className="msrt-2"sx={{display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',height:'8rem'}}>
           Book Seats

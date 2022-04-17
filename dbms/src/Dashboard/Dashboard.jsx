@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Home from './Home';
+import SeatsLayout from "../Components/SeatsLayout";
 function Dashboard() {
   const navbarItems = [
     {
@@ -14,15 +15,23 @@ function Dashboard() {
     }
   ];
   return (
+    <Router>
     <div>
       {console.log("Here")}
       <Navbar navbarItems={navbarItems}/>
       <Switch>
-        <Route to='/Dashboard/Home'>
-           <Home />
+        <Route path="/Dashboard" exact>
+          <Redirect to="/Dashboard/Home" />
         </Route>
+        <Route path='/Dashboard/Home' exact component={Home} />
+        <Route path='/Dashboard/Seats/:id' exact component={SeatsLayout} />
+        <Route path='/Dashboard/Profile' exact>
+          <Redirect to="/Dashboard/Home" />
+        </Route>
+ 
       </Switch>
     </div>
+    </Router>
   );
 }
 
