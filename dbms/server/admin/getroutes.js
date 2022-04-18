@@ -5,7 +5,6 @@ const db = require('../db/db');
 const { body, validationResult } = require('express-validator');
 app.use(express.urlencoded());
 app.use(express.json());
-
 //details of all stadium
 router.get("/stadiums",function(req,res)
 {
@@ -25,8 +24,8 @@ router.get("/stadiums",function(req,res)
 //get All Seats in a stadium
 router.get("/availableseats/:id",function(req,res)
 {
-    db.query('select s.seat_id,s.stadium_id,s.seat_type,s.seat_price from seats s, dbs.match m where m.stadium_id = s.stadium_id and match_id=? and s.seat_id'+
-    ' Not IN(select s.seat_id from book_seats s, dbs.match m, booking b where b.booking_id=s.booking_id and '+
+    db.query('select s.seat_id,s.stadium_id,s.seat_type,s.seat_price from seats s, new_schema.match m where m.stadium_id = s.stadium_id and match_id=? and s.seat_id'+
+    ' Not IN(select s.seat_id from book_seats s, new_schema.match m, booking b where b.booking_id=s.booking_id and '+
     'm.match_id = b.match_id and m.match_id = ?)',
     [req.params.id,req.params.id],
     function(err,results,fields)
@@ -44,7 +43,7 @@ router.get("/availableseats/:id",function(req,res)
 //getUpcomingMatches
 router.get('/upcomingmatches',function(req,res)
 {
-    db.query('SELECT * FROM dbs.match where date_time>now();',function(err,results,fields)
+    db.query('SELECT * FROM new_schema.match where date_time>now();',function(err,results,fields)
     {
         if(err)
         {

@@ -10,7 +10,7 @@ const [matches, setMatches] = useState([]);
 useEffect(() => {
   
     const fetchData = async () => {
-        const result = await axios('http://localhost:8080/get/allmatches',{
+        const result = await axios('http://localhost:8080/get/upcomingmatches',{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
