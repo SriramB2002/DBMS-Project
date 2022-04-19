@@ -30,7 +30,7 @@ const Form = (props) => {
       localStorage.setItem("auth",JSON.stringify({token:response.data}));
 
       //Logout after 5 mins 
-      return <Redirect to="/Dashboard" />;
+      return <Redirect to="/admin/Dashboard" />;
     }
     catch(error){
       console.log(Object.keys(error),error.message);
@@ -46,7 +46,7 @@ const Form = (props) => {
   return (
 
     <div className="section is-fullheight bg" style={{backgroundColor:'#424250',height:'100vh'}}>
-      {!!auth.token && <Redirect to="/Dashboard" />}
+      {!!auth.token && <Redirect to="/admin/Dashboard" />}
       <Modal heading={"Invalid Credentials"} text={"Password is Incorrect or the User Doesn't Exist"} open={open} setOpen={setOpen}/>
       <div className="container" >
         <div className="column is-6 is-offset-3" >
