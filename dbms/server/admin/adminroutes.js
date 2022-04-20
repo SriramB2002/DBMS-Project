@@ -94,15 +94,21 @@ router.post('/addteams',/*authenticate,*/(req,res)=>{
 
 function addSeats(stadium_id,normal_price,premium_price,capacity)
 {
-    for(let i=1;i<=capacity/4;i++)
+    let n=1;
+    while(n<=capacity)
     {
-        db.query('INSERT INTO SEATS (seat_id,stadium_id,seat_type,seat_price) VALUES (?,?,?,?)',
-        [i,stadium_id,"Premium",premium_price]);
-    }
-    for(let i=capacity/4+1;i<=capacity;i++)
-    {
-        db.query('INSERT INTO SEATS (seat_id,stadium_id,seat_type,seat_price) VALUES (?,?,?,?)',
-        [i,stadium_id,"Normal",normal_price]);
+        for(let i=1;i<=45;i++)
+        {
+            db.query('INSERT INTO SEATS (seat_id,stadium_id,seat_type,seat_price) VALUES (?,?,?,?)',
+            [n,stadium_id,"Premium",premium_price]);
+            n++;
+        }
+        for(let i=1;i<=105;i++)
+        {
+            db.query('INSERT INTO SEATS (seat_id,stadium_id,seat_type,seat_price) VALUES (?,?,?,?)',
+            [n,stadium_id,"Normal",normal_price]);
+            n++;
+        }
     }   
 }
 
