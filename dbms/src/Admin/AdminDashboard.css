@@ -1,0 +1,18 @@
+.homepage1 {
+    /* background-color: #424242; */
+    text-align: center;
+    color: white;
+}
+
+html {
+    background-color: #424242;
+}
+
+h1, label {
+    font-family: 'Montserrat', sans-serif;
+    border-bottom: 0px;
+}
+
+.pad {
+    margin: 10px;
+}

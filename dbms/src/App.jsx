@@ -10,6 +10,8 @@ import Dashboard from "./Dashboard/Dashboard";
 import Register from "./Register/Register";
 import  AuthContext  from "./Shared/AuthContext";
 import Home from "./Login/Home";
+import AdminLogin from "./Admin/AdminLogin";
+import AdminDashboard from "./Admin/AdminDashboard";
 
 const App = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -31,6 +33,12 @@ const App = () => {
         </Route>
         <Route path="/" exact>
           <Home />
+        </Route>
+        <Route path="/admin/login" exact>
+          {!!auth.token ? (<Redirect to="/admin/Dashboard"></Redirect>) : (<AdminLogin/>)}
+        </Route>
+        <Route path="/admin/Dashboard" exact>
+          {!!auth.token ? (<AdminDashboard/>) : (<Redirect to="/admin/login"></Redirect>)}
         </Route>
       </Switch>
     </Router>

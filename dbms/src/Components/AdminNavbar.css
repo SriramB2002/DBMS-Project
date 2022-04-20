@@ -1,0 +1,31 @@
+.link:hover{
+    background-color: rgba(249, 249, 249, 0.7);
+    transform: scale(1.1);
+    padding: 5px;
+    border-radius: 5px;
+    transition:all 0.1s ease-in-out;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
+.link{
+    color: azure;
+}
+.link:hover{
+    margin-right: -5px;
+    margin-left: -5px;
+}
+.link-logo{
+    color: white;
+    background-color: transparent;
+    border: none;
+
+}
+.link-logo:hover{
+    color: rgba(237, 69, 69, 0.895)!important
+}
+.navbar-logo{
+    position: relative;
+    font-size: 2rem;
+    margin-top: 0.2rem;
+    padding: 0 0 0 0;
+}
