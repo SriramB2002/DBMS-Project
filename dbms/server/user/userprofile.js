@@ -46,6 +46,7 @@ router.post('/updateDetails', authenticate, (req, res) => {
     const password = securePassword(req.body.password);
     db.query('UPDATE user SET password=?, first_name=?, last_name=? WHERE email=?', [password, req.body.first_name, req.body.last_name, req.user.user.email], function(err, results) {
         if(err){
+            console.log(err);
             res.status(422).json({
                 message:err.message
             });

@@ -3,6 +3,7 @@ import { Redirect, Route, BrowserRouter as Router, Switch } from "react-router-d
 import Navbar from "../Components/Navbar";
 import Home from './Home';
 import SeatsLayout from "../Components/SeatsLayout";
+import Profile from '../Profile/Profile'
 function Dashboard() {
   const navbarItems = [
     {
@@ -12,6 +13,9 @@ function Dashboard() {
     {
       name:"Profile",
       path:"/Dashboard/Profile"
+    },{
+      name:"Current Bookings",
+      path:"/Dashboard/CurrentBookings"
     }
   ];
   return (
@@ -26,8 +30,9 @@ function Dashboard() {
         <Route path='/Dashboard/Home' exact component={Home} />
         <Route path='/Dashboard/Seats/:id' exact component={SeatsLayout} />
         <Route path='/Dashboard/Profile' exact>
-          <Redirect to="/Dashboard/Home" />
+          <Profile />
         </Route>
+        
  
       </Switch>
     </div>
