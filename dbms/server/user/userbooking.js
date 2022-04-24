@@ -54,7 +54,7 @@ router.post('/createBooking', authenticate, (req, res) => {
     let seat_total = 0;
     let food_total = 0;
     let merch_total = 0;
-    db.query('SELECT stadium_id FROM dbs.MATCH WHERE match_id=?', [req.body.match_id], function (err, currentStadiumID) {
+    db.query('SELECT stadium_id FROM new_schema.MATCH WHERE match_id=?', [req.body.match_id], function (err, currentStadiumID) {
         // console.log(currentStadiumID[0].stadium_id);
         for (let i = 0; i < req.body.seats.length; i++) {
             seat_total += parseInt(req.body.seats[i].seat_price);
@@ -139,7 +139,7 @@ router.get('/getBookings', authenticate, (req, res) => {
             db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
                 let matchId = results1[0].match_id;
                 console.log(matchId)
-                db.query('SELECT * FROM dbs.match WHERE match_id=?', [matchId], function(err2, match) {
+                db.query('SELECT * FROM new_schema.match WHERE match_id=?', [matchId], function(err2, match) {
                     db.query('SELECT seat_id FROM book_seats WHERE booking_id=?',[bookingId],function(err,seats)
                     {
                         if(err)

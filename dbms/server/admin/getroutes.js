@@ -58,7 +58,7 @@ router.get('/upcomingmatches',function(req,res)
 //getUpcomingMatches By Stadium
 router.get('/upcomingmatches/:stadium_id',function(req,res)
 {
-    db.query('SELECT * FROM dbs.match where date_time>now() and stadium_id=?',[req.params.stadium_id],function(err,results,fields)
+    db.query('SELECT * FROM new_schema.match where date_time>now() and stadium_id=?',[req.params.stadium_id],function(err,results,fields)
     {
         if(err)
         {
@@ -74,7 +74,7 @@ router.get('/upcomingmatches/:stadium_id',function(req,res)
 //To get All matches
 router.get('/allmatches',function(req,res)
 {
-    db.query('SELECT * FROM dbs.match',function(err,results,fields)
+    db.query('SELECT * FROM new_schema.match',function(err,results,fields)
     {
         if(err)
         {

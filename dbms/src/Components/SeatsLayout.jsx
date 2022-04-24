@@ -18,7 +18,7 @@ const SeatsLayout = () => {
   const [page, setPage] = useState(0);
   
   const offset = page * PER_PAGE;
-  const rows = 266;
+  const rows = 61;
   const columns = 15;
   const additional = 15;
   useEffect(() => {
