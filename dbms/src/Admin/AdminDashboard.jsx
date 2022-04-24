@@ -16,6 +16,8 @@ import { TableBody } from '@mui/material';
 import { Paper } from '@mui/material';
 import { TableHead } from '@mui/material';
 import { textAlign } from '@mui/system';
+import { useState } from 'react';
+import axios from 'axios';
 
 
 function TabPanel(props) {
@@ -51,12 +53,69 @@ function a11yProps(index) {
   };
 }
 
-function getMerch() {
 
-}
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+
+  const [mname,setmname] = useState("");
+  const [mprice,setmprice] = useState(0);
+  const [mimg,setmimg] = useState("");
+
+  const [fname, setfname] = useState("");
+  const [fprice, setfprice] = useState(0);
+
+  const [team, setTeam] = useState("");
+  const [timg, settimg] = useState("");
+
+  const [stName, setStName] = useState("");
+  const [stCity, setStCity] = useState("");
+  const [capacity, setCapacity] = useState(0);
+  const [country, setCountry] = useState("");
+  const [premium, setPremium] = useState(0);
+  const [normal, setNormal] = useState(0);
+
+  const [team1, setFirst] = useState("");
+  const [team2, setSecond] = useState("");
+  const [format, setFormat] = useState("");
+  const [type, setType] = useState("");
+  const [date, setDate] = useState(Date.now());
+  const [stadium, setStadium] = useState("");
+
+  const addMerch = async ()=> {
+    const resp = await axios.post('http://localhost:8080/admin/addmerch', {
+      merch_name: mname,
+      merch_price: mprice,
+      merch_image: mimg
+    });
+    console.log(resp);
+  }
+
+  const addFood = async () => {
+    const resp = await axios.post('http://localhost:8080/admin/addfood', {
+      food_name: fname,
+      food_price: fprice
+    });
+    console.log(resp);
+  }
+
+  const addTeam = async () => {
+    const resp = await axios.post('http://localhost:8080/admin/addteams', {
+      team_name: team,
+      team_flag: timg
+    })
+  }
+
+  const addStadium = async () => {
+    const resp = await axios.post('http://localhost:8080/admin/addstadium', {
+      stadium_name: stName,
+      city: stCity,
+      country: country,
+      capacity: capacity,
+      premium_price: premium,
+      normal_price: normal
+    })
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,14 +143,12 @@ export default function BasicTabs() {
       </Box>
       <TabPanel value={value} index={0}>
         <h1>Add Merch</h1>
-        <div>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '420px'}} id="merch-name" type={'text'} label='Merch Name'></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '210px'}} id="merch-price" type={'number'} label='Merch Price'></TextField>
-        </div>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="merch-image-url" type={'url'} label='Merch Image URL'></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '420px'}} id="merch-name" type={'text'} label='Merch Name' value={mname} onChange={(e)=>setmname(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '210px'}} id="merch-price" type={'number'} label='Merch Price' value={mprice} onChange={(e)=>setmprice(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="merch-image-url" type={'url'} label='Merch Image URL' value={mimg} onChange={(e)=>setmimg(e.target.value)}></TextField>
         <br></br>
         <br></br>
-        <Button variant='contained'>Add Merch</Button>
+        <Button variant='contained' onClick={addMerch}>Add Merch</Button>
       </TabPanel>
 
       <TabPanel value={value} index={1}>
@@ -123,11 +180,11 @@ export default function BasicTabs() {
 
       <TabPanel value={value} index={2}>
       <h1>Add Food</h1>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '420px'}} id="food-name" type={'text'} label='Food Name'></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '210px'}} id="food-price" type={'number'} label='Food Price'></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '420px'}} id="food-name" type={'text'} label='Food Name' value={fname} onChange={(e) => setfname(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '210px'}} id="food-price" type={'number'} label='Food Price' value={fprice} onChange={(e) => setfprice(e.target.value)}></TextField>
         <br></br>
         <br></br>
-        <Button variant='contained'>Add Food</Button>
+        <Button variant='contained' onClick={addFood}>Add Food</Button>
       </TabPanel>
 
       <TabPanel value={value} index={3}>
@@ -137,25 +194,26 @@ export default function BasicTabs() {
 
       <TabPanel value={value} index={4}>
         <h1>Add Team</h1>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="team-name" type={'text'} label='Team Name'></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="team-image-url" type={'text'} label='Team Image URL'></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="team-name" type={'text'} label='Team Name' value={team} onChange={(e) => setTeam(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="team-image-url" type={'text'} label='Team Image URL' value={timg} onChange={(e) => settimg(e.target.value)}></TextField>
         <br></br>
         <br></br>
-        <Button variant='contained'>Add Team</Button>
+        <Button variant='contained' onClick={addTeam}>Add Team</Button>
       </TabPanel>
 
       <TabPanel value={value} index={5}>
         <h1>Add Stadium</h1>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="stadium-name" type={'text'} label='Stadium Name'></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="stadium-name" type={'text'} label='Stadium Name' value={stName} onChange={(e) => setStName(e.target.value)}></TextField>
         <br></br>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '315px'}} id="stadium-city" type={'text'} label='City'></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '315px'}} id="stadium-country" type={'text'} label='Country'></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '315px'}} id="stadium-city" type={'text'} label='City' value={stCity} onChange={(e) => setStCity(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '315px'}} id="stadium-country" type={'text'} label='Country' value={country} onChange={(e) => setCountry(e.target.value)}></TextField>
         <br></br>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '315px'}} id="premium-price" type={'number'} label='Premium Seat Price'></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '315px'}} id="normal-price" type={'number'} label='Normal Seat Price'></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '203px'}} id="stadium-capacity" type={'number'} label='Stadium Capacity' value={capacity} onChange={(e) => setCapacity(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '203px'}} id="premium-price" type={'number'} label='Premium Seat Price' value={premium} onChange={(e) => setPremium(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '203px'}} id="normal-price" type={'number'} label='Normal Seat Price' value={normal} onChange={(e) => setNormal(e.target.value)}></TextField>
         <br></br>
         <br></br>
-        <Button variant='contained'>Add Stadium</Button>
+        <Button variant='contained' onClick={addStadium}>Add Stadium</Button>
       </TabPanel>
 
       <TabPanel value={value} index={6}>
@@ -167,9 +225,9 @@ export default function BasicTabs() {
           <MenuItem>India</MenuItem>
         </TextField>
         <br></br>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-format" label="Match Format" type={'text'} style={{margin: '10px', width: '220px'}}></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-type" label="Match Type" type={'text'} style={{margin: '10px', width: '220px'}}></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-timestamp" label="" type={'datetime-local'} style={{margin: '10px', width: '220px'}}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-format" label="Match Format" type={'text'} style={{margin: '10px', width: '220px'}} value={format} onChange={(e) => setFormat(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-type" label="Match Type" type={'text'} style={{margin: '10px', width: '220px'}} value={type} onChange={(e) => setType(e.target.value)}></TextField>
+        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-timestamp" label="" type={'datetime-local'} style={{margin: '10px', width: '220px'}} value={date} defaultValue={date} onChange={(e) => setDate(e.target.value)}></TextField>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="stadium" label="Stadium" select style={{margin: '10px', width: '700px'}}>
           <MenuItem>Rajiv Gandhi International Stadium, Hyderabad</MenuItem>
         </TextField>
