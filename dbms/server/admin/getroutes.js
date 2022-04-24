@@ -93,4 +93,16 @@ router.post('/getTeam', (req, res) => {
     })
 });
 
+router.get('/getFood', (req, res) => {
+    db.query('SELECT * FROM food_item', function(err, results) {
+        res.json(results);
+    })
+})
+
+router.get('/getMerch', (req, res) => {
+    db.query('SELECT * FROM merch', function(err, results) {
+        res.json(results);
+    })
+})
+
 module.exports = router;
