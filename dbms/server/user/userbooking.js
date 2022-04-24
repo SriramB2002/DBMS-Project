@@ -22,11 +22,6 @@ function authenticate(req, res, next) {
     });
 }
 //get items to buy in cart for frontend to show
-router.get('/food/avail', (req, res) => {
-    db.query('SELECT food_name , food_price FROM food_item', function (err, results, fields) {
-        res.status(200).json(results);
-    });
-});
 //get merch list for user to buy for frontend to show
 router.get('/merch/avail', (req, res) => {
     db.query('SELECT merch_name , merch_price , merch_image from merch', function (err, results, fields) {

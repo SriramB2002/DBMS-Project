@@ -4,6 +4,7 @@ import Navbar from "../Components/Navbar";
 import Home from './Home';
 import SeatsLayout from "../Components/SeatsLayout";
 import Profile from '../Profile/Profile'
+import MerchFood from "../Components/MerchFood";
 function Dashboard() {
   const navbarItems = [
     {
@@ -32,8 +33,10 @@ function Dashboard() {
         <Route path='/Dashboard/Profile' exact>
           <Profile />
         </Route>
-        
- 
+        <Route path='/Dashboard/Profile' exact>
+          <Profile />
+        </Route>
+        <Route path='/Dashboard/MerchFood' exact component={MerchFood} />
       </Switch>
     </div>
     </Router>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useReducer } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { Redirect } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import Tooltip from '@mui/material/Tooltip';
+import { Button } from '@mui/material';
 import './Seats.css';
+import MerchFood from './MerchFood';
 const PER_PAGE = 10;
 const SeatsLayout = () => {
   const { id } = useParams();
@@ -16,11 +18,12 @@ const SeatsLayout = () => {
   const [vip, setvip] = useState(0);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
-  
+  const history = useHistory();
   const offset = page * PER_PAGE;
   const rows = 61;
   const columns = 15;
   const additional = 15;
+  
   useEffect(() => {
     const temp = [];
 
@@ -57,7 +60,7 @@ const SeatsLayout = () => {
     const rownum = Math.floor(num / columns);
     const colnum = (num) % columns;
     let temp = [...stadiums];
-    console.log(temp);
+    // console.log(temp);
     if (temp[rownum][colnum].booked) {
       alert("Selected Seat is Not Available");
     }
@@ -68,17 +71,18 @@ const SeatsLayout = () => {
     if (data.length == 0) {
       return;
     }
-
+    console.log(data);
     const temp = stadiums;
     data.forEach(element => {
+      // console.log(data);
       //Change Seat_ID and Seat_Type
       const rc = Math.floor((element.seat_id - 1) / columns);
       const cc = (element.seat_id - 1) % columns;
-      console.log(rc, cc);
+      // console.log(rc, cc);
       temp[rc][cc].booked = false;
       temp[rc][cc].type = element.seat_type;
-      console.log(temp[rc][cc]);
     });
+    console.log(stadiums)
     setStadium(temp);
     forceUpdate();
     // setData(data);
@@ -87,7 +91,12 @@ const SeatsLayout = () => {
     
     setPage(selectedPage);
   }
-
+  const bookSeats = () => {
+      history.push({
+        pathname:'/Dashboard/MerchFood',
+        state:{stadiums}
+      });
+  }
   return (
     <div className='homepage' style={{ height: '150vh' }}>
       <div className='container' style={{ paddingTop: '7rem', color: 'white' }}>
@@ -106,7 +115,7 @@ const SeatsLayout = () => {
           {stadiums.slice(offset, offset + PER_PAGE)
             .map((row, index) => (<div className='row' key={index}>
               {row.map((seat, index) => (
-                <Tooltip title={seat.type} placement="top" arrow>
+                <Tooltip title={seat.type} placement="top" arrow key={seat.id}>
                       <div className={'seat' + (seat.booked ? ' booked' : '') + (!seat.booked && seat.selected ? ' selected' : '')} data-key={seat.id} onClick={handleSelect} key={seat.id}></div>
                 </Tooltip>
               ))}
@@ -122,7 +131,9 @@ const SeatsLayout = () => {
             disabledClassName={"pagination__link--disabled"}
             activeClassName={"pagination__link--active"}
           />
-
+          <Button variant="contained" color="secondary" sx={{backgroundColor:'green !important'}} onClick={bookSeats}>
+               Book Seats
+          </Button>
         </div>
       </div>
     </div>
