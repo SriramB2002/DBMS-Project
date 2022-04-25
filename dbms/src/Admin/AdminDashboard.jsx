@@ -18,6 +18,7 @@ import { TableHead } from '@mui/material';
 import { textAlign } from '@mui/system';
 import { useState } from 'react';
 import axios from 'axios';
+import Modal from '../Components/Modal';
 
 
 function TabPanel(props) {
@@ -82,12 +83,16 @@ export default function BasicTabs() {
   const [date, setDate] = useState(Date.now());
   const [stadium, setStadium] = useState("");
 
+  const [newMerchPrice, setNewMerch] = useState(0);
+  const [newFoodPrice, setNewFood] = useState(0);
+
   const addMerch = async ()=> {
     const resp = await axios.post('http://localhost:8080/admin/addmerch', {
       merch_name: mname,
       merch_price: mprice,
       merch_image: mimg
     });
+    getMerch();
     console.log(resp);
   }
 
@@ -96,6 +101,7 @@ export default function BasicTabs() {
       food_name: fname,
       food_price: fprice
     });
+    getFood();
     console.log(resp);
   }
 
@@ -104,6 +110,7 @@ export default function BasicTabs() {
       team_name: team,
       team_flag: timg
     })
+    getTeams();
   }
 
   const addStadium = async () => {
@@ -114,6 +121,52 @@ export default function BasicTabs() {
       capacity: capacity,
       premium_price: premium,
       normal_price: normal
+    })
+    getStadium();
+  }
+
+  const [merch_resp, setMerch] = useState(null);
+  const [food_resp, setFood] = useState(null);
+
+  const [team_resp, setTeamList] = useState(null);
+  const [stadium_resp, setStadiumList] = useState(null);
+
+  const getMerch = async () => {
+    let result = await axios.get('http://localhost:8080/get/getMerch');
+    setMerch(result?.data);
+  }
+
+  const getFood = async () => {
+    let result = await axios.get('http://localhost:8080/get/getFood');
+    setFood(result?.data);
+  }
+
+  const getTeams = async () => {
+    let result = await axios.get('http://localhost:8080/get/getallteams');
+    setTeamList(result?.data);
+  }
+
+  const getStadium = async () => {
+    let result = await axios.get('http://localhost:8080/get/stadiums');
+    setStadiumList(result?.data);
+  }
+
+  React.useEffect(async()=> {
+    await getMerch();
+    await getFood();
+    await getTeams();
+    await getStadium();
+  },[])
+
+  const updateMerch = async () => {
+    const resp = await axios.post('http://localhost:8080/admin/updatemerch', {
+      // metch_price: newMerchPrice
+    })
+  }
+
+  const updateFood = async () => {
+    const resp = await axios.post('http://localhost:8080/admin/updatefood', {
+      // food_price: newFoodPrice
     })
   }
 
@@ -158,22 +211,19 @@ export default function BasicTabs() {
             <TableHead>
               <TableCell style={{color: 'white', fontWeight: 'bold'}}>Merch Name</TableCell>
               <TableCell style={{color: 'white', fontWeight: 'bold'}}>Merch Image URL</TableCell>
+              <TableCell style={{color: 'white', fontWeight: 'bold'}}>Merch Price</TableCell>
               <TableCell style={{color: 'white', fontWeight: 'bold'}}></TableCell>
             </TableHead>
-            <TableBody>
-              <TableCell style={{color: 'white'}}>India Jersey</TableCell>
-              <TableCell style={{color: 'white'}}>url1</TableCell>
-              <TableCell>
-                <Button variant='contained'>Update Booking</Button>
-              </TableCell>
-            </TableBody>
-            <TableBody>
-              <TableCell style={{color: 'white'}}>Australia Jersey</TableCell>
-              <TableCell style={{color: 'white'}}>url2</TableCell>
-              <TableCell>
-                <Button variant='contained'>Update Booking</Button>
-              </TableCell>
-            </TableBody>
+            {merch_resp?.map((item, index) => (
+              <TableBody key={index}>
+                <TableCell style={{color: 'white'}}>{item?.merch_name}</TableCell>
+                <TableCell style={{color: 'white'}}>{item?.merch_image}</TableCell>
+                <TableCell style={{color: 'white'}}>{item?.merch_price}</TableCell>
+                <TableCell>
+                  <Button variant='contained' color='warning'>Update</Button>
+                </TableCell>
+              </TableBody>
+            ))}
           </Table>
         </TableContainer>
       </TabPanel>
@@ -189,7 +239,24 @@ export default function BasicTabs() {
 
       <TabPanel value={value} index={3}>
         <h1>Update Food</h1>
-        <p>Table here</p>
+        <TableContainer>
+          <Table sx={{backgroundColor: '#263238'}}>
+            <TableHead>
+              <TableCell style={{color: 'white', fontWeight: 'bold'}}>Merch Name</TableCell>
+              <TableCell style={{color: 'white', fontWeight: 'bold'}}>Merch Image URL</TableCell>
+              <TableCell style={{color: 'white', fontWeight: 'bold'}}></TableCell>
+            </TableHead>
+            {food_resp?.map((item, index) => (
+              <TableBody key={index}>
+                <TableCell style={{color: 'white'}}>{item?.food_name}</TableCell>
+                <TableCell style={{color: 'white'}}>{item?.food_price}</TableCell>
+                <TableCell>
+                  <Button variant='contained' color='warning'>Update</Button>
+                </TableCell>
+              </TableBody>
+            ))}
+          </Table>
+        </TableContainer>
       </TabPanel>
 
       <TabPanel value={value} index={4}>
@@ -218,18 +285,24 @@ export default function BasicTabs() {
 
       <TabPanel value={value} index={6}>
         <h1>New Match</h1>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="team-1" label="Team 1" select style={{margin: '10px', width: '340px'}}>
-          <MenuItem>India</MenuItem>
+        <TextField sx={{label: { color: 'lightgray'}, div: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="team-1" label="Team 1" select style={{margin: '10px', width: '340px'}} value={team1} onChange={(e) => setFirst(e.target.value)}>
+          {team_resp?.map((item, index) => (
+            <MenuItem value={item.team_name}>{item.team_name}</MenuItem>
+          ))}
         </TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="team-2" label="Team 2" select style={{margin: '10px', width: '340px'}}>
-          <MenuItem>India</MenuItem>
+        <TextField sx={{label: { color: 'lightgray'}, div: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="team-2" label="Team 2" select style={{margin: '10px', width: '340px'}} value={team2} onChange={(e) => setSecond(e.target.value)}>
+          {team_resp?.map((item, index) => (
+            <MenuItem value={item.team_name}>{item.team_name}</MenuItem>
+          ))}
         </TextField>
         <br></br>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-format" label="Match Format" type={'text'} style={{margin: '10px', width: '220px'}} value={format} onChange={(e) => setFormat(e.target.value)}></TextField>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-type" label="Match Type" type={'text'} style={{margin: '10px', width: '220px'}} value={type} onChange={(e) => setType(e.target.value)}></TextField>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="match-timestamp" label="" type={'datetime-local'} style={{margin: '10px', width: '220px'}} value={date} defaultValue={date} onChange={(e) => setDate(e.target.value)}></TextField>
-        <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="stadium" label="Stadium" select style={{margin: '10px', width: '700px'}}>
-          <MenuItem>Rajiv Gandhi International Stadium, Hyderabad</MenuItem>
+        <TextField sx={{label: { color: 'lightgray'}, div: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="stadium" label="Stadium" select style={{margin: '10px', width: '700px'}} value={stadium} onChange={(e) => setStadium(e.target.value)}>
+          {stadium_resp?.map((item, index) => (
+            <MenuItem value={item.stadium_name}>{item.stadium_name}</MenuItem>
+          ))}
         </TextField>
         <br></br>
         <br></br>
