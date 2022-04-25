@@ -231,4 +231,16 @@ router.post('/updatemerch',/*authenticate,*/(req,res)=>
     });
 })
 
+router.post('/deletemerch', (req, res) => {
+    db.query('DELETE FROM merch WHERE merch_id=?', [req.body.merch_id], (err, results) => {
+        res.json(results);
+    })
+})
+
+router.post('/deletefood', (req, res) => {
+    db.query('DELETE FROM food_item WHERE food_id=?', [req.body.food_id], (err, results) => {
+        res.json(results);
+    })
+})
+
 module.exports = router;
