@@ -27,11 +27,11 @@ function NavBar({navbarItems}) {
   return (
     <Navbar.Wrapper>
       <div className="navbar-logo">
-        <Link className="link-logo" to="/">
+        <a className="link-logo" href="/">
           <p className="logo">
             Stadia
           </p>
-        </Link>
+        </a>
       </div>
 
       <HamburgerButton.Wrapper onClick={() => toggleDrawer(true)}>

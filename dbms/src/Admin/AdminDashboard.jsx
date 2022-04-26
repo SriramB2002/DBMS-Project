@@ -141,7 +141,7 @@ export default function BasicTabs() {
           <Tab label="New Match" {...a11yProps(6)} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0} style={{maxWidth:'50vw',margin:'auto'}}>
         <h1>Add Merch</h1>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '420px'}} id="merch-name" type={'text'} label='Merch Name' value={mname} onChange={(e)=>setmname(e.target.value)}></TextField>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '210px'}} id="merch-price" type={'number'} label='Merch Price' value={mprice} onChange={(e)=>setmprice(e.target.value)}></TextField>
@@ -192,7 +192,7 @@ export default function BasicTabs() {
         <p>Table here</p>
       </TabPanel>
 
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={4} style={{maxWidth:'50vw',margin:'auto'}}>
         <h1>Add Team</h1>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="team-name" type={'text'} label='Team Name' value={team} onChange={(e) => setTeam(e.target.value)}></TextField>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} style={{margin: '10px', width: '650px'}} id="team-image-url" type={'text'} label='Team Image URL' value={timg} onChange={(e) => settimg(e.target.value)}></TextField>
@@ -216,7 +216,7 @@ export default function BasicTabs() {
         <Button variant='contained' onClick={addStadium}>Add Stadium</Button>
       </TabPanel>
 
-      <TabPanel value={value} index={6}>
+      <TabPanel value={value} index={6} style={{maxWidth:'50vw',margin:'auto'}}>
         <h1>New Match</h1>
         <TextField sx={{label: { color: 'lightgray'}, input: {color: 'white'}, fieldset: {borderColor: 'lightgray !important'}}} id="team-1" label="Team 1" select style={{margin: '10px', width: '340px'}}>
           <MenuItem>India</MenuItem>
