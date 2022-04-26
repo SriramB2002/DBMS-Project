@@ -113,7 +113,7 @@ router.get('/getallteams', (req, res) => {
 
 
 router.get('/getstadium/:id', (req, res) => {
-    db.query('SELECT * FROM stadium where stadium_id=?',[req.params.stadium_id],function(err,results,fields)
+    db.query('SELECT * FROM stadium where stadium_id=?',[req.params.id],function(err,results,fields)
     {
         if(err)
         {
