@@ -96,6 +96,7 @@ export default function BasicTabs() {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
   const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
 
   const handleClose1 = (event, reason) => {
     if (reason === "clickaway") {
@@ -130,6 +131,13 @@ export default function BasicTabs() {
       return;
     }
     setOpen5(false);
+  };
+
+  const handleClose6 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen6(false);
   };
 
   const addMerch = async () => {
@@ -186,18 +194,25 @@ export default function BasicTabs() {
   };
 
   const organizeMatch = async () => {
-    const resp = await axios.post("http://localhost:8080/admin/match", {
-      match_format: format,
-      match_type: type,
-      date_time: date,
-      team1_id: team1,
-      team2_id: team2,
-      stadium_id: stadium,
-    });
-    setOpen5(true);
-    setTimeout(() => {
-      setOpen5(false);
-    }, 7000);
+    if (team1 == team2) {
+      setOpen6(true);
+      setTimeout(() => {
+        setOpen6(false);
+      }, 7000);
+    } else {
+      const resp = await axios.post("http://localhost:8080/admin/match", {
+        match_format: format,
+        match_type: type,
+        date_time: date,
+        team1_id: team1,
+        team2_id: team2,
+        stadium_id: stadium,
+      });
+      setOpen5(true);
+      setTimeout(() => {
+        setOpen5(false);
+      }, 7000);
+    }
   };
 
   const [merch_resp, setMerch] = useState(null);
@@ -750,6 +765,15 @@ export default function BasicTabs() {
               sx={{ width: "100%" }}
             >
               Match Successfully Organized
+            </Alert>
+          </Snackbar>
+          <Snackbar open={open6} autoHideDuration={6000} onClose={handleClose6}>
+            <Alert
+              onClose={handleClose6}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Team 1 and Team 2 cannot be same.
             </Alert>
           </Snackbar>
         </TabPanel>
