@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box'; 
+import Box from '@mui/material/Box';
 import MerchCard from './MerchCard';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,9 +58,6 @@ const MerchFood = (props) => {
     return () => {
     }
   }, []);
-  useEffect(() => {
-    console.log(food);
-  }, [food]);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -69,34 +66,73 @@ const MerchFood = (props) => {
 
   return (
     <div className=''>
-       
+      console.log(food,merch);
       <div className="container">
-        <h1 className="he" style={{ paddingTop: '8rem' }}>Extras</h1>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' ,width:'11vw',margin:'auto'}}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Food" {...a11yProps(0)} style={{color:'white'}}/>
-          <Tab label="Merch" {...a11yProps(1)} style={{color:'white'}}/>
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-      <Grid container spacing={2}>
-          {
-            food.map((food_item,key) =>
-              <Grid item xs={3} key={key}>
-                <FoodCard food_item={food_item} setfooditem={setFood} index=
-                {key} food={food}/>
+        <h1 className="he" style={{ paddingTop: '5rem' }}>Extras</h1>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '17rem', margin: 'auto' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Food" {...a11yProps(0)} style={{ color: 'white' }} />
+            <Tab label="Merch" {...a11yProps(1)} style={{ color: 'white' }} />
+            <Tab label="Cart" {...a11yProps(2)} style={{ color: 'white' }} />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <Grid container spacing={2}>
+            {
+              food.map((food_item, key) =>
+                <Grid item xs={3} key={key}>
+                  <FoodCard food_item={food_item} setfooditem={setFood} index=
+                    {key} food={food} />
+                </Grid>
+              )
+            }
+
+
+
+          </Grid>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Grid container spacing={2}>
+
+            {
+              merch.map((merch_item, key) =>
+                <Grid item xs={3} key={key}>
+                  <MerchCard merch_item={merch_item} setmerchitem={setMerch} index={key} merch={merch} />
+                </Grid>
+              )
+            }
+          </Grid>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Grid container spacing={4}>
+
+            {
+              merch.map((merch_item, key) =>
+    
+                <Grid item xs={3} key={key} style={merch_item.added ? {}:{display:'none'}}>
+                <MerchCard merch_item={merch_item} setmerchitem={setMerch} index={key} merch={merch} />
               </Grid>
-            )
-          }
+              
+              )
+            }
+  
+            {
+              food.map((food_item, key) =>
+              
+                 
+                <Grid item xs={3} key={key} style={food_item.added ? {}:{display:'none'}}>
+                <FoodCard food_item={food_item} setfooditem={setFood} index=
+                  {key} food={food} />
+              </Grid>
+              
+               
+              )
+            }
 
 
 
-        </Grid>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <MerchCard />
-      </TabPanel>
-        
+          </Grid>
+        </TabPanel>
 
       </div>
     </div>
