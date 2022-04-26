@@ -20,6 +20,8 @@ import { useState } from "react";
 import axios from "axios";
 import Modal from "../Components/Modal";
 import CustomInputField from "../Components/CustomInputField";
+import MuiAlert from "@mui/material/Alert";
+import { Snackbar } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,6 +56,10 @@ function a11yProps(index) {
   };
 }
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
@@ -80,9 +86,59 @@ export default function BasicTabs() {
   const [type, setType] = useState("");
   const [date, setDate] = useState(Date.now());
   const [stadium, setStadium] = useState("");
+
   const [food_price, setfood_price] = useState([]);
   const [newMerchPrice, setNewMerch] = useState(0);
   const [newFoodPrice, setNewFood] = useState(0);
+
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
+
+  const handleClose1 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen1(false);
+  };
+
+  const handleClose2 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen2(false);
+  };
+
+  const handleClose3 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen3(false);
+  };
+
+  const handleClose4 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen4(false);
+  };
+
+  const handleClose5 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen5(false);
+  };
+
+  const handleClose6 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen6(false);
+  };
 
   const addMerch = async () => {
     const resp = await axios.post("http://localhost:8080/admin/addmerch", {
@@ -91,7 +147,10 @@ export default function BasicTabs() {
       merch_image: mimg,
     });
     getMerch();
-    console.log(resp);
+    setOpen1(true);
+    setTimeout(() => {
+      setOpen1(false);
+    }, 7000);
   };
 
   const addFood = async () => {
@@ -100,7 +159,10 @@ export default function BasicTabs() {
       food_price: fprice,
     });
     getFood();
-    console.log(resp);
+    setOpen2(true);
+    setTimeout(() => {
+      setOpen2(false);
+    }, 7000);
   };
 
   const addTeam = async () => {
@@ -109,6 +171,10 @@ export default function BasicTabs() {
       team_flag: timg,
     });
     getTeams();
+    setOpen3(true);
+    setTimeout(() => {
+      setOpen3(false);
+    }, 7000);
   };
 
   const addStadium = async () => {
@@ -121,6 +187,32 @@ export default function BasicTabs() {
       normal_price: normal,
     });
     getStadium();
+    setOpen4(true);
+    setTimeout(() => {
+      setOpen4(false);
+    }, 7000);
+  };
+
+  const organizeMatch = async () => {
+    if (team1 == team2) {
+      setOpen6(true);
+      setTimeout(() => {
+        setOpen6(false);
+      }, 7000);
+    } else {
+      const resp = await axios.post("http://localhost:8080/admin/match", {
+        match_format: format,
+        match_type: type,
+        date_time: date,
+        team1_id: team1,
+        team2_id: team2,
+        stadium_id: stadium,
+      });
+      setOpen5(true);
+      setTimeout(() => {
+        setOpen5(false);
+      }, 7000);
+    }
   };
 
   const [merch_resp, setMerch] = useState(null);
@@ -189,7 +281,10 @@ export default function BasicTabs() {
   const navbarItems = [];
 
   const [isClicked, setIsClicked] = React.useState(false);
-
+  const changeStadium = (e) => {
+    console.log(e);
+    setStName(e.target.value);
+  };
   return (
     <div className="homepage1">
       <NavBar navbarItems={navbarItems} />
@@ -264,6 +359,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addMerch}>
             Add Merch
           </Button>
+          <Snackbar open={open1} autoHideDuration={6000} onClose={handleClose1}>
+            <Alert
+              onClose={handleClose1}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Merch Successfully Added!
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={1}>
@@ -302,14 +406,6 @@ export default function BasicTabs() {
                       style={{ marginRight: "4px" }}
                     >
                       Update
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      style={{ marginLeft: "4px" }}
-                      onClick={(e) => deleteMerch(index)}
-                    >
-                      Delete
                     </Button>
                   </TableCell>
                 </TableBody>
@@ -351,6 +447,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addFood}>
             Add Food
           </Button>
+          <Snackbar open={open2} autoHideDuration={6000} onClose={handleClose2}>
+            <Alert
+              onClose={handleClose2}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Food Successfully Added
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={3}>
@@ -392,14 +497,6 @@ export default function BasicTabs() {
                     >
                       Update
                     </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      style={{ marginLeft: "4px" }}
-                      onClick={(e) => deleteFood(index)}
-                    >
-                      Delete
-                    </Button>
                   </TableCell>
                 </TableBody>
               ))}
@@ -440,6 +537,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addTeam}>
             Add Team
           </Button>
+          <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose3}>
+            <Alert
+              onClose={handleClose3}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Team Successfully Added
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={5}>
@@ -529,6 +635,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addStadium}>
             Add Stadium
           </Button>
+          <Snackbar open={open4} autoHideDuration={6000} onClose={handleClose4}>
+            <Alert
+              onClose={handleClose4}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Stadium Successfully Added
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={6}>
@@ -537,6 +652,7 @@ export default function BasicTabs() {
             sx={{
               label: { color: "lightgray" },
               div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="team-1"
@@ -547,13 +663,14 @@ export default function BasicTabs() {
             onChange={(e) => setFirst(e.target.value)}
           >
             {team_resp?.map((item, index) => (
-              <MenuItem value={item.team_name}>{item.team_name}</MenuItem>
+              <MenuItem value={item.team_id}>{item.team_name}</MenuItem>
             ))}
           </TextField>
           <TextField
             sx={{
               label: { color: "lightgray" },
               div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="team-2"
@@ -564,36 +681,47 @@ export default function BasicTabs() {
             onChange={(e) => setSecond(e.target.value)}
           >
             {team_resp?.map((item, index) => (
-              <MenuItem value={item.team_name}>{item.team_name}</MenuItem>
+              <MenuItem value={item.team_id}>{item.team_name}</MenuItem>
             ))}
           </TextField>
           <br></br>
           <TextField
             sx={{
               label: { color: "lightgray" },
-              input: { color: "white" },
+              div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="match-format"
             label="Match Format"
-            type={"text"}
+            select
             style={{ margin: "10px", width: "220px" }}
             value={format}
             onChange={(e) => setFormat(e.target.value)}
-          ></TextField>
+          >
+            <MenuItem value={"Test"}>Test</MenuItem>
+            <MenuItem value={"ODI"}>ODI</MenuItem>
+            <MenuItem value={"T20"}>T20</MenuItem>
+          </TextField>
           <TextField
             sx={{
               label: { color: "lightgray" },
-              input: { color: "white" },
+              div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="match-type"
             label="Match Type"
-            type={"text"}
+            select
             style={{ margin: "10px", width: "220px" }}
             value={type}
             onChange={(e) => setType(e.target.value)}
-          ></TextField>
+          >
+            <MenuItem value={"League Match"}>League Match</MenuItem>
+            <MenuItem value={"Quarter-Finals"}>Quarter-Finals</MenuItem>
+            <MenuItem value={"Semi-Finals"}>Semi-Finals</MenuItem>
+            <MenuItem value={"Finals"}>Finals</MenuItem>
+          </TextField>
           <TextField
             sx={{
               label: { color: "lightgray" },
@@ -622,12 +750,32 @@ export default function BasicTabs() {
             onChange={(e) => setStadium(e.target.value)}
           >
             {stadium_resp?.map((item, index) => (
-              <MenuItem value={item.stadium_name}>{item.stadium_name}</MenuItem>
+              <MenuItem value={item.stadium_id}>{item.stadium_name}</MenuItem>
             ))}
           </TextField>
           <br></br>
           <br></br>
-          <Button variant="contained">Organize Match</Button>
+          <Button variant="contained" onClick={organizeMatch}>
+            Organize Match
+          </Button>
+          <Snackbar open={open5} autoHideDuration={6000} onClose={handleClose5}>
+            <Alert
+              onClose={handleClose4}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Match Successfully Organized
+            </Alert>
+          </Snackbar>
+          <Snackbar open={open6} autoHideDuration={6000} onClose={handleClose6}>
+            <Alert
+              onClose={handleClose6}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Team 1 and Team 2 cannot be same.
+            </Alert>
+          </Snackbar>
         </TabPanel>
       </Box>
     </div>

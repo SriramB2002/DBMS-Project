@@ -155,7 +155,7 @@ router.post('/match',/*authenticate,*/(req,res)=>{
         res.status(400).json("Team id cannot be equal");
         return;
     }
-    db.query('INSERT INTO new_schema.MATCH (match_id, match_format, match_type, date_time, stadium_id, team1_id, team2_id) VALUES (?,?,?,?,?,?,?);',
+    db.query('INSERT INTO dbs.MATCH (match_id, match_format, match_type, date_time, stadium_id, team1_id, team2_id) VALUES (?,?,?,?,?,?,?);',
         [req.body.match_id,req.body.match_format,req.body.match_type, req.body.date_time, req.body.stadium_id, req.body.team1_id, req.body.team2_id],
                 function(err,results,fields){
                     if(err){
