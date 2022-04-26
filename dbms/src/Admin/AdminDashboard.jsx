@@ -64,21 +64,21 @@ export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
   const [mname, setmname] = useState("");
-  const [mprice, setmprice] = useState(0);
+  const [mprice, setmprice] = useState(null);
   const [mimg, setmimg] = useState("");
 
   const [fname, setfname] = useState("");
-  const [fprice, setfprice] = useState(0);
+  const [fprice, setfprice] = useState(null);
 
   const [team, setTeam] = useState("");
   const [timg, settimg] = useState("");
 
   const [stName, setStName] = useState("");
   const [stCity, setStCity] = useState("");
-  const [capacity, setCapacity] = useState(0);
+  const [capacity, setCapacity] = useState(null);
   const [country, setCountry] = useState("");
-  const [premium, setPremium] = useState(0);
-  const [normal, setNormal] = useState(0);
+  const [premium, setPremium] = useState(null);
+  const [normal, setNormal] = useState(null);
 
   const [team1, setFirst] = useState("");
   const [team2, setSecond] = useState("");
@@ -88,8 +88,8 @@ export default function BasicTabs() {
   const [stadium, setStadium] = useState("");
 
   const [food_price, setfood_price] = useState([]);
-  const [newMerchPrice, setNewMerch] = useState(0);
-  const [newFoodPrice, setNewFood] = useState(0);
+  const [newMerchPrice, setNewMerch] = useState(null);
+  const [newFoodPrice, setNewFood] = useState(null);
   const [merchIndex, setMIndex] = useState(-1);
   const [foodIndex, setFIndex] = useState(-1);
 
@@ -256,7 +256,7 @@ export default function BasicTabs() {
       merch_id: merch_resp[index].merch_id,
     });
     getMerch();
-    setNewMerch(0);
+    setNewMerch(null);
     setMIndex(-1);
   };
 
@@ -266,7 +266,7 @@ export default function BasicTabs() {
       food_id: food_resp[index].food_id,
     });
     getFood();
-    setNewFood(0);
+    setNewFood(null);
     setFIndex(-1);
   };
 
