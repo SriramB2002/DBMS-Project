@@ -105,4 +105,10 @@ router.get('/getMerch', (req, res) => {
     })
 })
 
+router.get('/getallteams', (req, res) => {
+    db.query('SELECT * FROM teams', (err, results) => {
+        res.json(results);
+    })
+})
+
 module.exports = router;
