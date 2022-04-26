@@ -90,6 +90,8 @@ export default function BasicTabs() {
   const [food_price, setfood_price] = useState([]);
   const [newMerchPrice, setNewMerch] = useState(0);
   const [newFoodPrice, setNewFood] = useState(0);
+  const [merchIndex, setMIndex] = useState(-1);
+  const [foodIndex, setFIndex] = useState(-1);
 
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -248,16 +250,24 @@ export default function BasicTabs() {
     await getStadium();
   }, []);
 
-  const updateMerch = async () => {
+  const updateMerch = async (index) => {
     const resp = await axios.post("http://localhost:8080/admin/updatemerch", {
-      // metch_price: newMerchPrice
+      newprice: newMerchPrice,
+      merch_id: merch_resp[index].merch_id,
     });
+    getMerch();
+    setNewMerch(0);
+    setMIndex(-1);
   };
 
-  const updateFood = async () => {
+  const updateFood = async (index) => {
     const resp = await axios.post("http://localhost:8080/admin/updatefood", {
-      // food_price: newFoodPrice
+      newprice: newFoodPrice,
+      food_id: food_resp[index].food_id,
     });
+    getFood();
+    setNewFood(0);
+    setFIndex(-1);
   };
 
   const deleteMerch = async (index) => {
@@ -403,7 +413,7 @@ export default function BasicTabs() {
                     <Button
                       variant="contained"
                       color="warning"
-                      style={{ marginRight: "4px" }}
+                      onClick={() => setMIndex(index)}
                     >
                       Update
                     </Button>
@@ -412,6 +422,31 @@ export default function BasicTabs() {
               ))}
             </Table>
           </TableContainer>
+          <br></br>
+          {merchIndex > -1 && (
+            <div>
+              <TextField
+                sx={{
+                  label: { color: "lightgray" },
+                  input: { color: "white" },
+                  fieldset: { borderColor: "lightgray !important" },
+                }}
+                type={"number"}
+                label="Set New Merch Price"
+                value={newMerchPrice}
+                onChange={(e) => setNewMerch(e.target.value)}
+              ></TextField>
+              <br></br>
+              <br></br>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => updateMerch(merchIndex)}
+              >
+                Confirm
+              </Button>
+            </div>
+          )}
         </TabPanel>
 
         <TabPanel value={value} index={2}>
@@ -478,14 +513,6 @@ export default function BasicTabs() {
                   <TableCell style={{ color: "white" }}>
                     {item?.food_name}
                   </TableCell>
-                  {/* <TableCell style={{ color: "white" }}>
-                    {
-                      <CustomInputField
-                        initialPrice={item?.food_price}
-                        id={item?.food_id}
-                      />
-                    }
-                  </TableCell> */}
                   <TableCell style={{ color: "white" }}>
                     {item?.food_price}
                   </TableCell>
@@ -493,7 +520,7 @@ export default function BasicTabs() {
                     <Button
                       variant="contained"
                       color="warning"
-                      style={{ marginRight: "4px" }}
+                      onClick={() => setFIndex(index)}
                     >
                       Update
                     </Button>
@@ -502,6 +529,31 @@ export default function BasicTabs() {
               ))}
             </Table>
           </TableContainer>
+          <br></br>
+          {foodIndex > -1 && (
+            <div>
+              <TextField
+                sx={{
+                  label: { color: "lightgray" },
+                  input: { color: "white" },
+                  fieldset: { borderColor: "lightgray !important" },
+                }}
+                type={"number"}
+                label="Set New Food Price"
+                value={newFoodPrice}
+                onChange={(e) => setNewFood(e.target.value)}
+              ></TextField>
+              <br></br>
+              <br></br>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => updateFood(foodIndex)}
+              >
+                Confirm
+              </Button>
+            </div>
+          )}
         </TabPanel>
 
         <TabPanel value={value} index={4}>
