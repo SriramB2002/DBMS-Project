@@ -111,4 +111,19 @@ router.get('/getallteams', (req, res) => {
     })
 })
 
+
+router.get('/getstadium/:id', (req, res) => {
+    db.query('SELECT * FROM stadium where stadium_id=?',[req.params.id],function(err,results,fields)
+    {
+        if(err)
+        {
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+        res.json(results);
+    });
+})
+
 module.exports = router;
