@@ -20,6 +20,8 @@ import { useState } from "react";
 import axios from "axios";
 import Modal from "../Components/Modal";
 import CustomInputField from "../Components/CustomInputField";
+import MuiAlert from "@mui/material/Alert";
+import { Snackbar } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,6 +56,10 @@ function a11yProps(index) {
   };
 }
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
@@ -84,6 +90,47 @@ export default function BasicTabs() {
   const [newMerchPrice, setNewMerch] = useState(0);
   const [newFoodPrice, setNewFood] = useState(0);
 
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+
+  const handleClose1 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen1(false);
+  };
+
+  const handleClose2 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen2(false);
+  };
+
+  const handleClose3 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen3(false);
+  };
+
+  const handleClose4 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen4(false);
+  };
+
+  const handleClose5 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen5(false);
+  };
+
   const addMerch = async () => {
     const resp = await axios.post("http://localhost:8080/admin/addmerch", {
       merch_name: mname,
@@ -91,7 +138,10 @@ export default function BasicTabs() {
       merch_image: mimg,
     });
     getMerch();
-    console.log(resp);
+    setOpen1(true);
+    setTimeout(() => {
+      setOpen1(false);
+    }, 7000);
   };
 
   const addFood = async () => {
@@ -100,7 +150,10 @@ export default function BasicTabs() {
       food_price: fprice,
     });
     getFood();
-    console.log(resp);
+    setOpen2(true);
+    setTimeout(() => {
+      setOpen2(false);
+    }, 7000);
   };
 
   const addTeam = async () => {
@@ -109,6 +162,10 @@ export default function BasicTabs() {
       team_flag: timg,
     });
     getTeams();
+    setOpen3(true);
+    setTimeout(() => {
+      setOpen3(false);
+    }, 7000);
   };
 
   const addStadium = async () => {
@@ -121,6 +178,10 @@ export default function BasicTabs() {
       normal_price: normal,
     });
     getStadium();
+    setOpen4(true);
+    setTimeout(() => {
+      setOpen4(false);
+    }, 7000);
   };
 
   const [merch_resp, setMerch] = useState(null);
@@ -264,6 +325,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addMerch}>
             Add Merch
           </Button>
+          <Snackbar open={open1} autoHideDuration={6000} onClose={handleClose1}>
+            <Alert
+              onClose={handleClose1}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Merch Successfully Added!
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={1}>
@@ -343,6 +413,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addFood}>
             Add Food
           </Button>
+          <Snackbar open={open2} autoHideDuration={6000} onClose={handleClose2}>
+            <Alert
+              onClose={handleClose2}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Food Successfully Added
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={3}>
@@ -424,6 +503,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addTeam}>
             Add Team
           </Button>
+          <Snackbar open={open3} autoHideDuration={6000} onClose={handleClose3}>
+            <Alert
+              onClose={handleClose3}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Team Successfully Added
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={5}>
@@ -513,6 +601,15 @@ export default function BasicTabs() {
           <Button variant="contained" onClick={addStadium}>
             Add Stadium
           </Button>
+          <Snackbar open={open4} autoHideDuration={6000} onClose={handleClose4}>
+            <Alert
+              onClose={handleClose4}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Stadium Successfully Added
+            </Alert>
+          </Snackbar>
         </TabPanel>
 
         <TabPanel value={value} index={6}>
