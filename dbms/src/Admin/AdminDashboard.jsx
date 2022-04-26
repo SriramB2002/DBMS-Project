@@ -86,6 +86,7 @@ export default function BasicTabs() {
   const [type, setType] = useState("");
   const [date, setDate] = useState(Date.now());
   const [stadium, setStadium] = useState("");
+
   const [food_price, setfood_price] = useState([]);
   const [newMerchPrice, setNewMerch] = useState(0);
   const [newFoodPrice, setNewFood] = useState(0);
@@ -184,6 +185,21 @@ export default function BasicTabs() {
     }, 7000);
   };
 
+  const organizeMatch = async () => {
+    const resp = await axios.post("http://localhost:8080/admin/match", {
+      match_format: format,
+      match_type: type,
+      date_time: date,
+      team1_id: team1,
+      team2_id: team2,
+      stadium_id: stadium,
+    });
+    setOpen5(true);
+    setTimeout(() => {
+      setOpen5(false);
+    }, 7000);
+  };
+
   const [merch_resp, setMerch] = useState(null);
   const [food_resp, setFood] = useState(null);
 
@@ -250,7 +266,10 @@ export default function BasicTabs() {
   const navbarItems = [];
 
   const [isClicked, setIsClicked] = React.useState(false);
-
+  const changeStadium = (e) => {
+    console.log(e);
+    setStName(e.target.value);
+  };
   return (
     <div className="homepage1">
       <NavBar navbarItems={navbarItems} />
@@ -618,6 +637,7 @@ export default function BasicTabs() {
             sx={{
               label: { color: "lightgray" },
               div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="team-1"
@@ -628,13 +648,14 @@ export default function BasicTabs() {
             onChange={(e) => setFirst(e.target.value)}
           >
             {team_resp?.map((item, index) => (
-              <MenuItem value={item.team_name}>{item.team_name}</MenuItem>
+              <MenuItem value={item.team_id}>{item.team_name}</MenuItem>
             ))}
           </TextField>
           <TextField
             sx={{
               label: { color: "lightgray" },
               div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="team-2"
@@ -645,36 +666,47 @@ export default function BasicTabs() {
             onChange={(e) => setSecond(e.target.value)}
           >
             {team_resp?.map((item, index) => (
-              <MenuItem value={item.team_name}>{item.team_name}</MenuItem>
+              <MenuItem value={item.team_id}>{item.team_name}</MenuItem>
             ))}
           </TextField>
           <br></br>
           <TextField
             sx={{
               label: { color: "lightgray" },
-              input: { color: "white" },
+              div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="match-format"
             label="Match Format"
-            type={"text"}
+            select
             style={{ margin: "10px", width: "220px" }}
             value={format}
             onChange={(e) => setFormat(e.target.value)}
-          ></TextField>
+          >
+            <MenuItem value={"Test"}>Test</MenuItem>
+            <MenuItem value={"ODI"}>ODI</MenuItem>
+            <MenuItem value={"T20"}>T20</MenuItem>
+          </TextField>
           <TextField
             sx={{
               label: { color: "lightgray" },
-              input: { color: "white" },
+              div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="match-type"
             label="Match Type"
-            type={"text"}
+            select
             style={{ margin: "10px", width: "220px" }}
             value={type}
             onChange={(e) => setType(e.target.value)}
-          ></TextField>
+          >
+            <MenuItem value={"League Match"}>League Match</MenuItem>
+            <MenuItem value={"Quarter-Finals"}>Quarter-Finals</MenuItem>
+            <MenuItem value={"Semi-Finals"}>Semi-Finals</MenuItem>
+            <MenuItem value={"Finals"}>Finals</MenuItem>
+          </TextField>
           <TextField
             sx={{
               label: { color: "lightgray" },
@@ -703,12 +735,23 @@ export default function BasicTabs() {
             onChange={(e) => setStadium(e.target.value)}
           >
             {stadium_resp?.map((item, index) => (
-              <MenuItem value={item.stadium_name}>{item.stadium_name}</MenuItem>
+              <MenuItem value={item.stadium_id}>{item.stadium_name}</MenuItem>
             ))}
           </TextField>
           <br></br>
           <br></br>
-          <Button variant="contained">Organize Match</Button>
+          <Button variant="contained" onClick={organizeMatch}>
+            Organize Match
+          </Button>
+          <Snackbar open={open5} autoHideDuration={6000} onClose={handleClose5}>
+            <Alert
+              onClose={handleClose4}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Match Successfully Organized
+            </Alert>
+          </Snackbar>
         </TabPanel>
       </Box>
     </div>
