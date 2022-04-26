@@ -7,10 +7,12 @@ import Tooltip from '@mui/material/Tooltip';
 import { Button } from '@mui/material';
 import './Seats.css';
 import MerchFood from './MerchFood';
-const PER_PAGE = 10;
+const PER_PAGE = 8;
+const columns = 15;
 const SeatsLayout = () => {
-  const { id } = useParams();
+  const { id ,sid } = useParams();
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [std,setstd] = useState({});
   const [stadiums, setStadium] = useState([]);
   const [selected, setSelected] = useState([]);
   const [price, setPrice] = useState(0);
@@ -18,30 +20,44 @@ const SeatsLayout = () => {
   const [vip, setvip] = useState(0);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
+  useEffect(()=>{
+    const fetch = async () => {
+      const data = await axios.get(`http://localhost:8080/get/getstadium/${sid}`);
+      // console.log(data.data[0]);
+      setstd(data.data[0]);
+    }
+    fetch();
+  },[]);
+  const [rows,setrows] = useState(0);
+  useEffect(() => {
+    setrows(Math.ceil(std?.capacity/15));
+  }, [std]);
   const history = useHistory();
   const offset = page * PER_PAGE;
-  const rows = 61;
-  const columns = 15;
   const additional = 15;
   
   useEffect(() => {
     const temp = [];
-
+    if(!std.capacity){
+      return;
+    }
+    console.log(std.capacity);
     //Number of Rows
-    let e = 1;
+    let e = 0;
     for (let i = 0; i < rows; i++) {
       const row = [];
       for (let j = 0; j < columns; j++) {
-        row.push({ id: e, type: 'Not Available', booked: true, selected: false });
+        row.push({ id: e, type: 'Not Available', booked: true, selected: false,seat_id:e+1});
         e += 1;
       }
       temp.push(row);
     }
     const row = [];
     for (let i = 0; i < additional; i++) {
-      row.push({ id: e, type: 'Not Available', booked: true, selected: false });
+      row.push({ id: e, type: 'Not Available', booked: true, selected: false,seat_id:e+1});
       e += 1;
     }
+    console.log(temp);
     temp.push(row);
     setStadium(temp);
     //Set Dummy Data For Stadium
@@ -53,12 +69,12 @@ const SeatsLayout = () => {
     }
     fetchData();
 
-  }, []);
+  }, [rows]);
 
   const handleSelect = (e) => {
     const num = e.target.dataset.key - 1;
     const rownum = Math.floor(num / columns);
-    const colnum = (num) % columns;
+    const colnum = (num+1) % columns;
     let temp = [...stadiums];
     // console.log(temp);
     if (temp[rownum][colnum].booked) {
@@ -76,13 +92,16 @@ const SeatsLayout = () => {
     data.forEach(element => {
       // console.log(data);
       //Change Seat_ID and Seat_Type
-      const rc = Math.floor((element.seat_id - 1) / columns);
-      const cc = (element.seat_id - 1) % columns;
-      // console.log(rc, cc);
+      const rc = Math.floor((element.seat_id-1) / columns);
+      const cc = (element.seat_id-1) % columns;
+      // console.log(rc, cc,temp);
       temp[rc][cc].booked = false;
+      temp[rc][cc].seat_id = element.seat_id;
+      temp[rc][cc].stadium_id = element.stadium_id;
+      temp[rc][cc].seat_price = element.seat_price;
       temp[rc][cc].type = element.seat_type;
     });
-    console.log(stadiums)
+    // console.log(stadiums)
     setStadium(temp);
     forceUpdate();
     // setData(data);
@@ -94,16 +113,16 @@ const SeatsLayout = () => {
   const bookSeats = () => {
       history.push({
         pathname:'/Dashboard/MerchFood',
-        state:{stadiums}
+        state:{stadiums,id}
       });
   }
   return (
     <div className='homepage' style={{ height: '150vh' }}>
       <div className='container' style={{ paddingTop: '7rem', color: 'white' }}>
         <h1 style={{ borderBottom: 'none', textAlign: 'center' }}>
-          Jamtha Stadium
+          {std?.stadium_name}
         </h1>
-        <h2 style={{ borderBottom: 'none', textAlign: 'center' }}>Total Capacity : 4000</h2>
+        <h2 style={{ borderBottom: 'none', textAlign: 'center' }}>Total Capacity : {std?.capacity}</h2>
         <div className='container layout'>
           {/* {stadiums.map((row,index)=>(
                   <div className='row' key={index}>

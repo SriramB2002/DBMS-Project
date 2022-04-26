@@ -24,7 +24,7 @@ export default function MatchCard(props) {
   const [currentTeam1, setCurrentTeam1] = React.useState("");
   const [currentTeam2, setCurrentTeam2] = React.useState("");
   const redir = () => {
-    history.push(`/Dashboard/Seats/${props.match.match_id}`);
+    history.push(`/Dashboard/Seats/${props.match.match_id}/${props.match.stadium_id}`);
   }
   useEffect(() => {
     
