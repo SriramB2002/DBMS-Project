@@ -72,9 +72,9 @@ const SeatsLayout = () => {
   }, [rows]);
 
   const handleSelect = (e) => {
-    const num = e.target.dataset.key - 1;
+    const num = e.target.dataset.key;
     const rownum = Math.floor(num / columns);
-    const colnum = (num+1) % columns;
+    const colnum = (num) % columns;
     let temp = [...stadiums];
     // console.log(temp);
     if (temp[rownum][colnum].booked) {
