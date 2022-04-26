@@ -303,14 +303,6 @@ export default function BasicTabs() {
                     >
                       Update
                     </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      style={{ marginLeft: "4px" }}
-                      onClick={(e) => deleteMerch(index)}
-                    >
-                      Delete
-                    </Button>
                   </TableCell>
                 </TableBody>
               ))}
@@ -391,14 +383,6 @@ export default function BasicTabs() {
                       style={{ marginRight: "4px" }}
                     >
                       Update
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      style={{ marginLeft: "4px" }}
-                      onClick={(e) => deleteFood(index)}
-                    >
-                      Delete
                     </Button>
                   </TableCell>
                 </TableBody>

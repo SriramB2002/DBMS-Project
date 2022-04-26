@@ -14,8 +14,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 export default function FoodCard({ food_item, setfooditem, index, food }) {
-    const [quantity, setquantity] = useState(0);
-    const [add, setadd] = useState(0);
+    const [quantity, setquantity] = useState(food_item?.food_quantity || 0);
+    const [add, setadd] = useState(food_item?.added || 0);
     useEffect(() => {
         const newfood = [...food];
         newfood[index].food_quantity = quantity;
@@ -55,7 +55,7 @@ export default function FoodCard({ food_item, setfooditem, index, food }) {
     };
 
     return (
-        <Card sx={{ maxWidth:350,minWidth:'15vw', background: 'rgb(38,50,56)' }}>
+        <Card sx={{ maxWidth:'20vw',minWidth:'20vw', background: 'rgb(38,50,56)'}}>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
                     Please Add Non-Zero Items
@@ -87,7 +87,7 @@ export default function FoodCard({ food_item, setfooditem, index, food }) {
             </CardContent>
             <CardActions>
                
-                {add == 0 ? <Button size="medium" variant='contained' sx={{ color: 'white',marginLeft:'0.5rem' }} onClick={addToCart}>Add to Cart</Button> : <Button size="medium" sx={{ color: 'red' }} onClick={addToCart}>Remove</Button>}
+                {add == 0 ? <Button size="medium" variant='contained' sx={{ color: 'white',marginLeft:'0.5rem' }} onClick={addToCart}>Add to Cart</Button> : <Button size="medium" variant="contained" sx={{ marginLeft:'0.5rem' }} color="error" onClick={addToCart}>Remove</Button>}
 
             </CardActions>
         </Card>
