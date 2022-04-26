@@ -7,10 +7,11 @@ import Tooltip from '@mui/material/Tooltip';
 import { Button } from '@mui/material';
 import './Seats.css';
 import MerchFood from './MerchFood';
-const PER_PAGE = 10;
+const PER_PAGE = 8;
 const SeatsLayout = () => {
-  const { id } = useParams();
+  const { id ,sid } = useParams();
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [std,setstd] = useState({});
   const [stadiums, setStadium] = useState([]);
   const [selected, setSelected] = useState([]);
   const [price, setPrice] = useState(0);
@@ -18,9 +19,12 @@ const SeatsLayout = () => {
   const [vip, setvip] = useState(0);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
+  useEffect(()=>{
+    const data = await axios.get()
+  },[]);
   const history = useHistory();
   const offset = page * PER_PAGE;
-  const rows = 61;
+  const rows = 100;
   const columns = 15;
   const additional = 15;
   
@@ -80,6 +84,9 @@ const SeatsLayout = () => {
       const cc = (element.seat_id - 1) % columns;
       // console.log(rc, cc);
       temp[rc][cc].booked = false;
+      temp[rc][cc].seat_id = element.seat_id;
+      temp[rc][cc].stadium_id = element.stadium_id;
+      temp[rc][cc].seat_price = element.seat_price;
       temp[rc][cc].type = element.seat_type;
     });
     console.log(stadiums)
@@ -94,7 +101,7 @@ const SeatsLayout = () => {
   const bookSeats = () => {
       history.push({
         pathname:'/Dashboard/MerchFood',
-        state:{stadiums}
+        state:{stadiums,id}
       });
   }
   return (

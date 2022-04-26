@@ -29,7 +29,7 @@ function Dashboard() {
           <Redirect to="/Dashboard/Home" />
         </Route>
         <Route path='/Dashboard/Home' exact component={Home} />
-        <Route path='/Dashboard/Seats/:id' exact component={SeatsLayout} />
+        <Route path='/Dashboard/Seats/:id/:sid' exact component={SeatsLayout} />
         <Route path='/Dashboard/Profile' exact>
           <Profile />
         </Route>
