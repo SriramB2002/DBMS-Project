@@ -86,6 +86,7 @@ const Profile = () => {
         <h1 className='he' style={{marginTop:'2rem'}}>
             My Profile
         </h1>
+        <h1 className='he' style={{marginTop:'2rem'}}>Current Balance:  Rs.{profile.balance}</h1>
         <div className='container' style={{backgroundColor:'white',borderRadius:'2rem',padding:'2rem',paddingBottom:'2rem'}}>
         {!!profile.first_name && <Paper style={{ padding: '3rem',background:'#EEEEEE',borderRadius:'1rem' }}>
             <Grid container spacing={4}>
@@ -127,7 +128,7 @@ const Profile = () => {
         </Alert>
         </Snackbar>
         </div>
-        <h1 className='he' style={{marginTop:'2rem'}}>Current Balance:  Rs.{profile.balance}</h1>
+        
         </div>
   )
 }

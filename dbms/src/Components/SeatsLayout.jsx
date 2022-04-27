@@ -44,6 +44,7 @@ const SeatsLayout = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [open,setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   useEffect(()=>{
     const fetch = async () => {
       const data = await axios.get(`http://localhost:8080/get/getstadium/${sid}`);
@@ -95,7 +96,15 @@ const SeatsLayout = () => {
 
   }, [rows]);
 
+  const handleClose1 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen1(false);
+  };
+
   const handleSelect = (e) => {
+    let count = 0;
     const num = e.target.dataset.key;
     const rownum = Math.floor(num / columns);
     const colnum = (num) % columns;
@@ -105,7 +114,7 @@ const SeatsLayout = () => {
       setOpen(true);
       setTimeout(() => {
         setOpen(false);
-      }, 500);
+      }, 3000);
       temp[rownum][colnum].selected = 0;
       return;
     }
@@ -139,7 +148,27 @@ const SeatsLayout = () => {
     
     setPage(selectedPage);
   }
-  const bookSeats = () => {
+  const bookSeats = (e) => {
+      let count = 0;
+      const num = e.target.dataset.key;
+      const rownum = Math.floor(num / columns);
+      const colnum = (num) % columns;
+      console.log(stadiums);
+      stadiums.forEach(row=>{
+        row.forEach(entry=>{
+            if(!!entry.selected){
+              count++;
+            }
+        });
+      });
+      if (count == 0)
+      {
+        setOpen1(true);
+        setTimeout(() => {
+          setOpen1(false);
+        }, 500);
+        return;
+      }
       history.push({
         pathname:'/Dashboard/MerchFood',
         state:{stadiums,id}
@@ -178,6 +207,15 @@ const SeatsLayout = () => {
                 </Tooltip>
               ))}
             </div>))}
+            <Snackbar open={open1} autoHideDuration={6000} onClose={handleClose1}>
+              <Alert
+                onClose={handleClose1}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+              Please choose atleast one seat
+              </Alert>
+          </Snackbar>
           <ReactPaginate
             previousLabel={"←"}
             nextLabel={"→"}

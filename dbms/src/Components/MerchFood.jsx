@@ -29,7 +29,7 @@ function AlertDialog({open,setOpen,food,merch,seats,match_id}) {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${auth.token}`
     };
-      axios.post('http://localhost:8080/user/booking/createBooking',data,{
+      axios.post('http://localhost:8080/user/booking/createBookingBalance',data,{
         headers:headers
       }
       ).then(res => {
