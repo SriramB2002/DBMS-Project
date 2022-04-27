@@ -72,7 +72,7 @@ const Navbar = {
     justify-content: space-between;
     align-items: center;
 
-    background-color: #434c4f;
+    background-color: #15152d;
     box-shadow: 0 0.75rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2);
 
     //40em == 640px

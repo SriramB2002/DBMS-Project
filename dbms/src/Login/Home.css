@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 .body {
     font-family: 'Montserrat', sans-serif;
-    height: 125vh
+    height: 50vh !important
   }
   
   section {
     margin-top: 0px;
-    height: 125vh;
+    height: 0vh !important;
   }
   .stadia{
       background-color: rgba(143, 49, 194, 0.895) !important;

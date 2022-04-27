@@ -235,7 +235,7 @@ const MerchFood = (props) => {
       setOpen(1);
   }
   return (
-    <div className=''>
+    <div className='homepage'>
       console.log(food,merch);
       <div className="container">
         <AlertDialog open={open} setOpen={setOpen} food={food} merch={merch} seats={stadiumData} match_id={match_id}/>
