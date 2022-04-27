@@ -132,7 +132,7 @@ class Booking_details
     }
 }
 
-router.get('/getBookings', authenticate, (req, res) => {
+router.get('/getUpcomingBookings', authenticate, (req, res) => {
     db.query('SELECT booking_id FROM booking WHERE user_id=?', [req.user.user.user_id], function(err, results) {
         var bookings = [];
         if(results.length==0)
@@ -146,7 +146,49 @@ router.get('/getBookings', authenticate, (req, res) => {
             db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
                 let matchId = results1[0].match_id;
                 console.log(matchId)
-                db.query('SELECT * FROM new_schema.match WHERE match_id=?', [matchId], function(err2, match) {
+                db.query('SELECT * FROM new_schema.match WHERE match_id=? and date_time>now()', [matchId], function(err2, match) {
+                    db.query('SELECT seat_id FROM book_seats WHERE booking_id=?',[bookingId],function(err,seats)
+                    {
+                        if(err)
+                        {
+                            console.log(err);
+                        }
+                        db.query('SELECT * FROM booking_food WHERE booking_id=?',[bookingId],function(err,foods)
+                        {
+                            db.query('SELECT * FROM booking_merch WHERE booking_id=?',[bookingId],function(err,merch)
+                            {
+                                bookings.push((new Booking_details(match,(seats),(foods),(merch))));
+                                console.log(JSON.stringify(bookings[i])+"\n\n");
+                                // bookings.push(1);
+                                if(i==results.length-1)
+                                {
+                                    res.json(bookings);
+                                    return;
+                                }
+                            });
+                        });
+                    });
+                });
+            })
+        }
+    });
+});
+
+router.get('/getPreviousBookings', authenticate, (req, res) => {
+    db.query('SELECT booking_id FROM booking WHERE user_id=?', [req.user.user.user_id], function(err, results) {
+        var bookings = [];
+        if(results.length==0)
+        {
+            res.json("No Bookings Done By User")
+        }
+        for (let i = 0; i < results.length; i++)
+        {
+            let bookingId = results[i].booking_id;
+            console.log(results[i].booking_id);
+            db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
+                let matchId = results1[0].match_id;
+                console.log(matchId) 
+                 db.query('SELECT * FROM new_schema.match WHERE match_id=? and date_time<=now()', [matchId], function(err2, match) {
                     db.query('SELECT seat_id FROM book_seats WHERE booking_id=?',[bookingId],function(err,seats)
                     {
                         if(err)

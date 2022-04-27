@@ -1,13 +1,18 @@
 .seat{
-    background-color: rgb(167, 167, 167) !important;
-    width: 2rem !important;
-    height: 2rem !important;
+    background-color :#90c8ff !important; 
+    width: 1.2rem !important;
+    height: 1.2rem !important;
     border-radius: 15% !important;
     transition: all 0.2s ease;
-    margin:0.5rem;
+    margin:0.3rem;
 }
 .seat:nth-child(5n){
-   margin-right: 3rem;
+   margin-right: 1.6rem;
+}
+.premium{
+    background-color: #e0dfa8 !important;
+    box-shadow: 0 0 1px #ffffff !important;
+    transition: all 0.2s ease;
 }
 .seat:hover:not(.booked){
     background-color: #ffffff !important;
@@ -33,7 +38,7 @@
     flex-direction: row;
 }
 .booked{
-    background-color: rgb(91, 91, 91) !important;
+    background-color: #808080 !important;
 }
 .pagination{
     display: flex;
