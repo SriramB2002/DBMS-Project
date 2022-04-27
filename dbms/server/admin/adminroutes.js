@@ -207,7 +207,6 @@ router.post(
 );
 
 //Add food item
-<<<<<<< HEAD
 router.post('/addfood',/*authenticate,*/(req,res)=>
 {
     db.query('INSERT INTO FOOD_ITEM (food_id,food_name,food_price,food_image) values(?,?,?,?)',
@@ -223,31 +222,6 @@ router.post('/addfood',/*authenticate,*/(req,res)=>
                 res.json("Success")
             });
 });
-=======
-router.post(
-  "/addfood",
-  /*authenticate,*/ (req, res) => {
-    db.query(
-      "INSERT INTO FOOD_ITEM (food_id,food_name,food_price,food_image) values(?,?,?,?)",
-      [
-        req.body.food_id,
-        req.body.food_name,
-        req.body.food_price,
-        req.body.food_image,
-      ],
-      function (err, results, fields) {
-        if (err) {
-          res.status(422).json({
-            message: err.message,
-          });
-          return;
-        }
-        res.json("Success");
-      }
-    );
-  }
-);
->>>>>>> c4878ca0cd876a59754c7f78fa6c150aff61ae37
 
 router.post(
   "/updatefood",
