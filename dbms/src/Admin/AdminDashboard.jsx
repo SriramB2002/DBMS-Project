@@ -518,7 +518,7 @@ export default function BasicTabs() {
                   Food Name
                 </TableCell>
                 <TableCell style={{ color: "white", fontWeight: "bold" }}>
-                  Food Image
+                  Food Image URL
                 </TableCell>
                 <TableCell style={{ color: "white", fontWeight: "bold" }}>
                   Food Price
