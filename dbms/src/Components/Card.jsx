@@ -43,11 +43,11 @@ export default function MatchCard(props) {
         team_id: team1
       });
       console.log(data.data);
-      setCurrentTeam1(data.data[0].team_name);
+      setCurrentTeam1(data.data[0]);
       const data2 = await axios.post('http://localhost:8080/get/getTeam', {
         team_id: team2
       });
-      setCurrentTeam2(data2.data[0].team_name);
+      setCurrentTeam2(data2.data[0]);
     }
     getTeamNames();
   }, []);
@@ -61,6 +61,8 @@ export default function MatchCard(props) {
     }
   }, [stadiumList]);
 
+  console.log(currentTeam1);
+  
   return (
     <div className='d-flex' >
     <Card data-aos="flip-down" data-aos-duration="500" sx={{ minWidth: '90%' ,transition:'1s ease-in', backgroundColor:'white',color:'white',height:'8rem'}} className="fpt">
@@ -112,7 +114,7 @@ export default function MatchCard(props) {
   <Grid item xs={2}>
   <div style={{paddingY:'20px',height:'100%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',flexDirection:'column'}}>
     <Typography gutterBottom variant="h5" component="div" color="white" className='fpt-lg'>
-          {currentTeam1} <ReactCountryFlag countryCode="PK" svg/> 
+          {currentTeam1.team_name} <ReactCountryFlag countryCode={currentTeam1.team_flag} svg/> 
     </Typography>
     </div>
   </Grid>
@@ -126,7 +128,7 @@ export default function MatchCard(props) {
   <Grid item xs={2}>
   <div style={{paddingY:'20px',height:'100%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',flexDirection:'column'}}>
     <Typography gutterBottom variant="h5" component="div" color="white" className='fpt-lg'>
-          {currentTeam2} <ReactCountryFlag countryCode="IN" svg/> 
+          {currentTeam2.team_name} <ReactCountryFlag countryCode={currentTeam2.team_flag} svg/> 
     </Typography>
     </div>
   </Grid>
