@@ -53,7 +53,7 @@ function addMerch(booking_id, merch_id, quantity) {
         if (err) console.log(err.message);
     });
 }
-router.post('/createBooking', authenticate, (req, res) => {
+router.post('/createBookingBalance', authenticate, (req, res) => {
     let seat_total = 0;
     let food_total = 0;
     let merch_total = 0;
@@ -111,6 +111,32 @@ router.post('/createBooking', authenticate, (req, res) => {
     });
 });
 
+router.post('/createBookingRazorpay', authenticate, (req, res) => {
+    db.query('INSERT INTO BOOKING (booking_id,user_id,match_id,seat_total,merch_total,food_total) VALUES(?,?,?,?,?,?)', [req.body.booking_id, req.user.user.user_id, req.body.match_id,seat_total,merch_total,food_total], function (err, results, fields) {
+        if (err) {
+            
+            res.status(422).json({
+                message: err.message
+            });
+            return;
+        }
+        let seats = req.body.seats;
+        db.query("SELECT LAST_INSERT_ID() as val", function (err, results) {
+            for (var i = 0; i < seats.length; i++) {
+                bookseats(results[0].val, seats[i].seat_id);
+            }
+            for (var i = 0; i < req.body.merch_list.length; i++) {
+                addMerch(results[0].val, req.body.merch_list[i].merch_id, req.body.merch_list[i].merch_quantity);
+            }
+            for (var i = 0; i < req.body.food_list.length; i++) {
+                addfood(results[0].val, req.body.food_list[i].food_id, req.body.food_list[i].food_quantity);
+            }
+        });
+        res.json("BOOKED SUCCESSFULLY");
+    });
+});
+
+
 function getMatchId(bid) {
     let mid = [];
     for (let i = 0; i < bid.length; i++) {
@@ -132,7 +158,7 @@ class Booking_details
     }
 }
 
-router.get('/getUpcomingBookings', authenticate, (req, res) => {
+router.get('/getBookings', authenticate, (req, res) => {
     db.query('SELECT booking_id FROM booking WHERE user_id=?', [req.user.user.user_id], function(err, results) {
         var bookings = [];
         if(results.length==0)
@@ -145,50 +171,9 @@ router.get('/getUpcomingBookings', authenticate, (req, res) => {
             console.log(results[i].booking_id);
             db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
                 let matchId = results1[0].match_id;
+                
                 console.log(matchId)
                 db.query('SELECT * FROM new_schema.match WHERE match_id=? and date_time>now()', [matchId], function(err2, match) {
-                    db.query('SELECT seat_id FROM book_seats WHERE booking_id=?',[bookingId],function(err,seats)
-                    {
-                        if(err)
-                        {
-                            console.log(err);
-                        }
-                        db.query('SELECT * FROM booking_food WHERE booking_id=?',[bookingId],function(err,foods)
-                        {
-                            db.query('SELECT * FROM booking_merch WHERE booking_id=?',[bookingId],function(err,merch)
-                            {
-                                bookings.push((new Booking_details(match,(seats),(foods),(merch))));
-                                console.log(JSON.stringify(bookings[i])+"\n\n");
-                                // bookings.push(1);
-                                if(i==results.length-1)
-                                {
-                                    res.json(bookings);
-                                    return;
-                                }
-                            });
-                        });
-                    });
-                });
-            })
-        }
-    });
-});
-
-router.get('/getPreviousBookings', authenticate, (req, res) => {
-    db.query('SELECT booking_id FROM booking WHERE user_id=?', [req.user.user.user_id], function(err, results) {
-        var bookings = [];
-        if(results.length==0)
-        {
-            res.json("No Bookings Done By User")
-        }
-        for (let i = 0; i < results.length; i++)
-        {
-            let bookingId = results[i].booking_id;
-            console.log(results[i].booking_id);
-            db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
-                let matchId = results1[0].match_id;
-                console.log(matchId) 
-                 db.query('SELECT * FROM new_schema.match WHERE match_id=? and date_time<=now()', [matchId], function(err2, match) {
                     db.query('SELECT seat_id FROM book_seats WHERE booking_id=?',[bookingId],function(err,seats)
                     {
                         if(err)
