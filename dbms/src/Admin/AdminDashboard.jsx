@@ -69,6 +69,7 @@ export default function BasicTabs() {
 
   const [fname, setfname] = useState("");
   const [fprice, setfprice] = useState(null);
+  const [fimage, setfimage] = useState(null);
 
   const [team, setTeam] = useState("");
   const [timg, settimg] = useState("");
@@ -159,6 +160,7 @@ export default function BasicTabs() {
     const resp = await axios.post("http://localhost:8080/admin/addfood", {
       food_name: fname,
       food_price: fprice,
+      food_image: fimage,
     });
     getFood();
     setOpen2(true);
@@ -478,6 +480,20 @@ export default function BasicTabs() {
             onChange={(e) => setfprice(e.target.value)}
           ></TextField>
           <br></br>
+          <TextField
+            sx={{
+              label: { color: "lightgray" },
+              input: { color: "white" },
+              fieldset: { borderColor: "lightgray !important" },
+            }}
+            style={{ margin: "10px", width: "650px" }}
+            id="food-image"
+            type={"text"}
+            label="Food Image URL"
+            value={fimage}
+            onChange={(e) => setfimage(e.target.value)}
+          ></TextField>
+          <br></br>
           <br></br>
           <Button variant="contained" onClick={addFood}>
             Add Food
@@ -502,6 +518,9 @@ export default function BasicTabs() {
                   Food Name
                 </TableCell>
                 <TableCell style={{ color: "white", fontWeight: "bold" }}>
+                  Food Image URL
+                </TableCell>
+                <TableCell style={{ color: "white", fontWeight: "bold" }}>
                   Food Price
                 </TableCell>
                 <TableCell
@@ -512,6 +531,9 @@ export default function BasicTabs() {
                 <TableBody sx={{ backgroundColor: "#37474f" }} key={index}>
                   <TableCell style={{ color: "white" }}>
                     {item?.food_name}
+                  </TableCell>
+                  <TableCell style={{ color: "white" }}>
+                    {item?.food_image}
                   </TableCell>
                   <TableCell style={{ color: "white" }}>
                     {item?.food_price}
