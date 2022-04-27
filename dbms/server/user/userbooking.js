@@ -168,24 +168,24 @@ router.get('/getBookings', authenticate, (req, res) => {
         for (let i = 0; i < results.length; i++)
         {
             let bookingId = results[i].booking_id;
-            console.log(results[i].booking_id);
+            // console.log(results[i].booking_id);
             db.query('SELECT match_id FROM booking WHERE booking_id=?', [bookingId], function(err1, results1) {
                 let matchId = results1[0].match_id;
                 
-                console.log(matchId)
+                // console.log(matchId)
                 db.query('SELECT * FROM new_schema.match WHERE match_id=? and date_time>now()', [matchId], function(err2, match) {
-                    db.query('SELECT seat_id FROM book_seats WHERE booking_id=?',[bookingId],function(err,seats)
+                    db.query('SELECT s.seat_id,s.seat_type,s.seat_price FROM book_seats b, seats s WHERE b.booking_id=? and s.seat_id = b.seat_id and s.stadium_id = ?',[bookingId,match[0].stadium_id],function(err,seats)
                     {
                         if(err)
                         {
                             console.log(err);
                         }
-                        db.query('SELECT * FROM booking_food WHERE booking_id=?',[bookingId],function(err,foods)
+                        db.query('SELECT f.food_id,f.food_name,f.food_price FROM booking_food b, food_item f WHERE b.booking_id=? and f.food_id = b.food_id',[bookingId],function(err,foods)
                         {
-                            db.query('SELECT * FROM booking_merch WHERE booking_id=?',[bookingId],function(err,merch)
+                            db.query('SELECT m.merch_id,m.merch_name,m.merch_price FROM booking_food b, merch m WHERE b.booking_id=? and m.merch_id = b.food_id',[bookingId],function(err,merch)
                             {
                                 bookings.push((new Booking_details(match,(seats),(foods),(merch))));
-                                console.log(JSON.stringify(bookings[i])+"\n\n");
+                                // console.log(JSON.stringify(bookings[i])+"\n\n");
                                 // bookings.push(1);
                                 if(i==results.length-1)
                                 {
