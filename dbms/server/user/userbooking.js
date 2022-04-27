@@ -3,8 +3,16 @@ const app = express();
 const router = express.Router();
 const db = require('../db/db');
 const jwt = require('jsonwebtoken');
+const Razorpay = require('razorpay');
+const shortid = require('shortid');
 app.use(express.urlencoded());
 app.use(express.json());
+
+const razorpay = new Razorpay({
+	key_id: 'rzp_test_q4mvZhApcGLivc',
+	key_secret: '4HynUVSAMTfhSWeCQoDweiwZ'
+})
+
 function authenticate(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -24,7 +32,7 @@ function authenticate(req, res, next) {
 //get items to buy in cart for frontend to show
 //get merch list for user to buy for frontend to show
 router.get('/merch/avail', (req, res) => {
-    db.query('SELECT merch_name , merch_price , merch_image from merch', function (err, results, fields) {
+    db.query('SELECT merch_name , merch_price , merch_image,merch_id from merch', function (err, results, fields) {
         res.status(200).json(results);
     });
 });
@@ -51,6 +59,7 @@ router.post('/createBooking', authenticate, (req, res) => {
     let merch_total = 0;
     db.query('SELECT stadium_id FROM new_schema.MATCH WHERE match_id=?', [req.body.match_id], function (err, currentStadiumID) {
         // console.log(currentStadiumID[0].stadium_id);
+        // console.log(req.body);
         for (let i = 0; i < req.body.seats.length; i++) {
             seat_total += parseInt(req.body.seats[i].seat_price);
         }
@@ -62,7 +71,9 @@ router.post('/createBooking', authenticate, (req, res) => {
         });
         console.log(req.user);
         db.query('SELECT balance from USER where user_id = ?', [req.user.user.user_id], function (err, results) {
+
             if (err) {
+
                 return;
             }
             if (seat_total + food_total + merch_total > results[0].balance)
@@ -75,6 +86,7 @@ router.post('/createBooking', authenticate, (req, res) => {
                 });
                 db.query('INSERT INTO BOOKING (booking_id,user_id,match_id,seat_total,merch_total,food_total) VALUES(?,?,?,?,?,?)', [req.body.booking_id, req.user.user.user_id, req.body.match_id,seat_total,merch_total,food_total], function (err, results, fields) {
                     if (err) {
+                        
                         res.status(422).json({
                             message: err.message
                         });
@@ -219,9 +231,32 @@ router.post('/updateBooking', authenticate, (req, res) => {
             });
         });
     });
-       
-    
-
 });
+
+router.post('/razorpay', async (req, res) => {
+	const payment_capture = 1
+	const amount = 1
+	const currency = 'INR'
+
+	const options = {
+		amount: amount * 100,
+		currency,
+		receipt: shortid.generate(),
+		payment_capture
+	}
+
+	try {
+		const response = await razorpay.orders.create(options)
+		console.log(response)
+		res.json({
+			id: response.id,
+			currency: response.currency,
+			amount: response.amount
+		})
+	} catch (error) {
+		console.log(error)
+	}
+})
+
 
 module.exports = router;
