@@ -180,9 +180,9 @@ router.get('/getBookings', authenticate, (req, res) => {
                         {
                             console.log(err);
                         }
-                        db.query('SELECT f.food_id,f.food_name,f.food_price FROM booking_food b, food_item f WHERE b.booking_id=? and f.food_id = b.food_id',[bookingId],function(err,foods)
+                        db.query('SELECT f.food_id,f.food_name, b.quantity,f.food_price FROM booking_food b, food_item f WHERE b.booking_id=? and f.food_id = b.food_id',[bookingId],function(err,foods)
                         {
-                            db.query('SELECT m.merch_id,m.merch_name,m.merch_price FROM booking_food b, merch m WHERE b.booking_id=? and m.merch_id = b.food_id',[bookingId],function(err,merch)
+                            db.query('SELECT m.merch_id,m.merch_name,m.merch_price, b.quantity   FROM booking_food b, merch m WHERE b.booking_id=? and m.merch_id = b.food_id',[bookingId],function(err,merch)
                             {
                                 bookings.push((new Booking_details(match,(seats),(foods),(merch))));
                                 // console.log(JSON.stringify(bookings[i])+"\n\n");
