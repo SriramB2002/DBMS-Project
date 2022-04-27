@@ -63,7 +63,7 @@ export default function FoodCard({ food_item, setfooditem, index, food }) {
             </Snackbar>
             <CardMedia
                 component="img"
-                image="https://static.toiimg.com/thumb/61050397.cms?width=1200&height=900"
+                image={food_item.food_image}
                 alt="Samosa"
                 style={{ height: '25vh', background: 'contain' }}
             />
