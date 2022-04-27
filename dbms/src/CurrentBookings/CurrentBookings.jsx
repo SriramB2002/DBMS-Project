@@ -13,6 +13,28 @@ import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 export const CurrentBookings = () => {
     const [rows, setRows] = useState([]);
+    const [foodIndex, setFoodIndex] = useState(null);
+    const [merchIndex, setMerchIndex] = useState(null);
+    const [deleteIndex, setDeleteIndex] = useState(null);
+
+    const fd = (index) => {
+        setFoodIndex(index);
+        setMerchIndex(null);
+        setDeleteIndex(null);
+    }
+
+    const mr = (index) => {
+        setFoodIndex(null);
+        setMerchIndex(index);
+        setDeleteIndex(null);
+    }
+
+    const del = (index) => {
+        setFoodIndex(null);
+        setMerchIndex(null);
+        setDeleteIndex(index);
+    }
+
     const { auth, setAuth } = useContext(AuthContext);
     const [bookings, setBookings] = useState([]);
     useEffect(() => {
@@ -112,10 +134,10 @@ export const CurrentBookings = () => {
                                             {row.prem.cnt}/{row.norm.cnt}
                                         </TableCell>
                                         <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
-                                            <Button variant='contained' color='warning'>View Food</Button>
+                                            <Button variant='contained' color='warning' onClick={() => fd(index)}>View Food</Button>
                                         </TableCell>
                                         <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
-                                            <Button variant='contained' color='primary'>View Merch</Button>
+                                            <Button variant='contained' color='primary' onClick={() => mr(index)}>View Merch</Button>
                                         </TableCell>
                                         <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
                                             <Button variant='contained' color='error'>Cancel Booking</Button>
@@ -127,6 +149,16 @@ export const CurrentBookings = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <br></br>
+                {foodIndex > -1 && (
+                    <TableContainer>
+                        <Table>
+                            <TableHead sx={{ backgroundColor: "#263238" }}>
+                                <TableCell style={{color: 'white'}}></TableCell>
+                            </TableHead>
+                        </Table>
+                    </TableContainer>
+                )}
             </div>
         </div>
 
