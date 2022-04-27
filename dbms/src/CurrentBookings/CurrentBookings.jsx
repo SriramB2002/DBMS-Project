@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
 export const CurrentBookings = () => {
     const [rows, setRows] = useState([]);
     const { auth, setAuth } = useContext(AuthContext);
@@ -75,33 +76,52 @@ export const CurrentBookings = () => {
         <div className='homepage' style={{ paddingTop: '5rem' }}>
             <h1 className='he'>Current Bookings</h1>
             <div>
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} sx={{width:'80%',margin:'auto'}}>
                     <Table sx={{ width: '100%' }} aria-label="simple table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#263238" }}>
                             <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell align="right" style={{ textAlign: 'center' }}>Match</TableCell>
-                                <TableCell align="right" style={{ textAlign: 'center' }}>Date</TableCell>
-                                <TableCell align="right" style={{ textAlign: 'center' }}>Seats</TableCell>
-                                <TableCell align="right" style={{ textAlign: 'center' }}>Food Items</TableCell>
-                                <TableCell align="right" style={{ textAlign: 'center' }}>Merch</TableCell>
-                                <TableCell align="right" style={{ textAlign: 'center' }}>Cancel Booking</TableCell>
+                                <TableCell align="right" style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>ID</TableCell>
+                                <TableCell align="right" style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>Match</TableCell>
+                                <TableCell align="right" style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>Date</TableCell>
+                                <TableCell align="right" style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>Seats (Premium/Normal)</TableCell>
+                                <TableCell align="right" style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>Food Items</TableCell>
+                                <TableCell align="right" style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>Merch</TableCell>
+                                <TableCell align="right" style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>Cancel Booking</TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
+                        <TableBody sx={{ backgroundColor: "#37474f" }}>
+                       
                             {
                                 rows.map((row, index) => {
+                                    return(
                                     <TableRow
                                         key={index}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        
                                     >
-                                        <TableCell component="th" scope="row">
-                                            {index}
+                                        <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
+                                            {console.log(index,row)}
+                                            {index+1}
                                         </TableCell>
-                                        <TableCell component="th" scope="row">
-                                            {index}
+                                        <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
+                                            {row.match[0].match_format}
                                         </TableCell>
+                                        <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
+                                            {row.dateTime}
+                                        </TableCell>
+                                        <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
+                                            {row.prem.cnt}/{row.norm.cnt}
+                                        </TableCell>
+                                        <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
+                                            <Button variant='contained' color='warning'>View Food</Button>
+                                        </TableCell>
+                                        <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
+                                            <Button variant='contained' color='primary'>View Merch</Button>
+                                        </TableCell>
+                                        <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
+                                            <Button variant='contained' color='error'>Cancel Booking</Button>
+                                        </TableCell >
                                     </TableRow>
+                                    );
                                 })
                             }
                         </TableBody>
