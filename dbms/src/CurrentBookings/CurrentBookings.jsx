@@ -64,7 +64,6 @@ export const CurrentBookings = () => {
             temp1.prem = prem;
             temp1.norm = norm;
             temp1.dateTime = temp1.match[0].date_time;
-            console.log(temp1);
             temp.push(temp1);
         });
         setRows(temp);
