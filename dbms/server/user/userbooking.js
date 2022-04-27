@@ -52,7 +52,7 @@ function addMerch(booking_id, merch_id, quantity) {
         if (err) console.log(err.message);
     });
 }
-router.post('/createBooking', authenticate, (req, res) => {
+router.post('/createBookingBalance', authenticate, (req, res) => {
     let seat_total = 0;
     let food_total = 0;
     let merch_total = 0;
@@ -109,6 +109,32 @@ router.post('/createBooking', authenticate, (req, res) => {
         });
     });
 });
+
+router.post('/createBookingRazorpay', authenticate, (req, res) => {
+    db.query('INSERT INTO BOOKING (booking_id,user_id,match_id,seat_total,merch_total,food_total) VALUES(?,?,?,?,?,?)', [req.body.booking_id, req.user.user.user_id, req.body.match_id,seat_total,merch_total,food_total], function (err, results, fields) {
+        if (err) {
+            
+            res.status(422).json({
+                message: err.message
+            });
+            return;
+        }
+        let seats = req.body.seats;
+        db.query("SELECT LAST_INSERT_ID() as val", function (err, results) {
+            for (var i = 0; i < seats.length; i++) {
+                bookseats(results[0].val, seats[i].seat_id);
+            }
+            for (var i = 0; i < req.body.merch_list.length; i++) {
+                addMerch(results[0].val, req.body.merch_list[i].merch_id, req.body.merch_list[i].merch_quantity);
+            }
+            for (var i = 0; i < req.body.food_list.length; i++) {
+                addfood(results[0].val, req.body.food_list[i].food_id, req.body.food_list[i].food_quantity);
+            }
+        });
+        res.json("BOOKED SUCCESSFULLY");
+    });
+});
+
 
 function getMatchId(bid) {
     let mid = [];
@@ -232,7 +258,7 @@ router.post('/updateBooking', authenticate, (req, res) => {
     });
 });
 
-app.post('/razorpay', async (req, res) => {
+router.post('/razorpay', async (req, res) => {
 	const payment_capture = 1
 	const amount = 1
 	const currency = 'INR'

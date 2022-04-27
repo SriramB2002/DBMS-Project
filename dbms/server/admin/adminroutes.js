@@ -171,8 +171,8 @@ router.post('/match',/*authenticate,*/(req,res)=>{
 //Add food item
 router.post('/addfood',/*authenticate,*/(req,res)=>
 {
-    db.query('INSERT INTO FOOD_ITEM (food_id,food_name,food_price) values(?,?,?)',
-        [req.body.food_id,req.body.food_name,req.body.food_price],
+    db.query('INSERT INTO FOOD_ITEM (food_id,food_name,food_price,food_image) values(?,?,?,?)',
+        [req.body.food_id,req.body.food_name,req.body.food_price,req.body.food_image],
             function(err,results,fields )
             {
                 if(err){
