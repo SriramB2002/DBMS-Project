@@ -16,7 +16,7 @@ export const CurrentBookings = () => {
     const [foodIndex, setFoodIndex] = useState(null);
     const [merchIndex, setMerchIndex] = useState(null);
     const [deleteIndex, setDeleteIndex] = useState(null);
-
+    const { auth, setAuth } = useContext(AuthContext);
     const fd = (index) => {
         setFoodIndex(index);
         setMerchIndex(null);
@@ -33,30 +33,47 @@ export const CurrentBookings = () => {
         setFoodIndex(null);
         setMerchIndex(null);
         setDeleteIndex(index);
+        deleteBooking(index);
     }
 
-    const { auth, setAuth } = useContext(AuthContext);
-    const [bookings, setBookings] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
+    const deleteBooking = async (index) => {
+        if (index != null)
+        {
+            console.log(rows[index].bookingId);
             const headers = {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${auth.token}`
             };
-            const data = await axios.get('http://localhost:8080/user/booking/getBookings', {
-                headers: headers
+            console.log(headers);
+            const resp = await axios.get(`http://localhost:8080/user/booking/deletebooking/${rows[index].bookingId}`,{
+                headers:headers
             });
-            console.log(data.data);
-            setBookings(data.data);
+            fetchData();
+            setDeleteIndex(null);
         }
+    }
+
+    const [bookings, setBookings] = useState([]);
+    const fetchData = async () => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth.token}`
+        };
+        const data = await axios.get('http://localhost:8080/user/booking/getBookings', {
+            headers: headers
+        });
+        // console.log(data.data);
+        setBookings(data.data);
+    }
+    useEffect(() => {
         fetchData();
     }, []);
 
     useEffect(() => {
-        if(bookings.length==0){
+        if(bookings=="No Bookings Done By User"){
             return;
         }
-        console.log(bookings);
+        // console.log(bookings);
         const temp = [];
         bookings.forEach(booking => {
             const temp1 = booking;
@@ -92,7 +109,7 @@ export const CurrentBookings = () => {
         setRows(temp);
     }, [bookings]);
     useEffect(()=>{
-        console.log(rows);
+        // console.log(rows);
     },[rows]);
     return (
         <div className='homepage' style={{ paddingTop: '5rem' }}>
@@ -121,7 +138,7 @@ export const CurrentBookings = () => {
                                         
                                     >
                                         <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
-                                            {console.log(index,row)}
+                                            {/* {console.log(index,row)} */}
                                             {index+1}
                                         </TableCell>
                                         <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
@@ -140,7 +157,7 @@ export const CurrentBookings = () => {
                                             <Button variant='contained' color='primary' onClick={() => mr(index)}>View Merch</Button>
                                         </TableCell>
                                         <TableCell align="right" style={{ textAlign: 'center', color: 'white' }}>
-                                            <Button variant='contained' color='error'>Cancel Booking</Button>
+                                            <Button variant='contained' color='error' onClick={() => del(index)}>Cancel Booking</Button>
                                         </TableCell >
                                     </TableRow>
                                     );
@@ -150,15 +167,59 @@ export const CurrentBookings = () => {
                     </Table>
                 </TableContainer>
                 <br></br>
-                {foodIndex > -1 && (
-                    <TableContainer>
+                {foodIndex != null && (
+                    <TableContainer component={Paper} sx={{width:'60%',margin:'auto'}}>
                         <Table>
                             <TableHead sx={{ backgroundColor: "#263238" }}>
-                                <TableCell style={{color: 'white'}}></TableCell>
+                                <TableCell style={{color: 'white', fontWeight: 'bold'}}>Food Item</TableCell>
+                                <TableCell style={{color: 'white', fontWeight: 'bold'}}>Food Price</TableCell>
+                                <TableCell style={{color: 'white', fontWeight: 'bold'}}>Quantity</TableCell>
                             </TableHead>
+                                {rows[foodIndex].food.map((item, index) => {
+                                    return(
+                                        <TableBody sx={{ backgroundColor: "#37474f" }}>
+                                            <TableCell style={{color: 'white'}}>
+                                                {item.food_name}
+                                            </TableCell>
+                                            <TableCell style={{color: 'white'}}>
+                                                {item.food_price}
+                                            </TableCell>
+                                            <TableCell style={{color: 'white'}}>
+                                                {item.quantity}
+                                            </TableCell>
+                                        </TableBody>
+                                    )
+                                })}
                         </Table>
                     </TableContainer>
                 )}
+                {merchIndex != null && (
+                    <TableContainer component={Paper} sx={{width:'60%',margin:'auto'}}>
+                        <Table>
+                            <TableHead sx={{ backgroundColor: "#263238" }}>
+                                <TableCell style={{color: 'white', fontWeight: 'bold'}}>Merch Item</TableCell>
+                                <TableCell style={{color: 'white', fontWeight: 'bold'}}>Merch Price</TableCell>
+                                <TableCell style={{color: 'white', fontWeight: 'bold'}}>Quantity</TableCell>
+                            </TableHead>
+                                {rows[merchIndex].merch.map((item, index) => {
+                                    return(
+                                        <TableBody sx={{ backgroundColor: "#37474f" }}>
+                                            <TableCell style={{color: 'white'}}>
+                                                {item.merch_name}
+                                            </TableCell>
+                                            <TableCell style={{color: 'white'}}>
+                                                {item.merch_price}
+                                            </TableCell>
+                                            <TableCell style={{color: 'white'}}>
+                                                {item.quantity}
+                                            </TableCell>
+                                        </TableBody>
+                                    )
+                                })}
+                        </Table>
+                    </TableContainer>
+                )}
+                <br></br>
             </div>
         </div>
 

@@ -149,8 +149,9 @@ function getMatchId(bid) {
 
 class Booking_details
 {
-    constructor(match,seats,food,merch,cost)
+    constructor(bookingId,match,seats,food,merch,cost)
     {
+        this.bookingId = bookingId;
         this.match = match;
         this.seats = seats;
         this.food = food;
@@ -183,7 +184,7 @@ router.get('/getBookings', authenticate, (req, res) => {
                         }
                         db.query('SELECT f.food_id,f.food_name, b.quantity,f.food_price FROM booking_food b, food_item f WHERE b.booking_id=? and f.food_id = b.food_id',[bookingId],function(err,foods)
                         {
-                            db.query('SELECT m.merch_id,m.merch_name,m.merch_price, b.quantity   FROM booking_food b, merch m WHERE b.booking_id=? and m.merch_id = b.food_id',[bookingId],function(err,merch)
+                            db.query('SELECT m.merch_id,m.merch_name,m.merch_price, b.quantity   FROM booking_merch b, merch m WHERE b.booking_id=? and m.merch_id = b.merch_id',[bookingId],function(err,merch)
                             {
                                 let cost = 0
                                 console.log(seats);
@@ -197,12 +198,13 @@ router.get('/getBookings', authenticate, (req, res) => {
                                 for(let i = 0 ; i < merch.length ; i++) {
                                     cost += merch[i].merch_price*merch[i].quantity;
                                 }
-                                bookings.push((new Booking_details(match,(seats),(foods),(merch),(cost))));
+                                bookings.push((new Booking_details(bookingId,match,(seats),(foods),(merch),(cost))));
                                 // console.log(JSON.stringify(bookings[i])+"\n\n");
                                 // bookings.push(1);
                                 if(i==results.length-1)
                                 {
                                     res.json(bookings);
+                                    // console.log(booking)
                                     return;
                                 }
                             });
@@ -298,5 +300,28 @@ router.post('/razorpay', async (req, res) => {
 	}
 })
 
+router.post('/getBookMerch', authenticate, (req, res) => {
+    db.query('SELECT * FROM booking_merch WHERE booking_id=?', [req.body.booking_id], (err, results) => {
+        if(err){
+            console.log(err.message);
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+    })
+})
+
+router.post('/getBookFood', authenticate, (req, res) => {
+    db.query('SELECT * FROM booking_food WHERE booking_id=?', [req.body.booking_id], (err, results) => {
+        if(err){
+            console.log(err.message);
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+    })
+})
 
 module.exports = router;
