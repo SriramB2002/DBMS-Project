@@ -10,7 +10,15 @@ body {
 .testButton {
   margin-top: 20px;
 }
+html::-webkit-scrollbar {
+  display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 small {
   display: block;
   font-size: 12px;
