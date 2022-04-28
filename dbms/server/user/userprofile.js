@@ -32,7 +32,16 @@ function authenticate(req,res,next){
 }
 
 router.get('/getProfile', authenticate, (req, res) => {
-    res.json(req.user);
+    // res.json(req.user);
+    db.query('SELECT * from user where user_id=?',[req.user.user.user_id],function(err,results,fields){
+        if(err){
+            res.status(422).json({
+                message:err.message
+            });
+            return;
+        }
+        res.json(results);
+    });
 })
 
 router.post('/updateBalance',authenticate,(req, res) => {

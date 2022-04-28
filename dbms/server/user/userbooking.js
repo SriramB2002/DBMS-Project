@@ -9,8 +9,8 @@ app.use(express.urlencoded());
 app.use(express.json());
 
 const razorpay = new Razorpay({
-	key_id: 'rzp_test_q4mvZhApcGLivc',
-	key_secret: '4HynUVSAMTfhSWeCQoDweiwZ'
+	key_id: 'rzp_test_ZdRXkONBVZeKRJ',
+	key_secret: 'Gxb2X8hnj3irWyfe3fPkDyYq'
 })
 
 function authenticate(req, res, next) {
@@ -112,27 +112,44 @@ router.post('/createBookingBalance', authenticate, (req, res) => {
 });
 
 router.post('/createBookingRazorpay', authenticate, (req, res) => {
-    db.query('INSERT INTO BOOKING (booking_id,user_id,match_id,seat_total,merch_total,food_total) VALUES(?,?,?,?,?,?)', [req.body.booking_id, req.user.user.user_id, req.body.match_id,seat_total,merch_total,food_total], function (err, results, fields) {
-        if (err) {
-            
-            res.status(422).json({
-                message: err.message
-            });
-            return;
+    let seat_total = 0;
+    let food_total = 0;
+    let merch_total = 0;
+    db.query('SELECT stadium_id FROM new_schema.MATCH WHERE match_id=?', [req.body.match_id], function (err, currentStadiumID) {
+        // console.log(currentStadiumID[0].stadium_id);
+        // console.log(req.body);
+        for (let i = 0; i < req.body.seats.length; i++) {
+            seat_total += parseInt(req.body.seats[i].seat_price);
         }
-        let seats = req.body.seats;
-        db.query("SELECT LAST_INSERT_ID() as val", function (err, results) {
-            for (var i = 0; i < seats.length; i++) {
-                bookseats(results[0].val, seats[i].seat_id);
-            }
-            for (var i = 0; i < req.body.merch_list.length; i++) {
-                addMerch(results[0].val, req.body.merch_list[i].merch_id, req.body.merch_list[i].merch_quantity);
-            }
-            for (var i = 0; i < req.body.food_list.length; i++) {
-                addfood(results[0].val, req.body.food_list[i].food_id, req.body.food_list[i].food_quantity);
-            }
+        req.body.merch_list.forEach(i => {
+            merch_total += i.merch_price * i.merch_quantity;
         });
-        res.json("BOOKED SUCCESSFULLY");
+        req.body.food_list.forEach(i => {
+            food_total += i.food_price * i.food_quantity;
+        });
+        console.log(req.user);
+        db.query('INSERT INTO BOOKING (booking_id,user_id,match_id,seat_total,merch_total,food_total) VALUES(?,?,?,?,?,?)', [req.body.booking_id, req.user.user.user_id, req.body.match_id,seat_total,merch_total,food_total], function (err, results, fields) {
+            if (err) {
+                
+                res.status(422).json({
+                    message: err.message
+                });
+                return;
+            }
+            let seats = req.body.seats;
+            db.query("SELECT LAST_INSERT_ID() as val", function (err, results) {
+                for (var i = 0; i < seats.length; i++) {
+                    bookseats(results[0].val, seats[i].seat_id);
+                }
+                for (var i = 0; i < req.body.merch_list.length; i++) {
+                    addMerch(results[0].val, req.body.merch_list[i].merch_id, req.body.merch_list[i].merch_quantity);
+                }
+                for (var i = 0; i < req.body.food_list.length; i++) {
+                    addfood(results[0].val, req.body.food_list[i].food_id, req.body.food_list[i].food_quantity);
+                }
+            });
+            res.json("BOOKED SUCCESSFULLY");
+        });
     });
 });
 

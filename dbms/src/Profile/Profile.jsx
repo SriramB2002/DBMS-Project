@@ -30,7 +30,7 @@ const Profile = () => {
                 }
             });
             console.log(data.data);
-            setProfile(data.data.user);
+            setProfile(data.data[0]);
             setDetails({
                 first_name:data.data.user.first_name,
                 last_name:data.data.user.last_name,
@@ -95,7 +95,7 @@ const Profile = () => {
                     fullWidth
                     name="first_name"
                     label="First Name"
-                    value={details.first_name}
+                    value={profile.first_name}
                     onChange={handleChange('first_name')}
                   />
                 </Grid>
@@ -104,7 +104,7 @@ const Profile = () => {
                     fullWidth
                     name="last_name"
                     label="Last Name"
-                    value={details.last_name}
+                    value={profile.last_name}
                     onChange={handleChange('last_name')}
                   />
                 </Grid>
