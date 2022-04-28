@@ -8,14 +8,16 @@ import AuthContext from "../Shared/AuthContext";
 import Modal from "../Components/Modal";
 const Form = (props) => {
   const [open, setOpen] = useState(false);
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth,admin,setAdmin } = useContext(AuthContext);
   useEffect(() => {
     if (
-      localStorage.getItem("auth") &&
-      JSON.parse(localStorage.getItem("auth")).token !== undefined &&
-      auth.token == undefined
+      localStorage.getItem("admin") &&
+      JSON.parse(localStorage.getItem("admin")).token !== undefined &&
+      admin.token == undefined
     ) {
-      setAuth(JSON.parse(localStorage.getItem("auth")));
+      localStorage.removeItem("auth");
+      setAuth({});
+      setAdmin(JSON.parse(localStorage.getItem("admin")));
     }
   }, []);
   const login = async (data) => {
@@ -50,7 +52,7 @@ const Form = (props) => {
       className="section is-fullheight bg"
       style={{ backgroundColor: "#424250", height: "100vh" }}
     >
-      {!!auth.token && <Redirect to="/admin/Dashboard" />}
+      {!!admin.token && <Redirect to="/admin/Dashboard" />}
       <Modal
         heading={"Invalid Credentials"}
         text={"Password is Incorrect or the User Doesn't Exist"}
