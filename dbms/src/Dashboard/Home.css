@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+html {
+    background-color: #363450 !important;
+}
+
 .homepage{
     /* background: url('../Resources/stadium-3.jpg'); */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-color: #363450 !important;
+    height: fit-content !important;
     text-align: center;
     /* background: url(''); */
     opacity: 1;
