@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { Redirect } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import Tooltip from '@mui/material/Tooltip';
@@ -8,9 +7,9 @@ import { Button } from '@mui/material';
 import './Seats.css';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import MerchFood from './MerchFood';
 const PER_PAGE = 10;
 const columns = 15;
+//Snackbar
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -33,33 +32,47 @@ function SnackBar({open,setOpen,message}) {
   );
 }
 const SeatsLayout = () => {
+  //Params
   const { id ,sid } = useParams();
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+
+
   const [std,setstd] = useState({});
   const [stadiums, setStadium] = useState([]);
-  const [selected, setSelected] = useState([]);
-  const [price, setPrice] = useState(0);
-  const [normal, setnormal] = useState(0);
-  const [vip, setvip] = useState(0);
   const [data, setData] = useState([]);
+  const [cap, setcap] = useState(0);
+
+
+
+  //Pagination
   const [page, setPage] = useState(0);
+  //Modals and Alerts
   const [open,setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
+
+
+  //
+  const [rows,setrows] = useState(0);
+
   useEffect(()=>{
+
+    //Get Stadium Details by Stadium ID 
     const fetch = async () => {
       const data = await axios.get(`http://localhost:8080/get/getstadium/${sid}`);
-      // console.log(data.data[0]);
-      setstd(data.data[0]);
+      console.log(data.data[0]);
+      const seatsbt = data.data[0];
+      // seatsbt.capacity =  Math.floor(data.data[0].capacity/150)*150;
+      // console.log(seatsbt);
+      setstd(seatsbt);
     }
     fetch();
   },[]);
-  const [rows,setrows] = useState(0);
   useEffect(() => {
-    setrows(Math.ceil(std?.capacity/15));
+    setrows((Math.floor((std?.capacity)/150)*150)/10);
   }, [std]);
   const history = useHistory();
   const offset = page * PER_PAGE;
-  const additional = 15;
   
   useEffect(() => {
     const temp = [];
@@ -67,6 +80,7 @@ const SeatsLayout = () => {
       return;
     }
     console.log(std.capacity);
+    const additional = 0;
     //Number of Rows
     let e = 0;
     for (let i = 0; i < rows; i++) {
@@ -89,6 +103,7 @@ const SeatsLayout = () => {
     const fetchData = async () => {
       await axios.get('http://localhost:8080/get/availableseats/' + id).then(res => {
         const datar = res.data;
+        // const newdata = datar.slice(0, std.capacity);
         setData(datar);
       });
     }
@@ -219,7 +234,7 @@ const SeatsLayout = () => {
           <ReactPaginate
             previousLabel={"←"}
             nextLabel={"→"}
-            pageCount={Math.ceil(rows / PER_PAGE)}
+            pageCount={Math.ceil((Math.ceil(rows / PER_PAGE) * 2)/3)}
             onPageChange={handlePageClick}
             containerClassName={"pagination"}
             previousLinkClassName={"pagination__link"}
