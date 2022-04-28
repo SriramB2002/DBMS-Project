@@ -24,17 +24,20 @@ export default function BasicModal({open,setOpen,heading,text,redirect}) {
   if(redirect && open){
     setTimeout(() => {
         history.push(redirect);
-    }, 7000);
+    }, 4000);
   }
- 
+  console.log("Here in Modal");
   return (
     <div>
-      <Modal
+      {
+        open && 
+        <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        {/* {console.log(open)} */}
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {heading}
@@ -44,6 +47,8 @@ export default function BasicModal({open,setOpen,heading,text,redirect}) {
           </Typography>
         </Box>
       </Modal>
+      }
+      
     </div>
   );
 }

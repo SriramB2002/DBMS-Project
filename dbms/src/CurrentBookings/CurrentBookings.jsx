@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { useContext } from 'react';
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useReducer } from 'react'
 import AuthContext from '../Shared/AuthContext';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 export const CurrentBookings = () => {
     const [rows, setRows] = useState([]);
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
     const [foodIndex, setFoodIndex] = useState(null);
     const [merchIndex, setMerchIndex] = useState(null);
     const [deleteIndex, setDeleteIndex] = useState(null);
@@ -39,7 +40,6 @@ export const CurrentBookings = () => {
     const deleteBooking = async (index) => {
         if (index != null)
         {
-            console.log(rows[index].bookingId);
             const headers = {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${auth.token}`
@@ -49,6 +49,7 @@ export const CurrentBookings = () => {
                 headers:headers
             });
             fetchData();
+            forceUpdate();
             setDeleteIndex(null);
         }
     }

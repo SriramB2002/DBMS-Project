@@ -17,9 +17,16 @@ export default function FoodCard({ food_item, setfooditem, index, food }) {
     const [quantity, setquantity] = useState(food_item?.food_quantity || 0);
     const [add, setadd] = useState(food_item?.added || 0);
     useEffect(() => {
+        let mounted = 1;
+        if(mounted){
         const newfood = [...food];
         newfood[index].food_quantity = quantity;
         setfooditem(newfood);
+        }
+        return () => {
+            mounted = 0;
+        }
+        
     }, [quantity]);
     const addToCart = () => {
         if(add==1){

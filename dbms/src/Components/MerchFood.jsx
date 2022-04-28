@@ -9,11 +9,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
 import FormGroup from '@mui/material/FormGroup';
-
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
+import { Checkbox } from '@mui/material';
 import Box from '@mui/material/Box';
 import MerchCard from './MerchCard';
 import { Button } from '@mui/material';
@@ -21,12 +22,12 @@ import AuthContext from '../Shared/AuthContext';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-
+import Modal from '../Components/Modal';
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAlert }) {
+function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAlert ,modal,setModal,setData}) {
+  const history = useHistory();
   const { auth, setAuth } = useContext(AuthContext);
   const [checked,setchecked] = useState(false);
   const handleClickOpen = () => {
@@ -35,7 +36,7 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
   const handleClose = () => {
     setOpen(false);
   };
-  const [balance, setBalace] = useState(0);
+  const [balance, setBalace] = useState(0); 
   const [d, setD] = useState([]);
   const bookseats = (d, url) => {
     console.log(d, url);
@@ -76,13 +77,37 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
           message: "",
           severity: "success"
         })
-      }, 5000);
-
+      }, 3000);
+      setOpen(false);
+      setModal(true);
     });
-    setOpen(false);
-    setchecked(0);
-
   }
+  useEffect(()=>{
+    let mounted = true;
+    console.log(food,merch,seats);
+    if(mounted){
+      let temp = 0;
+      food.forEach(food_item => {
+          temp += parseInt(food_item.food_price)*parseInt(food_item.food_quantity);
+      });
+      merch.forEach(merch_item => {
+        temp += parseInt(merch_item.merch_price)*parseInt(merch_item.merch_quantity);
+      });
+      seats.forEach(row => {
+        row.forEach(seat => {
+          if(seat.selected==true){
+            temp += parseInt(seat.seat_price);
+          }
+        });
+      });
+      console.log(temp);
+      setBalace(temp);
+
+    }
+    return ()=>{
+      mounted = false;
+    }
+  },[food,merch,seats]);
   function loadScript(src) {
     return new Promise((resolve) => {
       const script = document.createElement('script')
@@ -172,6 +197,8 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
     }
     console.log(data);
     //Give an Option
+    setD(data);
+    setData(data);
     //Op1
     if(!checked){
       displayRazorpay(data);
@@ -189,6 +216,7 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
+     
       <DialogTitle id="alert-dialog-title">
         {"Confirm Booking"}
       </DialogTitle>
@@ -201,7 +229,7 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
         <div>
         <div>
         <FormGroup>
-          <FormControlLabel control={<Checkbox checked={checked} onChange={(e) => setchecked(e.target.value)}/>} label="Continue to Pay with Balance" />
+          <FormControlLabel control={<Checkbox checked={checked} onChange={(e) => setchecked(e.target.checked)}/>} label="Continue to Pay with Balance" />
         </FormGroup>
         </div>
         <div>
@@ -210,6 +238,7 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
           Proceed to Payment
         </Button>
         </div>
+
         </div>
       </DialogActions>
     </Dialog>
@@ -251,6 +280,7 @@ const MerchFood = (props) => {
   const match_id = props.location.state.id;
   const [food, setFood] = useState([]);
   const [merch, setMerch] = useState([]);
+  const [data,setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [alert, setAlert] = useState({
     open: false,
@@ -272,6 +302,8 @@ const MerchFood = (props) => {
     return () => {
     }
   }, []);
+  const [modal,setModal] = useState(false);
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -291,7 +323,8 @@ const MerchFood = (props) => {
     <div className='homepage'>
       console.log(food,merch);
       <div className="container">
-        <AlertDialog open={open} setOpen={setOpen} food={food} merch={merch} seats={stadiumData} alert={alert} setAlert={setAlert} match_id={match_id} />
+        
+        <AlertDialog open={open} setOpen={setOpen} food={food} merch={merch} seats={stadiumData} alert={alert} setAlert={setAlert} match_id={match_id} modal={modal} setModal={setModal} data={data} setData={setData}/>
         <h1 className="he" style={{ paddingTop: '5rem' }}>Extras</h1>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '17rem', margin: 'auto' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -360,11 +393,13 @@ const MerchFood = (props) => {
             <Button size="medium" variant='contained' sx={{ color: 'white', margin: 'auto' }} color="success" onClick={createBooking}>Confirm Booking</Button>
           </div>
         </TabPanel>
-        <Snackbar open={alert.open} autoHideDuration={5000} onClose={handleClose}>
+        <Snackbar open={alert.open} autoHideDuration={4000} onClose={handleClose}>
           <Alert onClose={handleClose} severity={alert.severity} sx={{ width: '100%' }}>
             {alert?.message}
           </Alert>
         </Snackbar>
+        <Modal open={modal} setOpen={setModal} heading={"Payment Successful"} text={"You Will be Redirected to Billing Page in few seconds"} redirect={'/Dashboard/Bill'} data={data}/>
+
       </div>
     </div>
   )
