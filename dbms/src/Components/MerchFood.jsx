@@ -87,22 +87,31 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
     console.log(food,merch,seats);
     if(mounted){
       let temp = 0;
-      food.forEach(food_item => {
+      if(food.length>0){
+        food.forEach(food_item => {
           temp += parseInt(food_item.food_price)*parseInt(food_item.food_quantity);
+          console.log(temp);
       });
-      merch.forEach(merch_item => {
-        temp += parseInt(merch_item.merch_price)*parseInt(merch_item.merch_quantity);
-      });
-      seats.forEach(row => {
-        row.forEach(seat => {
-          if(seat.selected==true){
-            temp += parseInt(seat.seat_price);
-          }
+      }
+      if(merch.length>0){
+        merch.forEach(merch_item => {
+          temp += parseInt(merch_item.merch_price)*parseInt(merch_item.merch_quantity);
+          console.log(temp);
         });
-      });
+      }
+      if(seats.length>0){
+        seats.forEach(row => {
+          row.forEach(seat => {
+            if(seat.selected==true){
+              temp += parseInt(seat.seat_price);
+              console.log(temp);
+            }
+          });
+        });
+      }
+     
       console.log(temp);
       setBalace(temp);
-
     }
     return ()=>{
       mounted = false;
@@ -172,7 +181,8 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
           seat.push({
             seat_id: elem.seat_id,
             seat_price: elem.seat_price,
-            stadium_id: elem.stadium_id
+            stadium_id: elem.stadium_id,
+            seat_type: elem.type
           });
         }
       }
@@ -289,13 +299,13 @@ const MerchFood = (props) => {
   });
   useEffect(() => {
     const fetchFood = async () => {
-      const data = await axios.get('http://localhost:8080/get/getFood');
-      console.log(data.data);
-      setFood(data.data);
+      const datar = await axios.get('http://localhost:8080/get/getFood');
+      console.log(datar.data);
+      setFood(datar.data);
     }
     const fetchMerch = async () => {
-      const data = await axios.get('http://localhost:8080/user/booking/merch/avail');
-      setMerch(data.data);
+      const datar = await axios.get('http://localhost:8080/user/booking/merch/avail');
+      setMerch(datar.data);
     }
     fetchFood();
     fetchMerch();

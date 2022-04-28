@@ -17,13 +17,19 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({open,setOpen,heading,text,redirect}) {
+export default function BasicModal({open,setOpen,heading,text,redirect,data}) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const history = useHistory();
+  console.log(data);
   if(redirect && open){
     setTimeout(() => {
-        history.push(redirect);
+        history.push({
+          pathname: redirect,
+          state:{
+            data:data
+          }
+        });
     }, 4000);
   }
   console.log("Here in Modal");

@@ -6,6 +6,7 @@ import SeatsLayout from "../Components/SeatsLayout";
 import Profile from '../Profile/Profile'
 import MerchFood from "../Components/MerchFood";
 import { CurrentBookings } from "../CurrentBookings/CurrentBookings";
+import  BillBreakout  from "../Bill/BillBreakout";
 function Dashboard() {
   const navbarItems = [
     {
@@ -39,6 +40,7 @@ function Dashboard() {
         </Route>
         <Route path='/Dashboard/MerchFood' exact component={MerchFood} />
         <Route path='/Dashboard/CurrentBookings' exact component={CurrentBookings} />
+        <Route path='/Dashboard/Bill' exact component={BillBreakout} />
       </Switch>
     </div>
     </Router>
