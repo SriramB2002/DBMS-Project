@@ -5,7 +5,7 @@ import styled from "styled-components";
 import './Navbar.css';
 import AuthContext from '../Shared/AuthContext';
 function NavBar({navbarItems}) {
-  const {auth,setAuth} = useContext(AuthContext);
+  const {auth,setAuth,admin,setAdmin} = useContext(AuthContext);
   const [openDrawer, toggleDrawer] = useState(false);
   const history = useHistory();
   const drawerRef = useRef(null);
@@ -20,8 +20,8 @@ function NavBar({navbarItems}) {
     return () => document.removeEventListener("mousedown", closeDrawer);
   }, []);
   const logout = () => {
-    setAuth({});
-    localStorage.setItem("auth",JSON.stringify({}));
+    setAdmin({});
+    localStorage.setItem("admin",JSON.stringify({}));
     history.push('/admin/login');
   };
   return (

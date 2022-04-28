@@ -15,8 +15,6 @@ const Form = (props) => {
       JSON.parse(localStorage.getItem("admin")).token !== undefined &&
       admin.token == undefined
     ) {
-      localStorage.removeItem("auth");
-      setAuth({});
       setAdmin(JSON.parse(localStorage.getItem("admin")));
     }
   }, []);
@@ -32,8 +30,10 @@ const Form = (props) => {
       });
 
       console.log(response.data);
-      setAuth({ token: response.data });
-      localStorage.setItem("auth", JSON.stringify({ token: response.data }));
+      setAdmin({ token: response.data });
+      setAuth({});
+      localStorage.removeItem("auth");
+      localStorage.setItem("admin", JSON.stringify({ token: response.data }));
 
       //Logout after 5 mins
       return <Redirect to="/admin/Dashboard" />;

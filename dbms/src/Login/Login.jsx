@@ -9,7 +9,7 @@ import Modal from "../Components/Modal";
 import './Login.css';
 const Form = (props) => {
   const [open,setOpen] = useState(false);
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth,admin,setAdmin } = useContext(AuthContext);
   useEffect(() => {
     if(localStorage.getItem('auth') && JSON.parse(localStorage.getItem('auth')).token!==undefined && auth.token==undefined){
       setAuth(JSON.parse(localStorage.getItem('auth')));
@@ -24,6 +24,8 @@ const Form = (props) => {
         password: data.password
       });
       console.log(response.data);
+      localStorage.removeItem("admin");
+      setAdmin({});
       setAuth({token:response.data});
       localStorage.setItem("auth",JSON.stringify({token:response.data}));
 

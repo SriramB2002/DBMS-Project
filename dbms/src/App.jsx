@@ -14,10 +14,16 @@ import AdminLogin from "./Admin/AdminLogin";
 import AdminDashboard from "./Admin/AdminDashboard";
 
 const App = () => {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth,admin,setAdmin } = useContext(AuthContext);
   return (
     <Router>
       <Switch>
+      <Route path="/admin/login" exact>
+          {!!admin.token ? (<Redirect to="/admin/Dashboard"></Redirect>) : (<AdminLogin/>)}
+        </Route>
+        <Route path="/admin/Dashboard" exact>
+          {!!admin.token ? (<AdminDashboard/>) : (<Redirect to="/admin/login"></Redirect>)}
+        </Route>
         <Route path="/register">
           {!!auth.token ? <Redirect to="/Dashboard" /> : <Register />}
         </Route>
@@ -34,12 +40,7 @@ const App = () => {
         <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/admin/login" exact>
-          {!!auth.token ? (<Redirect to="/admin/Dashboard"></Redirect>) : (<AdminLogin/>)}
-        </Route>
-        <Route path="/admin/Dashboard" exact>
-          {!!auth.token ? (<AdminDashboard/>) : (<Redirect to="/admin/login"></Redirect>)}
-        </Route>
+        
       </Switch>
     </Router>
   );
