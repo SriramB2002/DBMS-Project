@@ -602,7 +602,7 @@ export default function BasicTabs() {
             style={{ margin: "10px", width: "650px" }}
             id="team-image-url"
             type={"text"}
-            label="Team Image URL"
+            label="Team Code"
             value={timg}
             onChange={(e) => settimg(e.target.value)}
           ></TextField>
@@ -800,6 +800,7 @@ export default function BasicTabs() {
             sx={{
               label: { color: "lightgray" },
               input: { color: "white" },
+              svg: {color: "white"},
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="match-timestamp"
@@ -814,6 +815,7 @@ export default function BasicTabs() {
             sx={{
               label: { color: "lightgray" },
               div: { color: "white" },
+              svg: { color: "white" },
               fieldset: { borderColor: "lightgray !important" },
             }}
             id="stadium"
