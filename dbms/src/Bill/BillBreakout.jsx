@@ -8,6 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import './Bill.css';
 const BillBreakout = (props) => {
   const [price, setprice] = useState(0);
   const [fp, setfp] = useState(0);
@@ -91,6 +92,7 @@ const BillBreakout = (props) => {
             <Grid item xs={6}>
               <Paper
                 textAlign='center' lineHeight='60px' elevation={100} sx={{ height: '40vh',overflow:'scroll' }}
+                className='_paper'
               >
                 <h1 style={{ paddingTop: '1rem' }}>Food</h1>
                 <div style={{ width: '90%', margin: 'auto' }}>
@@ -134,6 +136,7 @@ const BillBreakout = (props) => {
             <Grid item xs={6}>
               <Paper
                 textAlign='center' lineHeight='60px' elevation={100} sx={{ height: '40vh',overflow:'scroll' }}
+                className='_paper'
               >
                 <h1 style={{ paddingTop: '1rem' }}>Merch</h1>
                 <div style={{ width: '90%', margin: 'auto' }}>
@@ -177,6 +180,7 @@ const BillBreakout = (props) => {
             <Grid item xs={9}>
               <Paper
                 textAlign='center' lineHeight='60px' elevation={100} sx={{ height: '25vh',overflow:'scroll',overflow:'scroll' }}
+                className='_paper'
               >
             <h1 style={{ paddingTop: '1rem' }}>Seats</h1>
             <div style={{ width: '90%', margin: 'auto' }}>
