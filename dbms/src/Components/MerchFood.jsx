@@ -110,7 +110,6 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
           });
         });
       }
-     
       console.log(temp);
       setBalace(temp);
     }
@@ -120,25 +119,20 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
   },[food,merch,seats]);
   async function displayRazorpay(d) {
     console.log(d);
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${auth.token}`
+    };
     const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
-
-    if (!res) {
-      alert('Razorpay SDK failed to load. Are you online?')
-      return
-    }
-    console.log("here");
-    const data = await fetch('http://localhost:8080/user/booking/razorpay', { method: 'POST' }).then((t) =>
-      t.json()
-    )
+    const data = await axios.post('http://localhost:8080/user/booking/razorpay',{
+      amount:balance
+    });
     console.log("here2");
     const options = {
       key: 'rzp_test_ZdRXkONBVZeKRJ',
-      currency: data.currency,
-      amount: data.amount.toString(),
-      order_id: data.id,
+      currency: 'INR',
+      amount: balance*100,
       name: 'Donation',
-      description: 'Thank you for nothing. Please give us some money',
-      image: 'http://localhost:1337/logo.svg',
       handler: function (response) {
         //Success
         bookseats(d, 'Razorpay');
@@ -218,7 +212,7 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          To Confirm Booking , Please Pay Rs. 1000
+          To Confirm Booking , Please Pay Rs. {balance}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
