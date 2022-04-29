@@ -36,10 +36,10 @@ const Profile = () => {
             console.log(data.data);
             setProfile(data.data[0]);
             setDetails({
-                first_name:data.data.user.first_name,
-                last_name:data.data.user.last_name,
+                first_name:data?.data[0]?.first_name,
+                last_name:data?.data[0]?.last_name,
                 password:''
-            })
+            });
         }
         fetchData();
     }, []);
@@ -68,7 +68,6 @@ const Profile = () => {
         try{
             const data = await axios.post('http://localhost:8080/user/profile/updateDetails',{
                 ...details
-            
         },{
             headers:{
                 'Authorization':'Bearer '+ auth.token
