@@ -208,7 +208,7 @@ const BillBreakout = (props) => {
                           <TableCell align="right"></TableCell>
                           <TableCell align="right"></TableCell>
                           <TableCell align="right">Total Price</TableCell>
-                          <TableCell align="right">&#8377;{mp}</TableCell>
+                          <TableCell align="right">&#8377;{sp}</TableCell>
                         </TableRow>
 
 
