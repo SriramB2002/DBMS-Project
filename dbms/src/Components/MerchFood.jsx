@@ -22,6 +22,7 @@ import AuthContext from '../Shared/AuthContext';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import loadScript from '../Shared/loadScript';
 import Modal from '../Components/Modal';
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -117,19 +118,6 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
       mounted = false;
     }
   },[food,merch,seats]);
-  function loadScript(src) {
-    return new Promise((resolve) => {
-      const script = document.createElement('script')
-      script.src = src
-      script.onload = () => {
-        resolve(true)
-      }
-      script.onerror = () => {
-        resolve(false)
-      }
-      document.body.appendChild(script)
-    })
-  }
   async function displayRazorpay(d) {
     console.log(d);
     const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
@@ -142,9 +130,7 @@ function AlertDialog({ open, setOpen, food, merch, seats, match_id, alert, setAl
     const data = await fetch('http://localhost:8080/user/booking/razorpay', { method: 'POST' }).then((t) =>
       t.json()
     )
-
     console.log("here2");
-
     const options = {
       key: 'rzp_test_ZdRXkONBVZeKRJ',
       currency: data.currency,
@@ -349,7 +335,7 @@ const MerchFood = (props) => {
               food.map((food_item, key) =>
                 <Grid item xs={3} key={key}>
                   <FoodCard food_item={food_item} setfooditem={setFood} index=
-                    {key} food={food} />
+                    {key} food={food}S/>
                 </Grid>
               )
             }

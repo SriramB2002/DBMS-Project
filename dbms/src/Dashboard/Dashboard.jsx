@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useContext } from "react";
 import { Redirect, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Home from './Home';
@@ -7,7 +7,14 @@ import Profile from '../Profile/Profile'
 import MerchFood from "../Components/MerchFood";
 import { CurrentBookings } from "../CurrentBookings/CurrentBookings";
 import  BillBreakout  from "../Bill/BillBreakout";
+import  AuthContext  from '../Shared/AuthContext';
 function Dashboard() {
+  const { auth, setAuth,admin,setAdmin } = useContext(AuthContext);
+  useEffect(() => {
+    if(localStorage.getItem('auth') && JSON.parse(localStorage.getItem('auth')).token!==undefined){
+      setAuth(JSON.parse(localStorage.getItem('auth')));
+    }
+  }, []);
   const navbarItems = [
     {
       name:"Home",

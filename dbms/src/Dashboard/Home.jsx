@@ -19,6 +19,11 @@ const Home = () => {
   const [headerHidden,setheaderHidden] = useState(false);
   const {auth,setAuth} = useContext(AuthContext);
   const [filter,setFilter] = useState(false);
+  useEffect(() => {
+    if(localStorage.getItem('auth') && JSON.parse(localStorage.getItem('auth')).token!==undefined){
+      setAuth(JSON.parse(localStorage.getItem('auth')));
+    }
+  }, []);
   const handleChange = (event) => {
     if(event.target.value=="See All Matches"){
       setStadium(event.target.value);

@@ -11,8 +11,7 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { createTheme,ThemeProvider } from '@mui/material/styles';
-
-
+import AddBalance from './AddBalance';
 const Profile = () => {
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -21,6 +20,7 @@ const Profile = () => {
     const [profile,setProfile] = useState({});
     const [open,setOpen] = useState(false);
     const [message,setMessage] = useState('');
+    const [modal,setModal] = useState(false);
     const [details,setDetails] = useState({
         first_name:profile.first_name,
         last_name:profile.last_name,
@@ -47,19 +47,16 @@ const Profile = () => {
         
     //   };
     const darkTheme = createTheme({ palette: { mode: 'dark' } });
-    const handleClick = () => {
-        setOpen(true);
-      };
-    
       const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
         }
-    
         setOpen(false);
       };
  
-
+    const addBalance = () => {
+        setModal(true);
+    }
     const handleChange = (prop) => (event) => {
         setDetails({ ...details, [prop]: event.target.value });
     };
@@ -92,6 +89,7 @@ const Profile = () => {
             My Profile
         </h1>
         <h1 className='he' style={{marginTop:'1rem',fontSize:'1.5rem',color:'#E0E0E0'}}>Current Balance:  Rs. {profile.balance}</h1>
+        <AddBalance open={modal} setOpen={setModal}/>
         <Paper className='container' elevation={24}>
         {!!profile.first_name && 
         <Paper style={{ padding: '3rem'}} elevation={24}>
@@ -128,7 +126,7 @@ const Profile = () => {
         </Paper>}
         <ButtonGroup  fullWidth>
         <Button variant="contained" color="success" style={{padding:'1rem',color:'white'}} onClick={updateDetails}>Update Details</Button>
-        <Button variant="contained" color="primary" style={{padding:'1rem',color:'white'}}>Add Balance</Button>
+        <Button variant="contained" color="primary" style={{padding:'1rem',color:'white'}} onClick={addBalance}>Add Balance</Button>
         </ButtonGroup>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
