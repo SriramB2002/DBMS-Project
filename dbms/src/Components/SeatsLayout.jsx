@@ -181,7 +181,7 @@ const SeatsLayout = () => {
         setOpen1(true);
         setTimeout(() => {
           setOpen1(false);
-        }, 500);
+        }, 5000);
         return;
       }
       history.push({

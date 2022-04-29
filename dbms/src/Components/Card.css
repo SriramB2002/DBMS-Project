@@ -7,22 +7,25 @@
 }
 .fpt-small {
     font-family: 'Bebas Neue', cursive !important;
-    font-size: 1rem !important;
+    font-size: 1vw !important;
+    text-align: center;
   }
   .fpt-small-2 {
     font-family: 'Bebas Neue', cursive !important;
-    font-size: 1.3rem !important;
-
+    font-size: 1.3vw !important;
+    text-align: center;
   }
 
   .fpt-lg{
     font-family: 'Bebas Neue', cursive !important;
-    font-size: 2rem !important;
+    font-size: 2vw !important;
     padding-top:0.8rem;
+    text-align: center;
   }
   .fpt-lg-2{
     font-family: 'Bebas Neue', cursive !important;
     font-size: 1.2rem !important;
+    text-align: center;
   }
   .d-flex{
       display: flex;

@@ -3,7 +3,9 @@
 html {
     background-color: #363450 !important;
 }
-
+.paddedr{
+    margin-bottom:2rem;
+}
 .homepage{
     /* background: url('../Resources/stadium-3.jpg'); */
     background-size: cover;

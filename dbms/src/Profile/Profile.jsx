@@ -2,6 +2,7 @@ import axios from 'axios';
 import React,{useEffect, useState} from 'react'
 import './Profile.css';
 import { useContext } from 'react';
+import { Box, ButtonGroup } from '@material-ui/core';
 import  AuthContext  from '../Shared/AuthContext';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -9,6 +10,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { createTheme,ThemeProvider } from '@mui/material/styles';
+
+
 const Profile = () => {
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -42,6 +46,7 @@ const Profile = () => {
     // const onSubmit = async values => {
         
     //   };
+    const darkTheme = createTheme({ palette: { mode: 'dark' } });
     const handleClick = () => {
         setOpen(true);
       };
@@ -82,13 +87,15 @@ const Profile = () => {
       
     }
   return (
-    <div className='homepage' style={{paddingTop:'5rem'}}>
-        <h1 className='he' style={{marginTop:'2rem'}}>
+    <ThemeProvider theme={darkTheme}>
+        <div className='homepage' style={{paddingTop:'5rem'}}>
+        <h1 className='he'>
             My Profile
         </h1>
-        <h1 className='he' style={{marginTop:'2rem'}}>Current Balance:  Rs.{profile.balance}</h1>
-        <div className='container' style={{backgroundColor:'white',borderRadius:'2rem',padding:'2rem',paddingBottom:'2rem'}}>
-        {!!profile.first_name && <Paper style={{ padding: '3rem',background:'#EEEEEE',borderRadius:'1rem' }}>
+        <h1 className='he' style={{marginTop:'1rem',fontSize:'1.5rem',color:'#E0E0E0'}}>Current Balance:  Rs. {profile.balance}</h1>
+        <Paper className='container' elevation={24}>
+        {!!profile.first_name && 
+        <Paper style={{ padding: '3rem'}} elevation={24}>
             <Grid container spacing={4}>
                 <Grid item xs={12}>
                   <TextField
@@ -120,16 +127,19 @@ const Profile = () => {
                 </Grid>
                 </Grid>
         </Paper>}
-        <Button variant="contained" color="success" style={{marginTop:'2rem',padding:'1rem',borderRadius:'0.8rem'}} fullWidth onClick={updateDetails}>Update Details</Button>
-    
+        <ButtonGroup  fullWidth>
+        <Button variant="contained" color="success" style={{padding:'1rem',color:'white'}} onClick={updateDetails}>Update Details</Button>
+        <Button variant="contained" color="primary" style={{padding:'1rem',color:'white'}}>Add Balance</Button>
+        </ButtonGroup>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
             {message}
         </Alert>
         </Snackbar>
+        </Paper>
         </div>
-        
-        </div>
+        </ThemeProvider>
+
   )
 }
 

@@ -68,25 +68,7 @@ export default function MatchCard(props) {
     <Card data-aos="flip-down" data-aos-duration="500" sx={{ minWidth: '90%' ,transition:'1s ease-in', backgroundColor:'white',color:'white',height:'8rem'}} className="fpt">
       <CardActionArea sx={{padding:'2rem'}} className='ffpr'>
       <Grid container spacing={3}>
-  {/* 
-
-  <Grid item xs={1.5}>
-      <div style={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column'}}>
-          <Typography variant="body1" color="black" className='fpt-small'>
-           {date.toLocaleTimeString()}
-          </Typography>
-      </div>
-  </Grid>
-  <Grid item xs={1.5}>
-      <div className='as'style={{paddingY:'20px',height:'100%',background:'#EF5350',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'20px',flexDirection:'column',rowGap:'0px',textAlign:'center'}}>
-          <Typography variant="body1" color="black" className='fpt-small'>
-          <div>{currentStadium?.stadium_name}
-          </div>
-          </Typography>
-          
-      </div>
-  </Grid> */}
-  <Grid item xs={1}>
+  <Grid item xs={1} style ={{height:'100%'}}>
           <Typography variant="body1" color="white" sx={{paddingY:'0px',height:'50%',background:'#37374F',display:'flex',justifyContent:'center',alignItems:'center',borderRadius:'4px',marginTop:'1rem'}} className="fpt-small">
             <div>{props.match.match_format}</div>
           </Typography>

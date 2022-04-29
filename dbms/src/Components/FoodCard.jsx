@@ -19,7 +19,7 @@ export default function FoodCard({ food_item, setfooditem, index, food }) {
     useEffect(() => {
         let mounted = 1;
         if(mounted){
-        const newfood = [...food];
+    const newfood = [...food];
         newfood[index].food_quantity = quantity;
         setfooditem(newfood);
         }
